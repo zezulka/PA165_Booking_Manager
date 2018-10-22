@@ -15,8 +15,6 @@ public interface BookingDao {
     public void create(Booking order);
 
     public List<Booking> findAll();
-
-    public List<Booking> findByCustomer(Customer r);
     
     public List<Booking> findByRoom(Room r);
 
