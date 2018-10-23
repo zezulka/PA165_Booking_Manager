@@ -13,9 +13,9 @@ public interface BookingDao {
     public void create(Booking order);
 
     public void remove(Booking o) throws IllegalArgumentException;
-    
+
     public Booking findById(Long id);
-    
+
     public List<Booking> findAll();
 
     public List<Booking> findByRoom(Room r);
