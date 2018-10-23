@@ -10,6 +10,8 @@ import java.util.List;
 public interface CustomerDao {
 
     public void create(Customer u);
+    
+    public void remove(Customer u);
 
     public Customer findById(Long id);
 

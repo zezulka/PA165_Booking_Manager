@@ -11,6 +11,8 @@ import java.util.List;
 public interface RoomDao {
 
     public void create(Room u);
+    
+    public void remove(Room u);
 
     public Room findById(Long id);
 
