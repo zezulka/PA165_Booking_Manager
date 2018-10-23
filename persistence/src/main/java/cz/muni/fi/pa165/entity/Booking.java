@@ -2,12 +2,10 @@ package cz.muni.fi.pa165.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.Min;
@@ -32,16 +30,16 @@ public class Booking {
     private LocalDate from;
     
     @NotNull
-    @Min(1)
-    private Integer durationInDays;
+    @Future
+    private LocalDate to;
     
     @ManyToOne(optional = false)
     @NotNull
     private Customer customer;
     
-    @ManyToMany
+    @ManyToOne
     @NotNull
-    private List<Room> rooms;
+    private Room room;
 
     public Booking() {
     }

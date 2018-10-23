@@ -14,6 +14,8 @@ public interface RoomDao {
 
     public Room findById(Long id);
 
+    public Room findByNumber(Hotel hotel, Integer number);
+    
     public List<Room> findByHotel(Hotel hotel);
     
     public List<Room> findAll();

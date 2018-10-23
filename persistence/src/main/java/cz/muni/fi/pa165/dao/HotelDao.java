@@ -11,11 +11,11 @@ public interface HotelDao {
 
     public void create(Hotel p);
 
+    public void remove(Hotel p) throws IllegalArgumentException;
+    
     public Hotel findById(Long id);
 
     public List<Hotel> findAll();
-
-    public void remove(Hotel p) throws IllegalArgumentException;
 
     public Hotel findByName(String name);
 }
