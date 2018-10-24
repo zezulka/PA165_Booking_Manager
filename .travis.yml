@@ -1,0 +1,10 @@
+language: java
+script: mvn clean install
+sudo: false
+notifications:
+  webhooks:
+    urls:
+      - https://webhooks.gitter.im/e/50164e0149315a057137
+    on_success: change
+    on_failure: always
+    on_start: never
