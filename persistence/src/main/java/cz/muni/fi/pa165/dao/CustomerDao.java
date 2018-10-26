@@ -4,14 +4,15 @@ import cz.muni.fi.pa165.entity.Customer;
 import java.util.List;
 
 /**
- *
- *
+ * @author Petr Valenta
  */
 public interface CustomerDao {
 
-    public void create(Customer u);
+    public void create(Customer c);
     
-    public void remove(Customer u);
+    public void remove(Customer c);
+
+    public void update(Customer c);
 
     public Customer findById(Long id);
 
