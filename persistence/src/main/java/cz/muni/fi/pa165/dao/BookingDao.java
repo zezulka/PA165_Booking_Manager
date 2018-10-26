@@ -2,7 +2,10 @@ package cz.muni.fi.pa165.dao;
 
 import cz.muni.fi.pa165.entity.Booking;
 import cz.muni.fi.pa165.entity.Room;
+
 import java.util.List;
+
+import javax.validation.ConstraintViolationException;
 
 /**
  * @author Miloslav Zezulka
@@ -13,6 +16,7 @@ public interface BookingDao {
      * Creates a new {@link Booking}. The argument passed must not be null
      * and its id must be set to null.
      * @throws IllegalArgumentException booking is null or the id is not null
+     * @throws ConstraintViolationException any column constraints are violated
      * @param booking new booking to be inserted
      */
     public void create(Booking booking);
@@ -26,8 +30,18 @@ public interface BookingDao {
     public void remove(Booking booking);
 
     /**
-     * Returns a {@link Booking} with the id {@link id}. If no such 
-     * {@link Booking} is present in the database, null is returned instead.
+     * Updates an existing {@link Booking} and returns the instance relevant
+     * to the current persistence context.
+     * @param booking booking to be updated in the database, cannot be null
+     * @throws IllegalArgumentException booking is null or its id is null
+     * @throws ConstraintViolationException any column constraints are violated
+     * @return the managed instance returned from the database
+     */
+    public Booking update(Booking booking);
+    
+    /**
+     * Returns a {@link Booking} with the id {@link id}. If no such booking is
+     * present in the database, null is returned instead.
      * @param id non-null id
      * @throws IllegalArgumentException id is null
      * @return booking with the id {@link id} or null
@@ -35,16 +49,20 @@ public interface BookingDao {
     public Booking findById(Long id);
 
     /**
-     * Returns all {@link Booking}s present in the database.
-     * @return A {@link List} of all Bookings, an empty List if there are none.
+     * Returns all bookings present in the database.
+     * @return A {@link List} of all bookings, an empty {@link List} if there
+     * are none.
      */
     public List<Booking> findAll();
 
     /**
-     * Returns all {@link Booking}s which were booked for the given Room. This
+     * Returns all bookings which were booked for the given Room. This
      * includes all the bookings done in the past.
-     * @param room room to search bookings with
-     * @return 
+     * @param room room to search bookings with, cannot be null
+     * @throws IllegalArgumentException room is null or the id of the room is
+     * null
+     * @return A {@link List} of all bookings submitted for the
+     * <code>room</code>.
      */
     public List<Booking> findByRoom(Room room);
 }

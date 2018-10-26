@@ -1,14 +1,14 @@
 package cz.muni.fi.pa165.dao;
 
+import cz.muni.fi.pa165.entity.Booking;
+import cz.muni.fi.pa165.entity.Room;
+
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.springframework.stereotype.Repository;
-
-import cz.muni.fi.pa165.entity.Booking;
-import cz.muni.fi.pa165.entity.Room;
 
 @Repository
 public class BookingDaoImpl implements BookingDao {
@@ -23,6 +23,11 @@ public class BookingDaoImpl implements BookingDao {
 
     @Override
     public void remove(Booking booking) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+    
+    @Override
+    public Booking update(Booking booking) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -40,5 +45,4 @@ public class BookingDaoImpl implements BookingDao {
     public List<Booking> findByRoom(Room room) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-
 }
