@@ -50,7 +50,7 @@ public class CustomerDaoImpl implements CustomerDao {
         if (id == null) {
             throw new IllegalArgumentException("Cannot search for null id.");
         }
-        em.find(Customer.class, id);
+        return em.find(Customer.class, id);
     }
 
     @Override
