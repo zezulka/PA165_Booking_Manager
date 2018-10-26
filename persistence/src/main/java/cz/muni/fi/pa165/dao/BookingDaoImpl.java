@@ -21,6 +21,10 @@ public class BookingDaoImpl implements BookingDao {
         if(booking == null) {
             throw new IllegalArgumentException("Booking cannot be null.");
         }
+        if(booking.getId() != null) {
+            throw new IllegalArgumentException("Booking must have a null id when"
+                    + "being stored.");
+        }
         em.persist(booking);
     }
 
@@ -67,9 +71,10 @@ public class BookingDaoImpl implements BookingDao {
             throw new IllegalArgumentException("Can't find bookings with room "
                     + "as null.");
         }
-        if(room.getId() == null) {
-            throw new IllegalArgumentException("Room must have its id set.");
-        }
+        //remove the comment after the basic stucture to room is introduced.
+        //if(room.getId() == null) {
+        //    throw new IllegalArgumentException("Room must have its id set.");
+        //}
         return em
                 .createQuery("SELECT b FROM Booking b WHERE b.room = :room",
                         Booking.class)
