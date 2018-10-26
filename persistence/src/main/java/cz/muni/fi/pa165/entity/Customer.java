@@ -29,6 +29,12 @@ public class Customer {
     @NotNull
     private String surname;
 
+    @NotNull //TODO is this necessary?
+    private boolean admin;
+
+    @NotNull
+    private String passwordHash;
+
     public Customer() {
     }
 
@@ -49,6 +55,14 @@ public class Customer {
     public String getSurname() { return surname; }
 
     public void setSurname(String surname) { this.surname = surname; }
+
+    public boolean isAdmin() { return admin; }
+
+    public void setAdmin(boolean admin) { this.admin = admin; }
+
+    public String getPasswordHash() { return passwordHash; }
+
+    public void setPasswordHash(String passwordHash) { this.passwordHash = passwordHash; }
 
     @Override
     public boolean equals(final Object o) {
