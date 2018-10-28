@@ -33,7 +33,7 @@ public class Hotel {
     @Column(nullable=false, unique=true)
     private String name;
     
-    @OneToMany(mappedBy = "hotels")
+    @OneToMany(mappedBy = "hotel")
     private List<Room> rooms = new ArrayList<Room>();
     
     public Hotel() {
