@@ -10,6 +10,8 @@ import org.hibernate.validator.constraints.Email;
 import java.util.Objects;
 
 /**
+ * Customer entity
+ *
  * @author Petr Valenta
  */
 public class Customer {

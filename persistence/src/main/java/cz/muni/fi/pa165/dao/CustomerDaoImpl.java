@@ -10,6 +10,8 @@ import javax.persistence.PersistenceContext;
 
 import cz.muni.fi.pa165.entity.Customer;
 /**
+ * Customer entity interface implementation
+ *
  * @author Petr Valenta
  */
 @Repository
