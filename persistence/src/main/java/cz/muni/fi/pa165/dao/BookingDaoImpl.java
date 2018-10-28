@@ -71,10 +71,9 @@ public class BookingDaoImpl implements BookingDao {
             throw new IllegalArgumentException("Can't find bookings with room "
                     + "as null.");
         }
-        //remove the comment after the basic stucture to room is introduced.
-        //if(room.getId() == null) {
-        //    throw new IllegalArgumentException("Room must have its id set.");
-        //}
+        if(room.getId() == null) {
+            throw new IllegalArgumentException("Room must have its id set.");
+        }
         return em
                 .createQuery("SELECT b FROM Booking b WHERE b.room = :room",
                         Booking.class)
