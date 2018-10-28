@@ -29,7 +29,7 @@ public class Customer {
     @NotNull
     private String surname;
 
-    @NotNull //TODO is this necessary?
+    @NotNull
     private boolean admin;
 
     @NotNull
@@ -65,22 +65,23 @@ public class Customer {
     public void setPasswordHash(String passwordHash) { this.passwordHash = passwordHash; }
 
     @Override
-    public boolean equals(final Object o) {
+    public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (o == null || !(o instanceof Customer)) {
             return false;
         }
+
         final Customer customer = (Customer) o;
-        return Objects.equals(email, customer.email) &&
-            Objects.equals(firstName, customer.firstName) &&
-            Objects.equals(surname, customer.surname);
+
+        if (!customer.getEmail().equals( getEmail() ) ) return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-
-        return Objects.hash(email, firstName, surname);
+        return Objects.hash(email);
     }
 }
