@@ -18,7 +18,14 @@ public class BookingDaoImpl implements BookingDao {
     
     @Override
     public void create(Booking booking) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if(booking == null) {
+            throw new IllegalArgumentException("Booking cannot be null.");
+        }
+        if(booking.getId() != null) {
+            throw new IllegalArgumentException("Booking must have a null id when"
+                    + "being stored.");
+        }
+        em.persist(booking);
     }
 
     @Override
