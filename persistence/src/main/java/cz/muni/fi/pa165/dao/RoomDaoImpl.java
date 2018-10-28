@@ -6,7 +6,10 @@ import cz.muni.fi.pa165.entity.Room;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
+import javax.persistence.NoResultException;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class RoomDaoImpl implements RoomDao {
 
     @PersistenceContext
@@ -84,10 +87,15 @@ public class RoomDaoImpl implements RoomDao {
         if(hotel.getId() == null) {
             throw new IllegalArgumentException("Hotel must have its id set.");
         }
-        return em
+        try {
+            return em
                 .createQuery("SELECT r FROM Room r WHERE r.hotel = :hotel AND r.number = :number",
                         Room.class)
                 .setParameter("hotel", hotel)
-                .getSingleResult();
+                .setParameter("number", number)
+                .getSingleResult();    
+        } catch(NoResultException ignore) {
+            return null;
+        }
     }
 }
