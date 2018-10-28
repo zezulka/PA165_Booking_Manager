@@ -113,12 +113,12 @@ public class Room {
         if (this == o) return true;
         if (!(o instanceof Room)) return false;
         Room room = (Room) o;
-        return Objects.equals(hotel, room.hotel) &&
-                Objects.equals(number, room.number);
+        return Objects.equals(getHotel(), room.getHotel()) &&
+                Objects.equals(getNumber(), room.getNumber());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(hotel, number);
+        return Objects.hash(getHotel(), getNumber());
     }
 }
