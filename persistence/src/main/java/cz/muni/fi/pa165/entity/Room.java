@@ -15,8 +15,7 @@ import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 
 /**
- *
- *
+ * @author Martin Páleník
  */
 @Entity
 public class Room {
@@ -44,9 +43,6 @@ public class Room {
 
     @Enumerated
     private RoomType type;
-    
-    @OneToMany(mappedBy = "rooms")
-    private List<Booking> bookings;
 
     public Room() {
     }
