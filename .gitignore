@@ -27,3 +27,4 @@ hs_err_pid*
 
 # IntelliJ IDE settings
 .idea/
+*.iml
