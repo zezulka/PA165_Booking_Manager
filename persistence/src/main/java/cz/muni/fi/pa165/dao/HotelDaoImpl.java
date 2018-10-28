@@ -6,6 +6,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
+import org.springframework.stereotype.Repository;
+
 import cz.muni.fi.pa165.entity.Hotel;
 
 /**
@@ -15,6 +17,8 @@ import cz.muni.fi.pa165.entity.Hotel;
  * @author Soňa Barteková
  *
  */
+
+@Repository
 public class HotelDaoImpl implements HotelDao {
 	
 	@PersistenceContext
@@ -28,12 +32,12 @@ public class HotelDaoImpl implements HotelDao {
 		em.remove(h);
 	}
 
-	public void update(Hotel h) {
+	public Hotel update(Hotel h) {
         if (findById(h.getId()) == null) {
             throw new IllegalArgumentException("Unknown hotel to update!");
         }
         
-		em.merge(h);
+		return em.merge(h);
 	}
 
 	public Hotel findById(Long id) {

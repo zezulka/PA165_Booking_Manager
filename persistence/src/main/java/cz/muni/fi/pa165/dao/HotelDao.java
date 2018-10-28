@@ -32,8 +32,9 @@ public interface HotelDao {
      *
      * @param h represents persisted entity to be updated.
      * @throws IllegalArgumentException if hotel for updating is not in the database.
+     * @return updated hotel entity. 
      */    
-    public void update(Hotel h);
+    public Hotel update(Hotel h);
     
     /**
      * Return the hotel entity with specific id.
