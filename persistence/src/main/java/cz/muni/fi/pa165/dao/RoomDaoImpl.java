@@ -85,7 +85,7 @@ public class RoomDaoImpl implements RoomDao {
             throw new IllegalArgumentException("Hotel must have its id set.");
         }
         return em
-                .createQuery("SELECT r FROM Room r WHERE r.hotel = :hotel",
+                .createQuery("SELECT r FROM Room r WHERE r.hotel = :hotel AND r.number = :number",
                         Room.class)
                 .setParameter("hotel", hotel)
                 .getSingleResult();
