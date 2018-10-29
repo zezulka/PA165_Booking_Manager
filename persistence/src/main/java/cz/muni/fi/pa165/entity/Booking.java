@@ -24,12 +24,10 @@ public class Booking {
     private BigDecimal total;
 
     @NotNull
-    @Future
-    private LocalDate from;
+    private LocalDate fromDate;
 
     @NotNull
-    @Future
-    private LocalDate to;
+    private LocalDate toDate;
 
     @ManyToOne
     @NotNull
@@ -59,19 +57,19 @@ public class Booking {
     }
 
     public LocalDate getFrom() {
-        return from;
+        return fromDate;
     }
 
     public void setFrom(LocalDate from) {
-        this.from = from;
+        this.fromDate = from;
     }
 
     public LocalDate getTo() {
-        return to;
+        return toDate;
     }
 
     public void setTo(LocalDate to) {
-        this.to = to;
+        this.toDate = to;
     }
 
     public Customer getCustomer() {
@@ -93,8 +91,8 @@ public class Booking {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 53 * hash + (from != null ? from.hashCode() : 0);
-        hash = 53 * hash + (to != null ? to.hashCode() : 0);
+        hash = 53 * hash + (fromDate != null ? fromDate.hashCode() : 0);
+        hash = 53 * hash + (toDate != null ? toDate.hashCode() : 0);
         hash = 53 * hash + (customer != null ? customer.hashCode() : 0);
         hash = 53 * hash + (room != null ? room.hashCode() : 0);
         return hash;
@@ -112,10 +110,10 @@ public class Booking {
             return false;
         }
         Booking other = (Booking) obj;
-        if (from == null || !from.equals(other.getFrom())) {
+        if (fromDate == null || !fromDate.equals(other.getFrom())) {
             return false;
         }
-        if (to == null || !to.equals(other.getTo())) {
+        if (toDate == null || !toDate.equals(other.getTo())) {
             return false;
         }
         if(customer == null || !customer.equals(other.getCustomer())) {

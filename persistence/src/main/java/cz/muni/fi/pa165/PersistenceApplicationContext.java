@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 @Configuration
-@ComponentScan(basePackages = {"cz.muni.fi.pa165.dao", "cz.muni.fi.pa165.entity", "cz.muni.fi.pa165.enums"})
+@ComponentScan(basePackages = {"cz.muni.fi.pa165.dao", "cz.muni.fi.pa165.entity", "cz.muni.fi.pa165.enums", "cz.muni.fi.pa165.converters"})
 @EnableJpaRepositories
 @EnableTransactionManagement
 public class PersistenceApplicationContext {
