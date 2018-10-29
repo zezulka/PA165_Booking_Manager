@@ -44,7 +44,7 @@ public class HotelDaoTest extends AbstractTestNGSpringContextTests {
     private Hotel h2;
 
     /**
-     * Setup kindly forged from Mr. Zezulka's
+     * Setup kindly forged from Mr. Zezulka
      */
     @BeforeMethod
     private void init() {
@@ -106,4 +106,33 @@ public class HotelDaoTest extends AbstractTestNGSpringContextTests {
         assertThat(hotelDao.findByName("There is just no way any hotel would ever be called like this."))
                 .isNull();
     }
+
+    @Test
+    public void findByNullName() {
+        assertThatThrownBy(() -> hotelDao.findByName(null))
+                .isInstanceOf(DataAccessException.class)
+                .hasCauseInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    public void findById() {
+        assertThat(hotelDao.findById(h1.getId())).isEqualTo(h1);
+    }
+
+    @Test
+    public void findByNullId() {
+        assertThatThrownBy(() -> hotelDao.findById(null))
+                .isInstanceOf(DataAccessException.class)
+                .hasCauseInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    public void findByMissingId() {
+        assertThat(Long.MAX_VALUE).isNotEqualTo(h1.getId());
+        assertThat(Long.MAX_VALUE).isNotEqualTo(h2.getId());
+        assertThat(hotelDao.findById(Long.MAX_VALUE)).isNull();
+    }
+
+
+
 }
