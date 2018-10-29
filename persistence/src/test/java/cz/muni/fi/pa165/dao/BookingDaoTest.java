@@ -232,4 +232,36 @@ public class BookingDaoTest extends AbstractTestNGSpringContextTests {
             .isInstanceOf(DataAccessException.class)
             .hasCauseInstanceOf(IllegalArgumentException.class);
     }
+
+    @Test
+    public void updateHappyScenario() {
+        assertThat(bookingDao.findAll()).hasSize(2);
+        Booking found = bookingDao.findById(b1.getId());
+        assertThat(found.getCustomer()).isEqualTo(c1);
+        b1.setCustomer(c2);
+        bookingDao.update(b1);
+        found = bookingDao.findById(b1.getId());
+        assertThat(found.getCustomer()).isEqualTo(c2);
+        assertThat(bookingDao.findAll()).hasSize(2).containsExactly(b1,b4);
+    }
+
+    @Test
+    public void removeHappyScenario() {
+        assertThat(bookingDao.findAll()).hasSize(2);
+        bookingDao.remove(b1);
+        assertThat(bookingDao.findAll()).hasSize(1).containsExactly(b4);
+    }
+
+    @Test
+    public void createHappyScenario() {
+        assertThat(bookingDao.findAll()).hasSize(2);
+        Booking b5 = new Booking();
+        b5.setTotal(new BigDecimal("2800.98"));
+        b5.setFrom(LocalDate.of(2033,6,23));
+        b5.setTo(LocalDate.of(2033,6,20));
+        b5.setCustomer(c2);
+        b5.setRoom(r2);
+        bookingDao.create(b5);
+        assertThat(bookingDao.findAll()).hasSize(3).containsExactly(b1, b4, b5);
+    }
 }
