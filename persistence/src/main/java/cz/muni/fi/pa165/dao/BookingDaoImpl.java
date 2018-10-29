@@ -15,13 +15,13 @@ public class BookingDaoImpl implements BookingDao {
 
     @PersistenceContext
     private EntityManager em;
-    
+
     @Override
     public void create(Booking booking) {
-        if(booking == null) {
+        if (booking == null) {
             throw new IllegalArgumentException("Booking cannot be null.");
         }
-        if(booking.getId() != null) {
+        if (booking.getId() != null) {
             throw new IllegalArgumentException("Booking must have a null id when"
                     + "being stored.");
         }
@@ -30,26 +30,49 @@ public class BookingDaoImpl implements BookingDao {
 
     @Override
     public void remove(Booking booking) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (booking == null) {
+            throw new IllegalArgumentException("Cannot remove null booking.");
+        }
+        if (booking.getId() == null) {
+            throw new IllegalArgumentException("Booking id not set.");
+        }
+        em.remove(findById(booking.getId()));
     }
-    
+
     @Override
     public Booking update(Booking booking) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (booking == null) {
+            throw new IllegalArgumentException("Cannot update null booking.");
+        }
+        if (booking.getId() == null) {
+            throw new IllegalArgumentException("Cannot update booking with null id.");
+        }
+        return em.merge(booking);
     }
 
     @Override
     public Booking findById(Long id) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (id == null) {
+            throw new IllegalArgumentException("Cannot search with null id.");
+        }
+        return em.find(Booking.class, id);
     }
 
     @Override
     public List<Booking> findAll() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return em.createQuery("SELECT b FROM Booking b", Booking.class)
+                .getResultList();
     }
 
     @Override
     public List<Booking> findByRoom(Room room) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (room == null) {
+            throw new IllegalArgumentException("Room cannot be null.");
+        }
+        if (room.getId() == null) {
+            throw new IllegalArgumentException("Room must have its id set.");
+        }
+        return em.createQuery("SELECT b FROM Booking b WHERE b.room = :room",
+                Booking.class).setParameter("room", room).getResultList();
     }
 }
