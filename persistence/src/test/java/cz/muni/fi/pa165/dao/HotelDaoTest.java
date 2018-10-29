@@ -153,11 +153,4 @@ public class HotelDaoTest extends AbstractTestNGSpringContextTests {
                 .isInstanceOf(DataAccessException.class)
                 .hasCauseInstanceOf(IllegalArgumentException.class);
     }
-
-    @Test
-    public void removeNull() {
-        assertThatThrownBy(() -> hotelDao.remove(null))
-                .isInstanceOf(DataAccessException.class)
-                .hasCauseInstanceOf(IllegalArgumentException.class);
-    }
 }
