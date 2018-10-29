@@ -39,6 +39,9 @@ public class HotelDaoImpl implements HotelDao {
 	}
 
 	public Hotel update(Hotel h) {
+		if (h == null) {
+			throw new IllegalArgumentException("Cannot update null hotel.");
+		}
         if (findById(h.getId()) == null) {
             throw new IllegalArgumentException("Unknown hotel to update!");
         }
