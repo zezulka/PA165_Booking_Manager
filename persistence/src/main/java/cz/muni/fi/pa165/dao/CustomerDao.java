@@ -15,16 +15,16 @@ public interface CustomerDao {
      * Persists a new {@link Customer} to the database.
      *
      * @param c customer to be persisted.
-     * @throws IllegalArgumentException customer is null
+     * @throws IllegalArgumentException customer is null or customer already exists
      * @throws ConstraintViolationException column constraint was violated
      */
     public void create(Customer c);
 
     /**
-     * Removes an exeisting {@link Customer} from the database.
+     * Removes an existing {@link Customer} from the database.
      *
      * @param c customer to be removed
-     * @throws IllegalArgumentException customer is null
+     * @throws IllegalArgumentException customer is null or customer has null id
      */
     public void remove(Customer c);
 
