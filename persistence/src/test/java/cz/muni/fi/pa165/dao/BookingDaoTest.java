@@ -60,7 +60,7 @@ public class BookingDaoTest extends AbstractTestNGSpringContextTests {
     private Hotel h1;
 
     /**
-     * Setup modified from RoomDaoTest.java
+     * Setup modified from other tests
      */
     @BeforeMethod
     private void init() {
@@ -119,7 +119,12 @@ public class BookingDaoTest extends AbstractTestNGSpringContextTests {
         b1.setRoom(r1);
 
         b3.setId(Long.MAX_VALUE-1);
-        b4.setId(null);
+
+        b4.setTotal(new BigDecimal("2.5"));
+        b4.setFrom(LocalDate.of(2032,6,23));
+        b4.setTo(LocalDate.of(2032,6,25));
+        b4.setCustomer(c2);
+        b4.setRoom(r2);
 
         h1.setAddress("In The Middle Of Nowhere");
         h1.setName("Noname");
@@ -143,13 +148,9 @@ public class BookingDaoTest extends AbstractTestNGSpringContextTests {
 
     @Test
     public void findAll() {
-        assertThat(customerDao.findAll()).hasSize(2).containsExactly(c1,c2);
+        assertThat(bookingDao.findAll()).hasSize(2).containsExactly(b1,b4);
     }
 
-    @Test
-    public void findAllHotels() {
-        assertThat(hotelDao.findAll()).hasSize(1).containsExactly(h1);
-    }
     @Test
     public void findById() {
         assertThat(bookingDao.findById(b1.getId())).isEqualTo(b1);
@@ -165,7 +166,7 @@ public class BookingDaoTest extends AbstractTestNGSpringContextTests {
     @Test
     public void findByMissingId() {
         assertThat(Long.MAX_VALUE).isNotEqualTo(b1.getId());
-        //assertThat(Long.MAX_VALUE).isNotEqualTo(h2.getId());
+        assertThat(Long.MAX_VALUE).isNotEqualTo(b4.getId());
         assertThat(bookingDao.findById(Long.MAX_VALUE)).isNull();
     }
 
@@ -183,7 +184,7 @@ public class BookingDaoTest extends AbstractTestNGSpringContextTests {
 
     @Test
     public void findByNonUsedRoom() {
-        assertThat(bookingDao.findByRoom(r3)).isNull();
+        assertThat(bookingDao.findByRoom(r3)).isEmpty();
     }
 
 
@@ -217,7 +218,10 @@ public class BookingDaoTest extends AbstractTestNGSpringContextTests {
 
     @Test
     public void updateNullId() {
-        assertThatThrownBy(() -> bookingDao.update(b4))
+        Booking bnull = new Booking();
+        bnull.setId(null);
+
+        assertThatThrownBy(() -> bookingDao.update(bnull))
             .isInstanceOf(DataAccessException.class)
             .hasCauseInstanceOf(IllegalArgumentException.class);
     }
