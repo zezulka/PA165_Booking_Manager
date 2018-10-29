@@ -31,7 +31,7 @@ import javax.persistence.NoResultException;
  *
  * @author Petr Valenta
  */
-@ContextConfiguration(classes= PersistenceApplicationContext.class)
+@ContextConfiguration(classes = PersistenceApplicationContext.class)
 @TestExecutionListeners(TransactionalTestExecutionListener.class)
 @Transactional
 public class BookingDaoTest extends AbstractTestNGSpringContextTests {
@@ -73,7 +73,6 @@ public class BookingDaoTest extends AbstractTestNGSpringContextTests {
         b3 = new Booking();
         b4 = new Booking();
 
-
         c1 = new Customer();
         c2 = new Customer();
 
@@ -113,16 +112,16 @@ public class BookingDaoTest extends AbstractTestNGSpringContextTests {
         c2.setPasswordHash("TurnToPage394");
 
         b1.setTotal(new BigDecimal("1.5"));
-        b1.setFrom(LocalDate.of(2030,6,23));
-        b1.setTo(LocalDate.of(2030,6,25));
+        b1.setFrom(LocalDate.of(2030, 6, 23));
+        b1.setTo(LocalDate.of(2030, 6, 25));
         b1.setCustomer(c1);
         b1.setRoom(r1);
 
-        b3.setId(Long.MAX_VALUE-1);
+        b3.setId(Long.MAX_VALUE - 1);
 
         b4.setTotal(new BigDecimal("2.5"));
-        b4.setFrom(LocalDate.of(2032,6,23));
-        b4.setTo(LocalDate.of(2032,6,25));
+        b4.setFrom(LocalDate.of(2032, 6, 23));
+        b4.setTo(LocalDate.of(2032, 6, 25));
         b4.setCustomer(c2);
         b4.setRoom(r2);
 
@@ -148,7 +147,7 @@ public class BookingDaoTest extends AbstractTestNGSpringContextTests {
 
     @Test
     public void findAll() {
-        assertThat(bookingDao.findAll()).hasSize(2).containsExactly(b1,b4);
+        assertThat(bookingDao.findAll()).hasSize(2).containsExactly(b1, b4);
     }
 
     @Test
@@ -159,8 +158,8 @@ public class BookingDaoTest extends AbstractTestNGSpringContextTests {
     @Test
     public void findByNullId() {
         assertThatThrownBy(() -> bookingDao.findById(null))
-            .isInstanceOf(DataAccessException.class)
-            .hasCauseInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(DataAccessException.class)
+                .hasCauseInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
@@ -178,8 +177,8 @@ public class BookingDaoTest extends AbstractTestNGSpringContextTests {
     @Test
     public void findByNullRoom() {
         assertThatThrownBy(() -> bookingDao.findByRoom(null))
-            .isInstanceOf(DataAccessException.class)
-            .hasCauseInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(DataAccessException.class)
+                .hasCauseInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
@@ -187,33 +186,32 @@ public class BookingDaoTest extends AbstractTestNGSpringContextTests {
         assertThat(bookingDao.findByRoom(r3)).isEmpty();
     }
 
-
     @Test
     public void createNull() {
         assertThatThrownBy(() -> bookingDao.create(null))
-            .isInstanceOf(DataAccessException.class)
-            .hasCauseInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(DataAccessException.class)
+                .hasCauseInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     public void createNoNullId() {
         assertThatThrownBy(() -> bookingDao.create(b3))
-            .isInstanceOf(DataAccessException.class)
-            .hasCauseInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(DataAccessException.class)
+                .hasCauseInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     public void createExisting() {
         assertThatThrownBy(() -> bookingDao.create(b1))
-            .isInstanceOf(DataAccessException.class)
-            .hasCauseInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(DataAccessException.class)
+                .hasCauseInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     public void updateNull() {
         assertThatThrownBy(() -> bookingDao.update(null))
-            .isInstanceOf(DataAccessException.class)
-            .hasCauseInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(DataAccessException.class)
+                .hasCauseInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
@@ -222,14 +220,14 @@ public class BookingDaoTest extends AbstractTestNGSpringContextTests {
         bnull.setId(null);
 
         assertThatThrownBy(() -> bookingDao.update(bnull))
-            .isInstanceOf(DataAccessException.class)
-            .hasCauseInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(DataAccessException.class)
+                .hasCauseInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     public void removeNull() {
         assertThatThrownBy(() -> bookingDao.remove(null))
-            .isInstanceOf(DataAccessException.class)
-            .hasCauseInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(DataAccessException.class)
+                .hasCauseInstanceOf(IllegalArgumentException.class);
     }
 }

@@ -31,7 +31,7 @@ public class Room {
 
     @NotNull
     private Integer number;
-    
+
     @NotNull
     private String description;
 
@@ -51,7 +51,6 @@ public class Room {
     // getters and setters
     // https://www.yegor256.com/2014/09/16/getters-and-setters-are-evil.html
     // JPA [...] rely on the get/set notation
-
     public Long getId() {
         return id;
     }
@@ -110,11 +109,15 @@ public class Room {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Room)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Room)) {
+            return false;
+        }
         Room room = (Room) o;
-        return Objects.equals(getHotel(), room.getHotel()) &&
-                Objects.equals(getNumber(), room.getNumber());
+        return Objects.equals(getHotel(), room.getHotel())
+                && Objects.equals(getNumber(), room.getNumber());
     }
 
     @Override

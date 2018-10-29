@@ -11,68 +11,67 @@ import org.springframework.stereotype.Repository;
 import cz.muni.fi.pa165.entity.Hotel;
 
 /**
- * 
- * Class accessing persistence context for CRUD operations for hotel class.
- * It implements HotelDao interface.
+ *
+ * Class accessing persistence context for CRUD operations for hotel class. It
+ * implements HotelDao interface.
+ *
  * @author Soňa Barteková
  *
  */
-
 @Repository
 public class HotelDaoImpl implements HotelDao {
-	
-	@PersistenceContext
-	private EntityManager em;
 
-	public void create(Hotel h) {
-		if(h == null) {
-			throw new IllegalArgumentException("Hotel cannot be null.");
-		}
-		if(h.getId() != null) {
-			throw new IllegalArgumentException("Hotel must have a null id when being stored.");
-		}
-		em.persist(h);
-	}
+    @PersistenceContext
+    private EntityManager em;
 
-	public void remove(Hotel h) throws IllegalArgumentException{
-		if (h == null) {
-			throw new IllegalArgumentException("Cannot remove null hotel.");
-		}
-		if (h.getId() == null) {
-			throw new IllegalArgumentException("Hotel id not set.");
-		}
-		em.remove(h);
-	}
+    public void create(Hotel h) {
+        if (h == null) {
+            throw new IllegalArgumentException("Hotel cannot be null.");
+        }
+        if (h.getId() != null) {
+            throw new IllegalArgumentException("Hotel must have a null id when being stored.");
+        }
+        em.persist(h);
+    }
 
-	public Hotel update(Hotel h) {
-		if (h == null) {
-			throw new IllegalArgumentException("Cannot update null hotel.");
-		}
+    public void remove(Hotel h) throws IllegalArgumentException {
+        if (h == null) {
+            throw new IllegalArgumentException("Cannot remove null hotel.");
+        }
+        if (h.getId() == null) {
+            throw new IllegalArgumentException("Hotel id not set.");
+        }
+        em.remove(h);
+    }
+
+    public Hotel update(Hotel h) {
+        if (h == null) {
+            throw new IllegalArgumentException("Cannot update null hotel.");
+        }
         if (findById(h.getId()) == null) {
             throw new IllegalArgumentException("Unknown hotel to update!");
         }
-        
-		return em.merge(h);
-	}
 
-	public Hotel findById(Long id) {
-		return em.find(Hotel.class, id);
-	}
+        return em.merge(h);
+    }
 
-	public List<Hotel> findAll() {
-		return em.createQuery("select h from Hotel h", Hotel.class).getResultList();
-	}
+    public Hotel findById(Long id) {
+        return em.find(Hotel.class, id);
+    }
 
-	public Hotel findByName(String name) {
-        if(name == null) {
+    public List<Hotel> findAll() {
+        return em.createQuery("select h from Hotel h", Hotel.class).getResultList();
+    }
+
+    public Hotel findByName(String name) {
+        if (name == null) {
             throw new IllegalArgumentException("You try to find hotel by NULL name!");
         }
-		try {
-			return em.createQuery("select h from Hotel h where name = :name", Hotel.class)
-					.setParameter("name", name).getSingleResult();
-		}
-		catch(NoResultException nre) {
-			return null;
-		}
-	}
+        try {
+            return em.createQuery("select h from Hotel h where name = :name", Hotel.class)
+                    .setParameter("name", name).getSingleResult();
+        } catch (NoResultException nre) {
+            return null;
+        }
+    }
 }

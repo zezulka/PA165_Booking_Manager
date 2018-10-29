@@ -116,9 +116,9 @@ public class Booking {
         if (toDate == null || !toDate.equals(other.getTo())) {
             return false;
         }
-        if(customer == null || !customer.equals(other.getCustomer())) {
+        if (customer == null || !customer.equals(other.getCustomer())) {
             return false;
         }
         return !(room == null || !room.equals(other.getRoom()));
-    }  
+    }
 }

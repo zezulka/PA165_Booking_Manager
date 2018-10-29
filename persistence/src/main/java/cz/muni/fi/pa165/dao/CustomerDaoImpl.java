@@ -9,6 +9,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
 import cz.muni.fi.pa165.entity.Customer;
+
 /**
  * Customer entity interface implementation
  *
@@ -63,12 +64,12 @@ public class CustomerDaoImpl implements CustomerDao {
 
     @Override
     public Customer findByEmail(String email) {
-        if (email == null || email.isEmpty()){
+        if (email == null || email.isEmpty()) {
             throw new IllegalArgumentException("Cannot search for null or empty email.");
         }
         try {
             return em.createQuery("SELECT c FROM Customer c WHERE email = :email",
-                Customer.class).setParameter("email", email).getSingleResult();
+                    Customer.class).setParameter("email", email).getSingleResult();
         } catch (NoResultException nre) {
             return null;
         }
@@ -77,6 +78,6 @@ public class CustomerDaoImpl implements CustomerDao {
     @Override
     public List<Customer> findAll() {
         return em.createQuery("SELECT c FROM Customer c",
-            Customer.class).getResultList();
+                Customer.class).getResultList();
     }
 }

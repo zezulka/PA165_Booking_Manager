@@ -6,7 +6,6 @@ import cz.muni.fi.pa165.entity.Room;
 import cz.muni.fi.pa165.enums.RoomType;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.testng.annotations.Test;
@@ -22,13 +21,11 @@ import static org.assertj.core.api.Assertions.*;
 import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 
-import javax.persistence.NoResultException;
-
 /**
  *
  * @author Martin Páleník
  */
-@ContextConfiguration(classes= PersistenceApplicationContext.class)
+@ContextConfiguration(classes = PersistenceApplicationContext.class)
 @TestExecutionListeners(TransactionalTestExecutionListener.class)
 @Transactional
 public class HotelDaoTest extends AbstractTestNGSpringContextTests {

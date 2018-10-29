@@ -24,7 +24,7 @@ public class Customer {
 
     @NotNull
     @Email
-    @Column(nullable=false, unique=true)
+    @Column(nullable = false, unique = true)
     private String email;
 
     @NotNull
@@ -46,27 +46,49 @@ public class Customer {
         return id;
     }
 
-    public void setId(Long id) { this.id = id; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public String getEmail() { return email; }
+    public String getEmail() {
+        return email;
+    }
 
-    public void setEmail(String email) { this.email = email; }
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-    public String getFirstName() { return firstName; }
+    public String getFirstName() {
+        return firstName;
+    }
 
-    public void setFirstName(String firstName) { this.firstName = firstName; }
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-    public String getSurname() { return surname; }
+    public String getSurname() {
+        return surname;
+    }
 
-    public void setSurname(String surname) { this.surname = surname; }
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
 
-    public boolean isAdmin() { return admin; }
+    public boolean isAdmin() {
+        return admin;
+    }
 
-    public void setAdmin(boolean admin) { this.admin = admin; }
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
+    }
 
-    public String getPasswordHash() { return passwordHash; }
+    public String getPasswordHash() {
+        return passwordHash;
+    }
 
-    public void setPasswordHash(String passwordHash) { this.passwordHash = passwordHash; }
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -79,7 +101,9 @@ public class Customer {
 
         final Customer customer = (Customer) o;
 
-        if (!customer.getEmail().equals( getEmail() ) ) return false;
+        if (!customer.getEmail().equals(getEmail())) {
+            return false;
+        }
 
         return true;
     }

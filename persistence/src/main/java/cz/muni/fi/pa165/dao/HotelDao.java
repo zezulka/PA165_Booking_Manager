@@ -5,16 +5,16 @@ import java.util.List;
 
 /**
  *
- *Interface for CRUD operations for entity hotel.
+ * Interface for CRUD operations for entity hotel.
  *
- *@author Soňa Barteková
+ * @author Soňa Barteková
  *
  */
 public interface HotelDao {
 
     /**
      * Persists new hotel into database.
-     * 
+     *
      * @param h represents entity to be persisted into database.
      */
     public void create(Hotel h);
@@ -22,20 +22,21 @@ public interface HotelDao {
     /**
      * Remove hotel entity from database.
      *
-     * @param h represents hotel to be removed from database.     
+     * @param h represents hotel to be removed from database.
      * @throws IllegalArgumentException if hotel for removing is not stored.
      */
     public void remove(Hotel h) throws IllegalArgumentException;
-    
+
     /**
      * Update persisted entity in the database.
      *
      * @param h represents persisted entity to be updated.
-     * @throws IllegalArgumentException if hotel for updating is not in the database.
-     * @return updated hotel entity. 
-     */    
+     * @throws IllegalArgumentException if hotel for updating is not in the
+     * database.
+     * @return updated hotel entity.
+     */
     public Hotel update(Hotel h);
-    
+
     /**
      * Return the hotel entity with specific id.
      *

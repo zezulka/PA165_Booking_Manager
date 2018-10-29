@@ -23,7 +23,7 @@ import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
  *
  * @author Miloslav Zezulka
  */
-@ContextConfiguration(classes= PersistenceApplicationContext.class)
+@ContextConfiguration(classes = PersistenceApplicationContext.class)
 @TestExecutionListeners(TransactionalTestExecutionListener.class)
 @Transactional
 public class RoomDaoTest extends AbstractTestNGSpringContextTests {

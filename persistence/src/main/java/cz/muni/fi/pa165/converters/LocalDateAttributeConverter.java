@@ -1,6 +1,5 @@
 package cz.muni.fi.pa165.converters;
 
-
 import java.sql.Date;
 import java.time.LocalDate;
 import javax.persistence.AttributeConverter;

@@ -66,10 +66,10 @@ public class RoomDaoImpl implements RoomDao {
 
     @Override
     public List<Room> findByHotel(Hotel hotel) {
-        if(hotel == null) {
+        if (hotel == null) {
             throw new IllegalArgumentException("Can't find rooms with hotel being null.");
         }
-        if(hotel.getId() == null) {
+        if (hotel.getId() == null) {
             throw new IllegalArgumentException("Hotel must have its id set.");
         }
         return em
@@ -81,20 +81,20 @@ public class RoomDaoImpl implements RoomDao {
 
     @Override
     public Room findByNumber(Hotel hotel, Integer number) {
-        if(hotel == null || number == null) {
+        if (hotel == null || number == null) {
             throw new IllegalArgumentException("None of the arguments shall be null.");
         }
-        if(hotel.getId() == null) {
+        if (hotel.getId() == null) {
             throw new IllegalArgumentException("Hotel must have its id set.");
         }
         try {
             return em
-                .createQuery("SELECT r FROM Room r WHERE r.hotel = :hotel AND r.number = :number",
-                        Room.class)
-                .setParameter("hotel", hotel)
-                .setParameter("number", number)
-                .getSingleResult();    
-        } catch(NoResultException ignore) {
+                    .createQuery("SELECT r FROM Room r WHERE r.hotel = :hotel AND r.number = :number",
+                            Room.class)
+                    .setParameter("hotel", hotel)
+                    .setParameter("number", number)
+                    .getSingleResult();
+        } catch (NoResultException ignore) {
             return null;
         }
     }
