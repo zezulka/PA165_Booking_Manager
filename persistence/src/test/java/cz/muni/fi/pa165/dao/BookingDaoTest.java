@@ -28,7 +28,6 @@ import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import javax.persistence.NoResultException;
 
 /**
- *
  * @author Petr Valenta
  */
 @ContextConfiguration(classes= PersistenceApplicationContext.class)
@@ -52,7 +51,6 @@ public class BookingDaoTest extends AbstractTestNGSpringContextTests {
     private Booking b1;
     private Booking b2;
     private Booking b3;
-    private Booking b4;
 
     private Customer c1;
     private Customer c2;
@@ -69,10 +67,8 @@ public class BookingDaoTest extends AbstractTestNGSpringContextTests {
         r3 = new Room();
 
         b1 = new Booking();
-        //b2 = new Booking();
+        b2 = new Booking();
         b3 = new Booking();
-        b4 = new Booking();
-
 
         c1 = new Customer();
         c2 = new Customer();
@@ -118,13 +114,13 @@ public class BookingDaoTest extends AbstractTestNGSpringContextTests {
         b1.setCustomer(c1);
         b1.setRoom(r1);
 
-        b3.setId(Long.MAX_VALUE-1);
+        b2.setTotal(new BigDecimal("2.5"));
+        b2.setFrom(LocalDate.of(2032,6,23));
+        b2.setTo(LocalDate.of(2032,6,25));
+        b2.setCustomer(c2);
+        b2.setRoom(r2);
 
-        b4.setTotal(new BigDecimal("2.5"));
-        b4.setFrom(LocalDate.of(2032,6,23));
-        b4.setTo(LocalDate.of(2032,6,25));
-        b4.setCustomer(c2);
-        b4.setRoom(r2);
+        b3.setId(Long.MAX_VALUE-1);
 
         h1.setAddress("In The Middle Of Nowhere");
         h1.setName("Noname");
@@ -143,12 +139,12 @@ public class BookingDaoTest extends AbstractTestNGSpringContextTests {
         customerDao.create(c2);
 
         bookingDao.create(b1);
-        bookingDao.create(b4);
+        bookingDao.create(b2);
     }
 
     @Test
     public void findAll() {
-        assertThat(bookingDao.findAll()).hasSize(2).containsExactly(b1,b4);
+        assertThat(bookingDao.findAll()).hasSize(2).containsExactly(b1,b2);
     }
 
     @Test
@@ -166,7 +162,7 @@ public class BookingDaoTest extends AbstractTestNGSpringContextTests {
     @Test
     public void findByMissingId() {
         assertThat(Long.MAX_VALUE).isNotEqualTo(b1.getId());
-        assertThat(Long.MAX_VALUE).isNotEqualTo(b4.getId());
+        assertThat(Long.MAX_VALUE).isNotEqualTo(b2.getId());
         assertThat(bookingDao.findById(Long.MAX_VALUE)).isNull();
     }
 
@@ -242,26 +238,26 @@ public class BookingDaoTest extends AbstractTestNGSpringContextTests {
         bookingDao.update(b1);
         found = bookingDao.findById(b1.getId());
         assertThat(found.getCustomer()).isEqualTo(c2);
-        assertThat(bookingDao.findAll()).hasSize(2).containsExactly(b1,b4);
+        assertThat(bookingDao.findAll()).hasSize(2).containsExactly(b1,b2);
     }
 
     @Test
     public void removeHappyScenario() {
         assertThat(bookingDao.findAll()).hasSize(2);
         bookingDao.remove(b1);
-        assertThat(bookingDao.findAll()).hasSize(1).containsExactly(b4);
+        assertThat(bookingDao.findAll()).hasSize(1).containsExactly(b2);
     }
 
     @Test
     public void createHappyScenario() {
         assertThat(bookingDao.findAll()).hasSize(2);
-        Booking b5 = new Booking();
-        b5.setTotal(new BigDecimal("2800.98"));
-        b5.setFrom(LocalDate.of(2033,6,23));
-        b5.setTo(LocalDate.of(2033,6,20));
-        b5.setCustomer(c2);
-        b5.setRoom(r2);
-        bookingDao.create(b5);
-        assertThat(bookingDao.findAll()).hasSize(3).containsExactly(b1, b4, b5);
+        Booking b4 = new Booking();
+        b4.setTotal(new BigDecimal("2800.98"));
+        b4.setFrom(LocalDate.of(2033,6,23));
+        b4.setTo(LocalDate.of(2033,6,20));
+        b4.setCustomer(c2);
+        b4.setRoom(r2);
+        bookingDao.create(b4);
+        assertThat(bookingDao.findAll()).hasSize(3).containsExactly(b1, b2, b4);
     }
 }
