@@ -25,6 +25,9 @@ public class CustomerDaoImpl implements CustomerDao {
         if (c == null) {
             throw new IllegalArgumentException("Customer cannot be null.");
         }
+        if (c.getId() != null) {
+            throw new IllegalArgumentException("Cannot create existing customer.");
+        }
         em.persist(c);
     }
 
@@ -32,6 +35,9 @@ public class CustomerDaoImpl implements CustomerDao {
     public void remove(Customer c) {
         if (c == null) {
             throw new IllegalArgumentException("Cannot remove null customer.");
+        }
+        if (c.getId() == null) {
+            throw new IllegalArgumentException("Cannot remove customer with null id.");
         }
         em.remove(c);
     }
@@ -61,7 +67,7 @@ public class CustomerDaoImpl implements CustomerDao {
             throw new IllegalArgumentException("Cannot search for null or empty email.");
         }
         try {
-            return em.createQuery("SELECT c FROM customer c WHERE email = :email",
+            return em.createQuery("SELECT c FROM Customer c WHERE email = :email",
                 Customer.class).setParameter("email", email).getSingleResult();
         } catch (NoResultException nre) {
             return null;
@@ -70,7 +76,7 @@ public class CustomerDaoImpl implements CustomerDao {
 
     @Override
     public List<Customer> findAll() {
-        return em.createQuery("SELECT c FROM customer c",
+        return em.createQuery("SELECT c FROM Customer c",
             Customer.class).getResultList();
     }
 }
