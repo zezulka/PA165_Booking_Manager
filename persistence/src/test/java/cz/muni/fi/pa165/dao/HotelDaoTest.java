@@ -194,4 +194,29 @@ public class HotelDaoTest extends AbstractTestNGSpringContextTests {
         assertThatThrownBy(() -> hotelDao.remove(hotel))
                 .isInstanceOf(IllegalArgumentException.class);
     }
+
+    @Test
+    public void createHappyScenario() {
+        Hotel h = new Hotel();
+        h.setName("Grand");
+        h.setAddress("Benesova 605/18, Brno 60200");
+        h.setRooms(new ArrayList<Room>());
+
+        hotelDao.create(h);
+        assertThat(h.getId()).isNotNull();
+        assertThat(hotelDao.findById(h.getId())).isEqualTo(h);
+        assertThat(hotelDao.findAll()).hasSize(3);
+    }
+
+    @Test
+    public void removeHappyScenario() {
+        assertThat(hotelDao.findAll()).hasSize(2);
+        roomDao.remove(r1);
+        roomDao.remove(r2);
+        hotelDao.remove(h1);
+        assertThat(hotelDao.findAll()).hasSize(1).containsExactly(h2);
+        roomDao.remove(r3);
+        hotelDao.remove(h2);
+        assertThat(hotelDao.findAll()).isEmpty();
+    }
 }
