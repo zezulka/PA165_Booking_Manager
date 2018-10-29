@@ -55,9 +55,8 @@ public interface HotelDao {
      * Return hotel with given name.
      *
      * @param name represents name of searched hotel.
-     * @return hotel from database with given name.
+     * @return hotel from database with given name, null if it does not exist.
      * @throws IllegalArgumentException if name is null.
-     * @throws NoResultException if there is no hotel to be returned.
      */
     public Hotel findByName(String name);
 }

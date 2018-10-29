@@ -19,6 +19,8 @@ import static org.assertj.core.api.Assertions.*;
 import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 
+import javax.persistence.NoResultException;
+
 /**
  *
  * @author Martin Páleník
@@ -95,7 +97,13 @@ public class HotelDaoTest extends AbstractTestNGSpringContextTests {
     }
 
     @Test
-    public void findByHotelExisting() {
+    public void findByNameExisting() {
         assertThat(hotelDao.findByName(h1.getName())).isEqualTo(h1);
+    }
+
+    @Test
+    public void findByNameNonexistent() {
+        assertThat(hotelDao.findByName("There is just no way any hotel would ever be called like this."))
+                .isNull();
     }
 }
