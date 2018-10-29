@@ -35,6 +35,12 @@ public class HotelDaoImpl implements HotelDao {
 	}
 
 	public void remove(Hotel h) throws IllegalArgumentException{
+		if (h == null) {
+			throw new IllegalArgumentException("Cannot remove null hotel.");
+		}
+		if (h.getId() == null) {
+			throw new IllegalArgumentException("Hotel id not set.");
+		}
 		em.remove(h);
 	}
 

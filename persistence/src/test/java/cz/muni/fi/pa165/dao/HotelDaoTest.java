@@ -5,7 +5,10 @@ import cz.muni.fi.pa165.entity.Hotel;
 import cz.muni.fi.pa165.entity.Room;
 import cz.muni.fi.pa165.enums.RoomType;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+
 import org.testng.annotations.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -148,9 +151,47 @@ public class HotelDaoTest extends AbstractTestNGSpringContextTests {
     }
 
     @Test
+    public void createTwice() {
+        Hotel h = new Hotel();
+        h.setName("Grand");
+        h.setAddress("Benesova 605/18, Brno 60200");
+        h.setRooms(new ArrayList<Room>());
+
+        hotelDao.create(h);
+        assertThatThrownBy(() -> hotelDao.create(h))
+                .isInstanceOf(DataAccessException.class)
+                .hasCauseInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
     public void updateNull() {
         assertThatThrownBy(() -> hotelDao.update(null))
                 .isInstanceOf(DataAccessException.class)
                 .hasCauseInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    public void updateWithNullId() {
+        Hotel h = new Hotel();
+        h.setName("Grand");
+        h.setAddress("Benesova 605/18, Brno 60200");
+        h.setRooms(new ArrayList<Room>());
+
+        assertThatThrownBy(() -> hotelDao.update(h))
+                .isInstanceOf(DataAccessException.class)
+                .hasCauseInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    public void removeNull() {
+        assertThatThrownBy(() -> hotelDao.remove(null))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    public void removeWithNullId() {
+        Hotel hotel = new Hotel();
+        assertThatThrownBy(() -> hotelDao.remove(hotel))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 }
