@@ -25,7 +25,13 @@ public class HotelDaoImpl implements HotelDao {
 	private EntityManager em;
 
 	public void create(Hotel h) {
-		em.persist(h);		
+		if(h == null) {
+			throw new IllegalArgumentException("Hotel cannot be null.");
+		}
+		if(h.getId() != null) {
+			throw new IllegalArgumentException("Hotel must have a null id when being stored.");
+		}
+		em.persist(h);
 	}
 
 	public void remove(Hotel h) throws IllegalArgumentException{
@@ -33,6 +39,9 @@ public class HotelDaoImpl implements HotelDao {
 	}
 
 	public Hotel update(Hotel h) {
+		if (h == null) {
+			throw new IllegalArgumentException("Cannot update null hotel.");
+		}
         if (findById(h.getId()) == null) {
             throw new IllegalArgumentException("Unknown hotel to update!");
         }
@@ -50,11 +59,11 @@ public class HotelDaoImpl implements HotelDao {
 
 	public Hotel findByName(String name) {
         if(name == null) {
-            throw new IllegalArgumentException("You try to find hotel by NULL name!"); 
+            throw new IllegalArgumentException("You try to find hotel by NULL name!");
         }
 		try {
 			return em.createQuery("select h from Hotel h where name = :name", Hotel.class)
-					.setParameter(":name", name).getSingleResult();
+					.setParameter("name", name).getSingleResult();
 		}
 		catch(NoResultException nre) {
 			return null;
