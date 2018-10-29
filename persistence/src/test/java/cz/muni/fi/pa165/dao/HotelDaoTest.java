@@ -81,11 +81,18 @@ public class HotelDaoTest extends AbstractTestNGSpringContextTests {
 
         h1.setAddress("In The Middle Of Nowhere");
         h1.setName("Noname");
-        h1.setRooms(Arrays.asList(r1, r2));
+
+        List<Room> l1 = new ArrayList<>();
+        l1.add(r1);
+        l1.add(r2);
+        h1.setRooms(l1);
 
         h2.setAddress("Pobrezni 1, Prague");
         h2.setName("Hilton");
-        h2.setRooms(Arrays.asList(r3));
+
+        List<Room> l2 = new ArrayList<>();
+        l2.add(r3);
+        h2.setRooms(l2);
 
         hotelDao.create(h1);
         hotelDao.create(h2);
@@ -206,6 +213,18 @@ public class HotelDaoTest extends AbstractTestNGSpringContextTests {
         assertThat(h.getId()).isNotNull();
         assertThat(hotelDao.findById(h.getId())).isEqualTo(h);
         assertThat(hotelDao.findAll()).hasSize(3);
+    }
+
+    @Test
+    public void updateHappyScenario() {
+        assertThat(hotelDao.findAll()).hasSize(2);
+        Hotel found = hotelDao.findById(h2.getId());
+        assertThat(found.getName()).isEqualTo("Hilton");
+        h2.setName("Not Hilton");
+        hotelDao.update(h2);
+        found = hotelDao.findById(h2.getId());
+        assertThat(found.getName()).isEqualTo("Not Hilton");
+        assertThat(hotelDao.findAll()).hasSize(2).containsExactly(h1, h2);
     }
 
     @Test
