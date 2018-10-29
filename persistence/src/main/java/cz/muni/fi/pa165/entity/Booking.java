@@ -23,12 +23,12 @@ public class Booking {
     @NotNull
     private BigDecimal total;
 
-    @NotNull
-    @Future
+    //@NotNull
+    //@Future
     private LocalDate fromDate;
 
-    @NotNull
-    @Future
+    //@NotNull
+    //@Future
     private LocalDate toDate;
 
     @ManyToOne
