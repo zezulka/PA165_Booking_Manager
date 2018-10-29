@@ -54,7 +54,7 @@ public class HotelDaoImpl implements HotelDao {
         }
 		try {
 			return em.createQuery("select h from Hotel h where name = :name", Hotel.class)
-					.setParameter(":name", name).getSingleResult();
+					.setParameter("name", name).getSingleResult();
 		}
 		catch(NoResultException nre) {
 			return null;
