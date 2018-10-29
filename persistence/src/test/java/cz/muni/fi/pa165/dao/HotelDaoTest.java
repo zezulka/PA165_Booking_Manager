@@ -133,6 +133,17 @@ public class HotelDaoTest extends AbstractTestNGSpringContextTests {
         assertThat(hotelDao.findById(Long.MAX_VALUE)).isNull();
     }
 
+    @Test
+    public void createNull() {
+        assertThatThrownBy(() -> hotelDao.create(null))
+                .isInstanceOf(DataAccessException.class)
+                .hasCauseInstanceOf(IllegalArgumentException.class);
+    }
 
-
+    @Test
+    public void createExisting() {
+        assertThatThrownBy(() -> hotelDao.create(h1))
+                .isInstanceOf(DataAccessException.class)
+                .hasCauseInstanceOf(IllegalArgumentException.class);
+    }
 }
