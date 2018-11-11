@@ -21,8 +21,8 @@
     <packaging>pom</packaging>
     <modules>
         <module>persistence</module>
-        <module>mavenproject1/service</module>
-        <module>API</module>
+        <module>service</module>
+        <module>api</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
