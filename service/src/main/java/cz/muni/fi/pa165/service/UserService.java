@@ -31,10 +31,10 @@ public interface UserService {
      * Try to authenticate a user. Return true only if the hashed password
      * matches the records.
      *
-     * @throws IllegalArgumentException {@code user} or {@code hashedPassword}
+     * @throws IllegalArgumentException {@code user} or {@code password}
      * is null or empty or id of {@code user} is null
      */
-    boolean authenticate(User user, String hashedPassword);
+    boolean authenticate(User user, String password);
 
     /**
      * Checks if the given user is an administrator.
