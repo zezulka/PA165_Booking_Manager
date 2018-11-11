@@ -56,7 +56,6 @@ public class PersistenceApplicationContext {
     public DataSource db() {
         return new EmbeddedDatabaseBuilder()
                 .setType(EmbeddedDatabaseType.DERBY)
-                .setName("booking_manager_db")
                 .build();
     }
 }

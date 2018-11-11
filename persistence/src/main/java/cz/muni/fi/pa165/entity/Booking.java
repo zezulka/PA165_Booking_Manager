@@ -7,7 +7,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -31,7 +30,7 @@ public class Booking {
 
     @ManyToOne
     @NotNull
-    private Customer customer;
+    private User usr;
 
     @ManyToOne
     @NotNull
@@ -72,12 +71,12 @@ public class Booking {
         this.toDate = to;
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public User getUser() {
+        return usr;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public void setUser(User user) {
+        this.usr = user;
     }
 
     public Room getRoom() {
@@ -93,7 +92,7 @@ public class Booking {
         int hash = 7;
         hash = 53 * hash + (fromDate != null ? fromDate.hashCode() : 0);
         hash = 53 * hash + (toDate != null ? toDate.hashCode() : 0);
-        hash = 53 * hash + (customer != null ? customer.hashCode() : 0);
+        hash = 53 * hash + (usr != null ? usr.hashCode() : 0);
         hash = 53 * hash + (room != null ? room.hashCode() : 0);
         return hash;
     }
@@ -116,7 +115,7 @@ public class Booking {
         if (toDate == null || !toDate.equals(other.getTo())) {
             return false;
         }
-        if (customer == null || !customer.equals(other.getCustomer())) {
+        if (usr == null || !usr.equals(other.getUser())) {
             return false;
         }
         return !(room == null || !room.equals(other.getRoom()));

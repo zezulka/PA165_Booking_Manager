@@ -9,14 +9,16 @@ import org.hibernate.validator.constraints.Email;
 
 import java.util.Objects;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
- * Customer entity
+ * User entity
  *
  * @author Petr Valenta
  */
 @Entity
-public class Customer {
+@Table(name="Users")
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -34,12 +36,12 @@ public class Customer {
     private String surname;
 
     @NotNull
-    private boolean admin;
+    private boolean administrator;
 
     @NotNull
     private String passwordHash;
 
-    public Customer() {
+    public User() {
     }
 
     public Long getId() {
@@ -75,11 +77,11 @@ public class Customer {
     }
 
     public boolean isAdmin() {
-        return admin;
+        return administrator;
     }
 
     public void setAdmin(boolean admin) {
-        this.admin = admin;
+        this.administrator = admin;
     }
 
     public String getPasswordHash() {
@@ -95,13 +97,13 @@ public class Customer {
         if (this == o) {
             return true;
         }
-        if (o == null || !(o instanceof Customer)) {
+        if (o == null || !(o instanceof User)) {
             return false;
         }
 
-        final Customer customer = (Customer) o;
+        final User user = (User) o;
 
-        if (!customer.getEmail().equals(getEmail())) {
+        if (!user.getEmail().equals(getEmail())) {
             return false;
         }
 
