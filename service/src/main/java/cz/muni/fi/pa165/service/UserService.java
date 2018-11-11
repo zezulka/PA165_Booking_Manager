@@ -14,9 +14,11 @@ public interface UserService {
     /**
      * Register the given user with the given unencrypted password.
      *
-     * @return true if registration was successful, false otherwise.
+     * @throws IllegalArgumentException {@code user} or {@code password} is null
+     * or id of {@code user} is null
+     * @return True if registration was successful, false otherwise.
      */
-    boolean register(User u, String password);
+    boolean register(User user, String password);
 
     /**
      * Get all registered users.
@@ -28,13 +30,19 @@ public interface UserService {
     /**
      * Try to authenticate a user. Return true only if the hashed password
      * matches the records.
+     *
+     * @throws IllegalArgumentException {@code user} or {@code hashedPassword}
+     * is null or id of {@code user} is null
      */
-    boolean authenticate(User u, String hashedPassword);
+    boolean authenticate(User user, String hashedPassword);
 
     /**
      * Checks if the given user is an administrator.
      *
-     * @param candidate user to be checked, must not be null
+     * @param candidate user to be checked, must not be null and must exist in
+     * the database
+     * @throws IllegalArgumentException candidate is null or id of
+     * {@code candidate} is null
      */
     boolean isAdmin(User candidate);
 
@@ -42,8 +50,9 @@ public interface UserService {
      * Finds user by the database identifier.
      *
      * @param id id of the user, must not be null
-     * @return {@link User} instance with the given id or null if there is
-     * no such user.
+     * @throws IllegalArgumentException id is null
+     * @return {@link User} instance with the given id or null if there is no
+     * such user.
      */
     User findById(Long id);
 
@@ -52,8 +61,8 @@ public interface UserService {
      * database.
      *
      * @param email email of the user, must not be null
-     * @return {@link User} instance with the given email or null if there
-     * is no such user.
+     * @return {@link User} instance with the given email or null if there is no
+     * such user.
      */
     User findByEmail(String email);
 }
