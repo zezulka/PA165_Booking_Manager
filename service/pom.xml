@@ -5,9 +5,21 @@
         <groupId>cz.muni.fi.pa165</groupId>
         <artifactId>booking-manager</artifactId>
         <version>0.1</version>
-        <relativePath>../../pom.xml</relativePath>
     </parent>
+    
     <artifactId>service</artifactId>
     <name>Service layer and facade layer implementation</name>
     <packaging>jar</packaging>
+    
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cz.muni.fi.pa165</groupId>
+            <artifactId>booking-manager-persistence</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+    </dependencies>
 </project>
