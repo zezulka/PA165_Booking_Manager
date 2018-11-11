@@ -15,7 +15,7 @@ public interface UserService {
      * Register the given user with the given unencrypted password.
      *
      * @throws IllegalArgumentException {@code user} or {@code password} is null
-     * or id of {@code user} is null
+     * or empty or id of {@code user} is null
      * @return True if registration was successful, false otherwise.
      */
     boolean register(User user, String password);
@@ -32,7 +32,7 @@ public interface UserService {
      * matches the records.
      *
      * @throws IllegalArgumentException {@code user} or {@code hashedPassword}
-     * is null or id of {@code user} is null
+     * is null or empty or id of {@code user} is null
      */
     boolean authenticate(User user, String hashedPassword);
 
