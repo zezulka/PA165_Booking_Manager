@@ -14,8 +14,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import cz.muni.fi.pa165.PersistenceApplicationContext;
-import cz.muni.fi.pa165.entity.Customer;
-import cz.muni.fi.pa165.entity.Room;
+import cz.muni.fi.pa165.entity.User;
 
 /**
  *
@@ -24,18 +23,18 @@ import cz.muni.fi.pa165.entity.Room;
 @ContextConfiguration(classes = PersistenceApplicationContext.class)
 @TestExecutionListeners(TransactionalTestExecutionListener.class)
 @Transactional
-public class CustomerDaoTest extends AbstractTestNGSpringContextTests {
+public class UserDaoTest extends AbstractTestNGSpringContextTests {
 
     @Autowired
-    private CustomerDao customerDao;
+    private UserDao userDao;
 
-    private Customer c1;
-    private Customer c2;
+    private User c1;
+    private User c2;
 
     @BeforeMethod
     private void init() {
-        c1 = new Customer();
-        c2 = new Customer();
+        c1 = new User();
+        c2 = new User();
 
         c1.setEmail("teriductyl@jurassic.com");
         c1.setFirstName("Teri");
@@ -49,54 +48,54 @@ public class CustomerDaoTest extends AbstractTestNGSpringContextTests {
         c2.setAdmin(true);
         c2.setPasswordHash("TurnToPage394");
 
-        customerDao.create(c1);
-        customerDao.create(c2);
+        userDao.create(c1);
+        userDao.create(c2);
     }
 
     @Test
     public void findAllTest() {
-        assertThat(customerDao.findAll()).hasSize(2).containsExactly(c1, c2);
+        assertThat(userDao.findAll()).hasSize(2).containsExactly(c1, c2);
     }
 
     @Test
     public void correctFindByIdTest() {
-        assertThat(customerDao.findById(c1.getId())).isEqualTo(c1);
+        assertThat(userDao.findById(c1.getId())).isEqualTo(c1);
     }
 
     @Test
     public void nullFindByIdTest() {
-        assertThatThrownBy(() -> customerDao.findById(null))
+        assertThatThrownBy(() -> userDao.findById(null))
                 .isInstanceOf(DataAccessException.class)
                 .hasCauseInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     public void correctFindByEmailTest() {
-        assertThat(customerDao.findByEmail(c1.getEmail())).isEqualTo(c1);
+        assertThat(userDao.findByEmail(c1.getEmail())).isEqualTo(c1);
     }
 
     @Test
     public void nullFindByEmailTest() {
-        assertThatThrownBy(() -> customerDao.findByEmail(null))
+        assertThatThrownBy(() -> userDao.findByEmail(null))
                 .isInstanceOf(DataAccessException.class)
                 .hasCauseInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     public void emptyFindByEmailTest() {
-        assertThatThrownBy(() -> customerDao.findByEmail(""))
+        assertThatThrownBy(() -> userDao.findByEmail(""))
                 .isInstanceOf(DataAccessException.class)
                 .hasCauseInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     public void notExistingFindByEmailTest() {
-        assertThat(customerDao.findByEmail("nickname@mail.com")).isNull();
+        assertThat(userDao.findByEmail("nickname@mail.com")).isNull();
     }
 
     @Test
     public void correctCreateTest() {
-        Customer c = new Customer();
+        User c = new User();
 
         c.setEmail("Skyeblue@sky.com");
         c.setFirstName("Skye");
@@ -104,73 +103,73 @@ public class CustomerDaoTest extends AbstractTestNGSpringContextTests {
         c.setAdmin(false);
         c.setPasswordHash("SkyIsBlue42");
 
-        customerDao.create(c);
+        userDao.create(c);
 
         assertThat(c.getId()).isNotNull();
-        assertThat(customerDao.findById(c.getId())).isEqualTo(c);
-        assertThat(customerDao.findAll()).hasSize(3);
+        assertThat(userDao.findById(c.getId())).isEqualTo(c);
+        assertThat(userDao.findAll()).hasSize(3);
     }
 
     @Test
     public void nullCreateTtest() {
-        assertThatThrownBy(() -> customerDao.create(null))
+        assertThatThrownBy(() -> userDao.create(null))
                 .isInstanceOf(DataAccessException.class)
                 .hasCauseInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     public void notNullIdCreateTest() {
-        assertThatThrownBy(() -> customerDao.create(c1))
+        assertThatThrownBy(() -> userDao.create(c1))
                 .isInstanceOf(DataAccessException.class)
                 .hasCauseInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     public void correctUpdateTest() {
-        Customer c = customerDao.findById(c1.getId());
+        User c = userDao.findById(c1.getId());
         assertThat(c.isAdmin()).isFalse();
         c1.setAdmin(true);
-        customerDao.update(c1);
-        c = customerDao.findById(c1.getId());
+        userDao.update(c1);
+        c = userDao.findById(c1.getId());
         assertThat(c.isAdmin()).isTrue();
-        assertThat(customerDao.findAll()).hasSize(2).containsExactly(c1, c2);
+        assertThat(userDao.findAll()).hasSize(2).containsExactly(c1, c2);
     }
 
     @Test
     public void nullUpdateTest() {
-        assertThatThrownBy(() -> customerDao.update(null))
+        assertThatThrownBy(() -> userDao.update(null))
                 .isInstanceOf(DataAccessException.class)
                 .hasCauseInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     public void nullIdUpdateTest() {
-        Customer c = new Customer();
-        assertThatThrownBy(() -> customerDao.update(c))
+        User c = new User();
+        assertThatThrownBy(() -> userDao.update(c))
                 .isInstanceOf(DataAccessException.class)
                 .hasCauseInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     public void correctRemoveTest() {
-        assertThat(customerDao.findAll()).hasSize(2);
-        customerDao.remove(c1);
-        assertThat(customerDao.findAll()).hasSize(1).containsExactly(c2);
-        customerDao.remove(c2);
-        assertThat(customerDao.findAll()).isEmpty();
+        assertThat(userDao.findAll()).hasSize(2);
+        userDao.remove(c1);
+        assertThat(userDao.findAll()).hasSize(1).containsExactly(c2);
+        userDao.remove(c2);
+        assertThat(userDao.findAll()).isEmpty();
     }
 
     @Test
     public void nullRemoveTest() {
-        assertThatThrownBy(() -> customerDao.remove(null))
+        assertThatThrownBy(() -> userDao.remove(null))
                 .isInstanceOf(DataAccessException.class)
                 .hasCauseInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     public void nullIdRemoveTest() {
-        Customer c = new Customer();
-        assertThatThrownBy(() -> customerDao.remove(c))
+        User c = new User();
+        assertThatThrownBy(() -> userDao.remove(c))
                 .isInstanceOf(DataAccessException.class)
                 .hasCauseInstanceOf(IllegalArgumentException.class);
     }

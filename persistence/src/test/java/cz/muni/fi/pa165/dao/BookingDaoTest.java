@@ -2,7 +2,7 @@ package cz.muni.fi.pa165.dao;
 
 import cz.muni.fi.pa165.PersistenceApplicationContext;
 import cz.muni.fi.pa165.entity.Booking;
-import cz.muni.fi.pa165.entity.Customer;
+import cz.muni.fi.pa165.entity.User;
 import cz.muni.fi.pa165.entity.Hotel;
 import cz.muni.fi.pa165.entity.Room;
 import cz.muni.fi.pa165.enums.RoomType;
@@ -37,7 +37,7 @@ public class BookingDaoTest extends AbstractTestNGSpringContextTests {
     @Autowired
     private BookingDao bookingDao;
     @Autowired
-    private CustomerDao customerDao;
+    private UserDao userDao;
     @Autowired
     private HotelDao hotelDao;
 
@@ -49,8 +49,8 @@ public class BookingDaoTest extends AbstractTestNGSpringContextTests {
     private Booking b2;
     private Booking b3;
 
-    private Customer c1;
-    private Customer c2;
+    private User c1;
+    private User c2;
 
     private Hotel h1;
 
@@ -67,8 +67,8 @@ public class BookingDaoTest extends AbstractTestNGSpringContextTests {
         b2 = new Booking();
         b3 = new Booking();
 
-        c1 = new Customer();
-        c2 = new Customer();
+        c1 = new User();
+        c2 = new User();
 
         h1 = new Hotel();
 
@@ -108,13 +108,13 @@ public class BookingDaoTest extends AbstractTestNGSpringContextTests {
         b1.setTotal(new BigDecimal("1.5"));
         b1.setFrom(LocalDate.of(2030, 6, 23));
         b1.setTo(LocalDate.of(2030, 6, 25));
-        b1.setCustomer(c1);
+        b1.setUser(c1);
         b1.setRoom(r1);
 
         b2.setTotal(new BigDecimal("2.5"));
         b2.setFrom(LocalDate.of(2032,6,23));
         b2.setTo(LocalDate.of(2032,6,25));
-        b2.setCustomer(c2);
+        b2.setUser(c2);
         b2.setRoom(r2);
 
         b3.setId(Long.MAX_VALUE-1);
@@ -132,8 +132,8 @@ public class BookingDaoTest extends AbstractTestNGSpringContextTests {
         roomDao.create(r2);
         roomDao.create(r3);
 
-        customerDao.create(c1);
-        customerDao.create(c2);
+        userDao.create(c1);
+        userDao.create(c2);
 
         bookingDao.create(b1);
         bookingDao.create(b2);
@@ -229,11 +229,11 @@ public class BookingDaoTest extends AbstractTestNGSpringContextTests {
     public void updateHappyScenario() {
         assertThat(bookingDao.findAll()).hasSize(2);
         Booking found = bookingDao.findById(b1.getId());
-        assertThat(found.getCustomer()).isEqualTo(c1);
-        b1.setCustomer(c2);
+        assertThat(found.getUser()).isEqualTo(c1);
+        b1.setUser(c2);
         bookingDao.update(b1);
         found = bookingDao.findById(b1.getId());
-        assertThat(found.getCustomer()).isEqualTo(c2);
+        assertThat(found.getUser()).isEqualTo(c2);
         assertThat(bookingDao.findAll()).hasSize(2).containsExactly(b1,b2);
     }
 
@@ -251,7 +251,7 @@ public class BookingDaoTest extends AbstractTestNGSpringContextTests {
         b4.setTotal(new BigDecimal("2800.98"));
         b4.setFrom(LocalDate.of(2033,6,23));
         b4.setTo(LocalDate.of(2033,6,20));
-        b4.setCustomer(c2);
+        b4.setUser(c2);
         b4.setRoom(r2);
         bookingDao.create(b4);
         assertThat(bookingDao.findAll()).hasSize(3).containsExactly(b1, b2, b4);
