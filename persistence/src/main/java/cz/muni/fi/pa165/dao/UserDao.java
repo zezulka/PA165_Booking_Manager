@@ -42,7 +42,7 @@ public interface UserDao {
     public User update(User user);
 
     /**
-     * Finds and returns a {@link User} with the id {@link id}.
+     * Finds and returns a {@link User} with the id {@code id}.
      *
      * @param id non-null id
      * @return user or null
@@ -51,7 +51,7 @@ public interface UserDao {
     public User findById(Long id);
 
     /**
-     * Returns a {@link User} with matching {@link email} address. Return
+     * Returns a {@link User} with matching {@code email} address. Return
      * null if such user cannot be found.
      *
      * @param email email address String

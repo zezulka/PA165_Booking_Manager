@@ -43,12 +43,12 @@ public interface BookingDao {
     public Booking update(Booking booking);
 
     /**
-     * Returns a {@link Booking} with the id {@link id}. If no such booking is
+     * Returns a {@link Booking} with the id {@code id}. If no such booking is
      * present in the database, null is returned instead.
      *
      * @param id non-null id
      * @throws IllegalArgumentException id is null
-     * @return booking with the id {@link id} or null
+     * @return booking with the id {@code id} or null
      */
     public Booking findById(Long id);
 
