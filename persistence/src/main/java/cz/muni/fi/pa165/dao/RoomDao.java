@@ -42,12 +42,12 @@ public interface RoomDao {
     public Room update(Room room);
 
     /**
-     * Returns a {@link Room} with the id {@link id}. If no such room is present
+     * Returns a {@link Room} with the id {@code id}. If no such room is present
      * in the database, null is returned instead.
      *
      * @param id non-null id
      * @throws IllegalArgumentException id is null
-     * @return room with the id {@link id} or null
+     * @return room with the id {@code id} or null
      */
     public Room findById(Long id);
 
