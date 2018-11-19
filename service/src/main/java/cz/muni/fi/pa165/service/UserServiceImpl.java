@@ -4,8 +4,17 @@ import cz.muni.fi.pa165.dao.UserDao;
 import cz.muni.fi.pa165.entity.User;
 import cz.muni.fi.pa165.utils.Security;
 import java.util.List;
+import javax.persistence.EntityExistsException;
+import javax.persistence.TransactionRequiredException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
+import org.springframework.stereotype.Service;
 
+/*
+ * @author Miloslav Zezulka 
+ */
+@Service
 public class UserServiceImpl implements UserService {
 
     @Autowired
@@ -19,11 +28,12 @@ public class UserServiceImpl implements UserService {
         if (password == null || password.isEmpty()) {
             throw new IllegalArgumentException("Password must be nonempty.");
         }
-        if (user.getId() == null) {
-            throw new IllegalArgumentException("User does not have its id set.");
-        }
         user.setPasswordHash(Security.createHash(password));
-        userDao.create(user);
+        try {
+            userDao.create(user);
+        } catch (TransactionRequiredException | EntityExistsException | IllegalArgumentException e) {
+            throw new InvalidDataAccessApiUsageException("UserDAO could not create a new user.", e);
+        }
         return userDao.findById(user.getId()) != null;
     }
 
@@ -40,9 +50,6 @@ public class UserServiceImpl implements UserService {
         if (plainPassword == null || plainPassword.isEmpty()) {
             throw new IllegalArgumentException("Hashed password must be nonempty.");
         }
-        if (user.getId() == null) {
-            throw new IllegalArgumentException("User does not have its id set.");
-        }
         return Security.validatePassword(plainPassword, user.getPasswordHash());
     }
 
@@ -51,7 +58,13 @@ public class UserServiceImpl implements UserService {
         if (candidate == null) {
             throw new IllegalArgumentException("User is null");
         }
-        return findById(candidate.getId()).isAdmin();
+        try {
+            User u = findById(candidate.getId());
+            return u != null && u.isAdmin();
+        } catch (TransactionRequiredException | IllegalArgumentException e) {
+            throw new InvalidDataAccessApiUsageException("Could not verify "
+                    + "whether the user is an administrator.", e);
+        }
     }
 
     @Override
@@ -59,7 +72,11 @@ public class UserServiceImpl implements UserService {
         if (id == null) {
             throw new IllegalArgumentException("Id cannot be null.");
         }
-        return userDao.findById(id);
+        try {
+            return userDao.findById(id);
+        } catch (IllegalArgumentException e) {
+            throw new InvalidDataAccessApiUsageException("Could not find user by id.", e);
+        }
     }
 
     @Override
@@ -67,6 +84,22 @@ public class UserServiceImpl implements UserService {
         if (email == null) {
             throw new IllegalArgumentException("Email cannot be null.");
         }
-        return userDao.findByEmail(email);
+        try {
+            return userDao.findByEmail(email);
+        } catch (IllegalArgumentException e) {
+            throw new InvalidDataAccessApiUsageException("Could not find user by id.", e);
+        }
+    }
+
+    @Override
+    public void update(User user) throws DataAccessException {
+        if (user == null) {
+            throw new IllegalArgumentException("User cannot be null.");
+        }
+        try {
+            userDao.update(user);    
+        } catch(TransactionRequiredException | IllegalArgumentException e) {
+            throw new InvalidDataAccessApiUsageException("Could not update user.", e);
+        }
     }
 }
