@@ -6,6 +6,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import javax.persistence.EntityExistsException;
+import javax.validation.ConstraintViolationException;
+
 import cz.muni.fi.pa165.dao.HotelDao;
 import cz.muni.fi.pa165.entity.Hotel;
 import cz.muni.fi.pa165.entity.Room;
@@ -24,7 +27,7 @@ public class HotelServiceImpl implements HotelService {
         if (id == null) throw new IllegalArgumentException("id cannot be null");
         try{
             return hotelDao.findById(id);
-        } catch (Exception e) {
+        } catch (IllegalArgumentException e) {
             throw new DataAccessException("error during service: " + e){}; //DAE is abstract
         }
     }
@@ -35,7 +38,7 @@ public class HotelServiceImpl implements HotelService {
         if (name.isEmpty()) throw new IllegalArgumentException("name cannot be empty");
         try{
             return hotelDao.findByName(name);
-        } catch (Exception e) {
+        } catch (IllegalArgumentException e) {
             throw new DataAccessException("error during service: " + e){}; //DAE is abstract
         }
     }
@@ -50,7 +53,7 @@ public class HotelServiceImpl implements HotelService {
         if (hotel == null) throw new IllegalArgumentException("hotel cannot be null");
         try {
             hotelDao.create(hotel);
-        } catch (Exception e) {
+        } catch (IllegalArgumentException | ConstraintViolationException | EntityExistsException e) {
             throw new DataAccessException("error during service: " + e){}; //DAE is abstract
         }
     }
@@ -60,7 +63,7 @@ public class HotelServiceImpl implements HotelService {
         if (hotel == null) throw new IllegalArgumentException("hotel cannot be null");
         try {
             hotelDao.remove(hotel);
-        } catch (Exception e) {
+        } catch (IllegalArgumentException e) {
             throw new DataAccessException("error during service: " + e){}; //DAE is abstract
         }
     }
@@ -70,7 +73,7 @@ public class HotelServiceImpl implements HotelService {
         if (hotel == null) throw new IllegalArgumentException("hotel cannot be null");
         try {
             hotelDao.update(hotel);
-        } catch (Exception e) {
+        } catch (IllegalArgumentException | ConstraintViolationException e) {
             throw new DataAccessException("error during service: " + e){}; //DAE is abstract
         }
     }
