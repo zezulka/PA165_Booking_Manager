@@ -32,6 +32,15 @@ public interface RoomService {
 	boolean deleteRoom(Room room);
 	
 	/**
+	 * Update given room.
+	 * 
+	 * @param room room to be update. Cannot be null.
+	 * @throws IllegalArgumentException if room is null.
+	 * @return updated room.
+	 */
+	Room updateRoom(Room room);
+	
+	/**
 	 * Get all rooms.
 	 * 
 	 * @return List of rooms. Empty List if there are none.

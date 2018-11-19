@@ -3,11 +3,19 @@ package cz.muni.fi.pa165.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import cz.muni.fi.pa165.dao.RoomDao;
 import cz.muni.fi.pa165.entity.Hotel;
 import cz.muni.fi.pa165.entity.Room;
 
+/**
+ * 
+ * @author Soňa Barteková
+ *
+ */
+
+@Service
 public class RoomServiceImpl implements RoomService{
 	
 	@Autowired
@@ -51,7 +59,10 @@ public class RoomServiceImpl implements RoomService{
             throw new IllegalArgumentException("Room cannot be null.");
         }
         roomDao.create(room);
-		return roomDao.findById(room.getId()) != null;
+        if (roomDao.findById(room.getId()) != null) {
+        	return true;
+        }
+		return false;
 	}
 
 	@Override
@@ -59,8 +70,19 @@ public class RoomServiceImpl implements RoomService{
         if (room == null) {
             throw new IllegalArgumentException("Room cannot be null.");
         }
-        roomDao.remove(room);
-		return roomDao.findById(room.getId()) == null;
+        roomDao.create(room);
+        if (roomDao.findById(room.getId()) == null) {
+        	return true;
+        }
+		return false;
+	}
+
+	@Override
+	public Room updateRoom(Room room) {
+        if (room == null) {
+            throw new IllegalArgumentException("Room cannot be null.");
+        }
+		return roomDao.update(room);
 	}
 
 
