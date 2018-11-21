@@ -2,6 +2,9 @@ package cz.muni.fi.pa165.service;
 
 import java.util.List;
 
+import cz.muni.fi.pa165.entity.Booking;
+import cz.muni.fi.pa165.entity.Room;
+
 /**
  * Service used when the administrator wishes to search for a certain
  * hotel room availability at a certain time range.
@@ -10,6 +13,5 @@ import java.util.List;
  * a given time period.
  */
 public interface RoomAvailabilityService {
-    boolean isRoomAvailableDuring(TimeRange range, Room room);
-    List<Booking> getBookingsInRange(TimeRange range, Room room);
+    List<Booking> getBookingsInRange(DateRange range, Room room);
 }

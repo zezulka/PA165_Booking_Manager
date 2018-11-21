@@ -6,7 +6,7 @@
         <artifactId>booking-manager</artifactId>
         <version>0.1</version>
     </parent>
-    <artifactId>booking-manager-persistence</artifactId>
+    <artifactId>persistence</artifactId>
     <name>Persistence</name>
     <packaging>jar</packaging>
     

@@ -3,6 +3,9 @@ package cz.muni.fi.pa165.service;
 import java.math.BigDecimal;
 import java.util.List;
 
+import cz.muni.fi.pa165.entity.Booking;
+import cz.muni.fi.pa165.entity.User;
+
 /**
  *
  * This service represents a discount which can be given
@@ -19,6 +22,6 @@ import java.util.List;
  */
 public interface BookingDiscountService {
     List<Booking> bookingsForUser(User user);
-    boolean isUserEligibleForDiscount(User user);
+    boolean isUserEligibleForDiscount(DiscountType type, User user);
     BigDecimal calculateDiscount(Booking booking);
 }

@@ -25,7 +25,7 @@ public class ServiceConfig {
 
         @Override
         protected void configure() {
-            mapping(/*TODO*/.class, /*TODO*/.class);
+            //mapping(/*TODO*/.class, /*TODO*/.class);
         }
     }
 
