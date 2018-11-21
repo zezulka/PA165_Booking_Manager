@@ -2,11 +2,13 @@ package cz.muni.fi.pa165.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 import javax.persistence.EntityExistsException;
+import javax.persistence.TransactionRequiredException;
 import javax.validation.ConstraintViolationException;
 
 import cz.muni.fi.pa165.dao.HotelDao;
@@ -28,7 +30,7 @@ public class HotelServiceImpl implements HotelService {
         try{
             return hotelDao.findById(id);
         } catch (IllegalArgumentException e) {
-            throw new DataAccessException("error during service: " + e){}; //DAE is abstract
+            throw new InvalidDataAccessApiUsageException("Error during service.", e);
         }
     }
 
@@ -39,7 +41,7 @@ public class HotelServiceImpl implements HotelService {
         try{
             return hotelDao.findByName(name);
         } catch (IllegalArgumentException e) {
-            throw new DataAccessException("error during service: " + e){}; //DAE is abstract
+            throw new InvalidDataAccessApiUsageException("Error during service.", e);
         }
     }
 
@@ -53,8 +55,8 @@ public class HotelServiceImpl implements HotelService {
         if (hotel == null) throw new IllegalArgumentException("hotel cannot be null");
         try {
             hotelDao.create(hotel);
-        } catch (IllegalArgumentException | ConstraintViolationException | EntityExistsException e) {
-            throw new DataAccessException("error during service: " + e){}; //DAE is abstract
+        } catch (TransactionRequiredException | IllegalArgumentException | ConstraintViolationException | EntityExistsException e) {
+            throw new InvalidDataAccessApiUsageException("Error during service.", e);
         }
     }
 
@@ -63,8 +65,8 @@ public class HotelServiceImpl implements HotelService {
         if (hotel == null) throw new IllegalArgumentException("hotel cannot be null");
         try {
             hotelDao.remove(hotel);
-        } catch (IllegalArgumentException e) {
-            throw new DataAccessException("error during service: " + e){}; //DAE is abstract
+        } catch (TransactionRequiredException | IllegalArgumentException e) {
+            throw new InvalidDataAccessApiUsageException("Error during service.", e);
         }
     }
 
@@ -73,8 +75,8 @@ public class HotelServiceImpl implements HotelService {
         if (hotel == null) throw new IllegalArgumentException("hotel cannot be null");
         try {
             hotelDao.update(hotel);
-        } catch (IllegalArgumentException | ConstraintViolationException e) {
-            throw new DataAccessException("error during service: " + e){}; //DAE is abstract
+        } catch (TransactionRequiredException | IllegalArgumentException | ConstraintViolationException e) {
+            throw new InvalidDataAccessApiUsageException("Error during service.", e);
         }
     }
 }
