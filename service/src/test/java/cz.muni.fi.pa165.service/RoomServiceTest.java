@@ -1,12 +1,15 @@
 package cz.muni.fi.pa165.service;
 
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+
 import org.springframework.test.context.testng.AbstractTransactionalTestNGSpringContextTests;
+
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
