@@ -68,24 +68,4 @@ public interface HotelService {
      * @throws DataAccessException error during service
      */
     void update(Hotel hotel);
-
-    /**
-     * Adds a {@link Room}.
-     *
-     * @param hotel target {@link Hotel}
-     * @param room {@link Room} to be added
-     * @throws IllegalArgumentException {@code hotel} or {@code room} is null
-     * @throws DataAccessException error during service
-     */
-    void addRoom(Hotel hotel, Room room);
-
-//    /**
-//     * Removes a {@link Room}.
-//     *
-//     * @param hotel target {@link Hotel}
-//     * @param room {@link Room} to be removed
-//     * @throws IllegalArgumentException {@code hotel} or {@code room} is null
-//     * @throws DataAccessException error during service
-//     */
-//    void removeRoom(Hotel hotel, Room room);
 }

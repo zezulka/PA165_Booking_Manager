@@ -77,13 +77,4 @@ public class HotelServiceImpl implements HotelService {
             throw new DataAccessException("error during service: " + e){}; //DAE is abstract
         }
     }
-
-    @Override
-    public void addRoom(final Hotel hotel, final Room room) {
-        if (hotel == null) throw new IllegalArgumentException("hotel cannot be null");
-        if (room == null) throw new IllegalArgumentException("room cannot be null");
-
-        throw new DataAccessException("not yet implemented"){};
-        //roomDao.findByHotel(hotel);
-    }
 }
