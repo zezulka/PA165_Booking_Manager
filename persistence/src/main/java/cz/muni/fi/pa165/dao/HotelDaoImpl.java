@@ -34,7 +34,7 @@ public class HotelDaoImpl implements HotelDao {
         em.persist(h);
     }
 
-    public void remove(Hotel h) throws IllegalArgumentException {
+    public void remove(Hotel h) {
         if (h == null) {
             throw new IllegalArgumentException("Cannot remove null hotel.");
         }
