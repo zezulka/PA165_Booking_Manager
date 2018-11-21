@@ -3,7 +3,7 @@ package cz.muni.fi.pa165.service;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import cz.muni.fi.pa165.entity.User;
-import org.springframework.dao.DataAccessException;
+import cz.muni.fi.pa165.service.exceptions.BookingManagerDataAccessException;
 
 /**
  *
@@ -17,18 +17,18 @@ public interface UserService {
      *
      * @throws IllegalArgumentException {@code user} or {@code password} is null
      * or empty
-     * @throws DataAccessException any exception on the DAO layer occurs
+     * @throws BookingManagerDataAccessException any exception on the DAO layer occurs
      * @return True if registration was successful, false otherwise.
      */
-    boolean register(User user, String password) throws DataAccessException;
+    boolean register(User user, String password) throws BookingManagerDataAccessException;
 
     /**
      * Get all registered users.
      * 
-     * @throws DataAccessException any exception on the DAO layer occurs
+     * @throws BookingManagerDataAccessException any exception on the DAO layer occurs
      * @return {@link List} of users. Empty list if there are none.
      */
-    List<User> getAll() throws DataAccessException;
+    List<User> getAll() throws BookingManagerDataAccessException;
 
     /**
      * Try to authenticate a user. Return true only if the hashed password
@@ -37,7 +37,7 @@ public interface UserService {
      * @throws IllegalArgumentException {@code user} or {@code password}
      * is null or empty
      */
-    boolean authenticate(User user, String password) throws DataAccessException;
+    boolean authenticate(User user, String password) throws BookingManagerDataAccessException;
 
     /**
      * Checks if the given user is an administrator.
@@ -45,38 +45,38 @@ public interface UserService {
      * @param candidate user to be checked, must not be null and must exist in
      * the database
      * @throws IllegalArgumentException candidate is null
-     * @throws DataAccessException any exception on the DAO layer occurs
+     * @throws BookingManagerDataAccessException any exception on the DAO layer occurs
      */
-    boolean isAdmin(User candidate) throws DataAccessException;
+    boolean isAdmin(User candidate) throws BookingManagerDataAccessException;
 
     /**
      * Finds user by the database identifier.
      *
      * @param id id of the user, must not be null
      * @throws IllegalArgumentException id is null
-     * @throws DataAccessException any exception on the DAO layer occurs
+     * @throws BookingManagerDataAccessException any exception on the DAO layer occurs
      * @return {@link User} instance with the given id or null if there is no
      * such user.
      */
-    User findById(Long id) throws DataAccessException;
+    User findById(Long id) throws BookingManagerDataAccessException;
 
     /**
      * Finds user by {@code email} which is guaranteed to be unique in the
      * database.
      *
      * @param email email of the user, must not be null
-     * @throws DataAccessException any exception on the DAO layer occurs
+     * @throws BookingManagerDataAccessException any exception on the DAO layer occurs
      * @return {@link User} instance with the given email or null if there is no
      * such user.
      */
-    User findByEmail(String email) throws DataAccessException;
+    User findByEmail(String email) throws BookingManagerDataAccessException;
     
     /**
      * Updates the given {@code user} in the database.
      * 
      * @param user user to be updated in the database, must not be null
-     * @throws DataAccessException any exception on the DAO layer occurs
+     * @throws BookingManagerDataAccessException any exception on the DAO layer occurs
      * @throws IllegalArgumentException user is null
      */
-    void update(User user) throws DataAccessException;
+    void update(User user) throws BookingManagerDataAccessException;
 }

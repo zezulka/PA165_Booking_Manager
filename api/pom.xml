@@ -6,7 +6,16 @@
         <artifactId>booking-manager</artifactId>
         <version>0.1</version>
     </parent>
-    <artifactId>API</artifactId>
+    
+    <artifactId>api</artifactId>
     <name>Backend API</name>
     <packaging>jar</packaging>
+    
+    <dependencies>
+        <dependency>
+            <groupId>cz.muni.fi.pa165</groupId>
+            <artifactId>service</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+    </dependencies>
 </project>
