@@ -2,6 +2,7 @@ package cz.muni.fi.pa165.dao;
 
 import cz.muni.fi.pa165.entity.Hotel;
 import java.util.List;
+import javax.validation.ConstraintViolationException;
 
 /**
  *
@@ -16,6 +17,8 @@ public interface HotelDao {
      * Persists new hotel into database.
      *
      * @param h represents entity to be persisted into database.
+     * @throws IllegalArgumentException h is null or the id is not null
+     * @throws ConstraintViolationException any column constraints are violated
      */
     public void create(Hotel h);
 
@@ -25,7 +28,7 @@ public interface HotelDao {
      * @param h represents hotel to be removed from database.
      * @throws IllegalArgumentException if hotel for removing is not stored.
      */
-    public void remove(Hotel h) throws IllegalArgumentException;
+    public void remove(Hotel h);
 
     /**
      * Update persisted entity in the database.
@@ -33,6 +36,7 @@ public interface HotelDao {
      * @param h represents persisted entity to be updated.
      * @throws IllegalArgumentException if hotel for updating is not in the
      * database.
+     * @throws ConstraintViolationException any column constraints are violated
      * @return updated hotel entity.
      */
     public Hotel update(Hotel h);
@@ -41,6 +45,7 @@ public interface HotelDao {
      * Return the hotel entity with specific id.
      *
      * @param id represents id of the hotel entity.
+     * @throws IllegalArgumentException id is null
      * @return the hotel entity associated with the given id.
      */
     public Hotel findById(Long id);
