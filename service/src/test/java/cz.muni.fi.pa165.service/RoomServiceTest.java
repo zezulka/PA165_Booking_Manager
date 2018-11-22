@@ -31,7 +31,7 @@ import cz.muni.fi.pa165.dao.HotelDao;
 import cz.muni.fi.pa165.dao.RoomDao;
 
 @ContextConfiguration(classes=ServiceConfiguration.class)
-public class RoomServiceTest extends AbstractTransactionalTestNGSpringContextTests {
+public final class RoomServiceTest extends AbstractTransactionalTestNGSpringContextTests {
     @Mock
     private RoomDao roomDao;
 

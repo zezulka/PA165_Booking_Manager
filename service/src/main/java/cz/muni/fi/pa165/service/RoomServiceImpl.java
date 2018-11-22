@@ -10,81 +10,72 @@ import cz.muni.fi.pa165.entity.Hotel;
 import cz.muni.fi.pa165.entity.Room;
 
 /**
- * 
+ *
  * @author Soňa Barteková
  *
  */
-
 @Service
-public class RoomServiceImpl implements RoomService{
-	
-	@Autowired
-	private RoomDao roomDao;
+public class RoomServiceImpl implements RoomService {
 
-	@Override
-	public List<Room> findAll() {
-		return roomDao.findAll();
-	}
+    @Autowired
+    private RoomDao roomDao;
 
-	@Override
-	public Room findById(Long id) {
+    @Override
+    public List<Room> findAll() {
+        return roomDao.findAll();
+    }
+
+    @Override
+    public Room findById(Long id) {
         if (id == null) {
             throw new IllegalArgumentException("Id cannot be null.");
         }
         return roomDao.findById(id);
-	}
+    }
 
-	@Override
-	public List<Room> findByHotel(Hotel hotel) {
+    @Override
+    public List<Room> findByHotel(Hotel hotel) {
         if (hotel == null) {
             throw new IllegalArgumentException("Hotel cannot be null.");
         }
         return roomDao.findByHotel(hotel);
-	}
+    }
 
-	@Override
-	public Room findByNumber(Hotel hotel, Integer number) {
+    @Override
+    public Room findByNumber(Hotel hotel, Integer number) {
         if (hotel == null) {
             throw new IllegalArgumentException("Hotel cannot be null.");
-            }
+        }
         if (number == null) {
             throw new IllegalArgumentException("Number cannot be null.");
         }
-		return roomDao.findByNumber(hotel, number);
-	}
+        return roomDao.findByNumber(hotel, number);
+    }
 
-	@Override
-	public boolean createRoom(Room room) {
+    @Override
+    public boolean createRoom(Room room) {
         if (room == null) {
             throw new IllegalArgumentException("Room cannot be null.");
         }
         roomDao.create(room);
-        if (roomDao.findById(room.getId()) != null) {
-        	return true;
-        }
-		return false;
-	}
+        return roomDao.findById(room.getId()) != null;
+    }
 
-	@Override
-	public boolean deleteRoom(Room room) {
+    @Override
+    public boolean deleteRoom(Room room) {
         if (room == null) {
             throw new IllegalArgumentException("Room cannot be null.");
         }
-        roomDao.create(room);
-        if (roomDao.findById(room.getId()) == null) {
-        	return true;
-        }
-		return false;
-	}
+        roomDao.remove(room);
+        return roomDao.findById(room.getId()) == null;
+    }
 
-	@Override
-	public Room updateRoom(Room room) {
+    @Override
+    public Room updateRoom(Room room) {
         if (room == null) {
             throw new IllegalArgumentException("Room cannot be null.");
         }
-		return roomDao.update(room);
-	}
-
-
+        return roomDao.update(room);
+    }
 
 }
