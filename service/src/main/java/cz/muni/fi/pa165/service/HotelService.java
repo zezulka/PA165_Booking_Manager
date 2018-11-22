@@ -19,7 +19,7 @@ public interface HotelService {
      *
      * @param id non-null id
      * @throws IllegalArgumentException {@code id} is null
-     * @throws DataAccessException error during service
+     * @throws BookingManagerDataAccessException error during service
      * @return {@link Hotel} with the given {@code id} or null if such hotel does not exist
      */
     Hotel findById(Long id);
@@ -29,7 +29,7 @@ public interface HotelService {
      *
      * @param name non empty String
      * @throws IllegalArgumentException {@code name} is null or empty
-     * @throws DataAccessException error during service
+     * @throws BookingManagerDataAccessException error during service
      * @return {@link Hotel} instance with the given name or null if such hotel does not exist
      */
     Hotel findByName(String name);
@@ -37,7 +37,7 @@ public interface HotelService {
     /**
      * Returns a list of all hotels.
      *
-     * @throws DataAccessException error during service
+     * @throws BookingManagerDataAccessException error during service
      * @return {@link List} of all {@link Hotel} instances.
      */
     List<Hotel> findAll();
@@ -47,7 +47,7 @@ public interface HotelService {
      *
      * @param hotel to be created
      * @throws IllegalArgumentException {@code hotel} is null
-     * @throws DataAccessException error during service
+     * @throws BookingManagerDataAccessException error during service
      */
     void create(Hotel hotel);
 
@@ -56,7 +56,7 @@ public interface HotelService {
      *
      * @param hotel {@link Hotel} to be removed
      * @throws IllegalArgumentException {@code hotel} is null
-     * @throws DataAccessException error during service
+     * @throws BookingManagerDataAccessException error during service
      */
     void delete(Hotel hotel);
 
@@ -65,7 +65,7 @@ public interface HotelService {
      *
      * @param hotel {@link Hotel} to be updated
      * @throws IllegalArgumentException {@code hotel} is null
-     * @throws DataAccessException error during service
+     * @throws BookingManagerDataAccessException error during service
      */
     void update(Hotel hotel);
 }
