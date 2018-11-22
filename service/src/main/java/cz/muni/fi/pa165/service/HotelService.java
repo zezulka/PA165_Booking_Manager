@@ -6,7 +6,7 @@ import java.util.List;
 
 import cz.muni.fi.pa165.entity.Hotel;
 import cz.muni.fi.pa165.entity.Room;
-import org.springframework.dao.DataAccessException;
+import cz.muni.fi.pa165.service.exceptions.BookingManagerDataAccessException;
 
 /**
  * @author Petr Valenta
