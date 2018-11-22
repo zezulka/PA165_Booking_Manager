@@ -15,6 +15,8 @@ import cz.muni.fi.pa165.dao.HotelDao;
 import cz.muni.fi.pa165.entity.Hotel;
 import cz.muni.fi.pa165.entity.Room;
 
+import cz.muni.fi.pa165.service.exceptions.BookingManagerDataAccessException;
+
 /**
  * @author  Petr Valenta
  */
@@ -30,7 +32,7 @@ public class HotelServiceImpl implements HotelService {
         try{
             return hotelDao.findById(id);
         } catch (IllegalArgumentException e) {
-            throw new InvalidDataAccessApiUsageException("Error during service.", e);
+            throw new BookingManagerDataAccessException("Error during service.", e);
         }
     }
 
@@ -41,7 +43,7 @@ public class HotelServiceImpl implements HotelService {
         try{
             return hotelDao.findByName(name);
         } catch (IllegalArgumentException e) {
-            throw new InvalidDataAccessApiUsageException("Error during service.", e);
+            throw new BookingManagerDataAccessException("Error during service.", e);
         }
     }
 
@@ -56,7 +58,7 @@ public class HotelServiceImpl implements HotelService {
         try {
             hotelDao.create(hotel);
         } catch (TransactionRequiredException | IllegalArgumentException | ConstraintViolationException | EntityExistsException e) {
-            throw new InvalidDataAccessApiUsageException("Error during service.", e);
+            throw new BookingManagerDataAccessException("Error during service.", e);
         }
     }
 
@@ -66,7 +68,7 @@ public class HotelServiceImpl implements HotelService {
         try {
             hotelDao.remove(hotel);
         } catch (TransactionRequiredException | IllegalArgumentException e) {
-            throw new InvalidDataAccessApiUsageException("Error during service.", e);
+            throw new BookingManagerDataAccessException("Error during service.", e);
         }
     }
 
@@ -76,7 +78,7 @@ public class HotelServiceImpl implements HotelService {
         try {
             hotelDao.update(hotel);
         } catch (TransactionRequiredException | IllegalArgumentException | ConstraintViolationException e) {
-            throw new InvalidDataAccessApiUsageException("Error during service.", e);
+            throw new BookingManagerDataAccessException("Error during service.", e);
         }
     }
 }
