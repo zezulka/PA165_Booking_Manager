@@ -189,15 +189,15 @@ public class HotelDaoTest extends AbstractTestNGSpringContextTests {
     @Test
     public void removeNull() {
         assertThatThrownBy(() -> hotelDao.remove(null))
-                .isInstanceOf(IllegalArgumentException.class);
-    }
+            .isInstanceOf(DataAccessException.class)
+            .hasCauseInstanceOf(IllegalArgumentException.class);    }
 
     @Test
     public void removeWithNullId() {
         Hotel hotel = new Hotel();
         assertThatThrownBy(() -> hotelDao.remove(hotel))
-                .isInstanceOf(IllegalArgumentException.class);
-    }
+            .isInstanceOf(DataAccessException.class)
+            .hasCauseInstanceOf(IllegalArgumentException.class);    }
 
     @Test
     public void createHappyScenario() {
