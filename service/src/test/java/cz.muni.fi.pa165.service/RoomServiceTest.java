@@ -70,21 +70,36 @@ public final class RoomServiceTest extends AbstractTransactionalTestNGSpringCont
     }
 
     @Test
-    public void createRoomHappyTest() {
+    public void createRoomHappy() {
         roomService.createRoom(r1);
         verify(roomDao).create(r1);
     }
 
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void createRoomNull() {
+        roomService.createRoom(null);
+    }
+
     @Test
-    public void deleteRoomHappyTest() {
+    public void deleteRoomHappy() {
         roomService.deleteRoom(r1);
         verify(roomDao).remove(r1);
     }
 
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void deleteRoomNull() {
+        roomService.deleteRoom(null);
+    }
+
     @Test
-    public void updateRoomHappyTest() {
+    public void updateRoomHappy() {
         roomService.updateRoom(r1);
         verify(roomDao).update(r1);
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void updateRoomNull() {
+        roomService.updateRoom(null);
     }
 
     @Test
@@ -92,18 +107,42 @@ public final class RoomServiceTest extends AbstractTransactionalTestNGSpringCont
     }
 
     @Test
-    public void findById() {
+    public void findByIdHappy() {
         when(roomDao.findById(1L)).thenReturn(r1);
         Room tmp = roomService.findById(1L);
         verify(roomDao).findById(1L);
         Assert.assertEquals(tmp, r1);
     }
 
-    @Test
-    public void findByHotel() {
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void findByIdNull() {
+        roomService.findById(null);
     }
 
     @Test
-    public void findByNumber() {
+    public void findByHotelHappy() {
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void findByHotelNull() {
+        roomService.findByHotel(null);
+    }
+
+    @Test
+    public void findByNumberHappy() {
+        when(roomDao.findByNumber(h1,1)).thenReturn(r1);
+        Room tmp = roomService.findByNumber(h1, 1);
+        verify(roomDao).findByNumber(h1, 1);
+        Assert.assertEquals(tmp, r1);
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void findByNumberNullHotel() {
+        roomService.findByNumber(null, 1);
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void findByNumberNullNumber() {
+        roomService.findByNumber(h1, null);
     }
 }
