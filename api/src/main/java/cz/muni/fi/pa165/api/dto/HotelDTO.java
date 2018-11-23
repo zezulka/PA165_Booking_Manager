@@ -55,19 +55,11 @@ public class HotelDTO {
 
         final HotelDTO that = (HotelDTO) o;
 
-        if (!that.id.equals(this.id)) {
-            return false;
-        }
-
-        if (!that.name.equals(this.name)) {
-            return false;
-        }
-
-        return true;
+        return name.equals(that.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, id);
+        return Objects.hash(this.getName());
     }
 }
