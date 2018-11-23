@@ -11,7 +11,16 @@ import cz.muni.fi.pa165.entity.Room;
  *
  * The administrator should also be able to see the list of bookings made for
  * a given time period.
+ * 
+ * @author Miloslav Zezulka
  */
 public interface RoomAvailabilityService {
+    /**
+     * @param range range to search for bookings, must not be null
+     * @param room must not be null
+     * @throws IllegalArgumentException {@code range} or {@code room} is null
+     * @return List of {@link Booking}s for the given {@code range} and 
+     * {@code room}, empty List if there are none.
+     */
     List<Booking> getBookingsInRange(DateRange range, Room room);
 }
