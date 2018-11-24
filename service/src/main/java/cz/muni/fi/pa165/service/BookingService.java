@@ -4,9 +4,6 @@
 package cz.muni.fi.pa165.service;
 
 import cz.muni.fi.pa165.entity.Booking;
-import cz.muni.fi.pa165.entity.Room;
-import cz.muni.fi.pa165.entity.User;
-import cz.muni.fi.pa165.entity.Hotel;
 import cz.muni.fi.pa165.service.exceptions.BookingManagerDataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -19,24 +16,30 @@ public interface BookingService {
     /**
      * Create a booking.
      *
-     * @param user real person that booked the room
-     * @param room booked room
-     * @param range time interval when the room is being booked
+     * @param booking
      * @throws IllegalArgumentException any argument is null
      * @throws BookingManagerDataAccessException any exception on the DAO layer occurs
-     * @return true on success, false on failure
+     * @return true if new booking created, false otherwise
      */
-    boolean bookRoom(User user, Room room, DateRange range);
+    boolean book(Booking booking);
 
     /**
-     * Find users who have some room reserved in a certain time range.
+     * Cancel a booking.
      *
-     * @param range time range
+     * @param booking
      * @throws IllegalArgumentException any argument is null
      * @throws BookingManagerDataAccessException any exception on the DAO layer occurs
-     * @return list of users, empty list if no users match the given criteria
+     * @return true if booking found and cancelled, false otherwise
      */
-    List<User> listReserved(DateRange range);
+    boolean cancel(Booking booking);
+
+    /**
+     * Return all bookings currently in the system.
+     *
+     * @throws BookingManagerDataAccessException any exception on the DAO layer occurs
+     * @return {@link List} of bookings. Empty list if there are none.
+     */
+    List<Booking> getAll();
 
     /**
      * Calculate the accommodation price.
@@ -46,17 +49,5 @@ public interface BookingService {
      * @throws BookingManagerDataAccessException any exception on the DAO layer occurs
      * @return total accomodation price, zero otherwise
      */
-    BigDecimal checkout(Booking booking);
-
-    /**
-     * List available rooms in the given hotel.
-     *
-     * @param hotel given hotel
-     * @param range given time interval
-     * @throws IllegalArgumentException any argument is null
-     * @throws BookingManagerDataAccessException any exception on the DAO layer occurs
-     * @return list of rooms, empty list if no rooms match the given criteria
-     */
-    List<Room> getAvailableRooms(Hotel hotel, DateRange range);
-
- }
+    BigDecimal getTotalPrice(Booking booking);
+}
