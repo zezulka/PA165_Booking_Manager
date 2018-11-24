@@ -26,7 +26,7 @@ public interface BookingService {
      * @throws BookingManagerDataAccessException any exception on the DAO layer occurs
      * @return true on success, false on failure
      */
-    boolean BookRoom(User user, Room room, DateRange range);
+    boolean bookRoom(User user, Room room, DateRange range);
 
     /**
      * Find users who have some room reserved in a certain time range.
@@ -58,5 +58,5 @@ public interface BookingService {
      * @return list of rooms, empty list if no rooms match the given criteria
      */
     List<Room> getAvailableRooms(Hotel hotel, DateRange range);
-    
-}
+
+ }
