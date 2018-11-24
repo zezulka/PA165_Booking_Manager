@@ -19,9 +19,8 @@ public interface BookingService {
      * @param booking
      * @throws IllegalArgumentException any argument is null
      * @throws BookingManagerDataAccessException any exception on the DAO layer occurs
-     * @return true if new booking created, false otherwise
      */
-    boolean book(Booking booking);
+    void book(Booking booking);
 
     /**
      * Cancel a booking.
@@ -29,9 +28,8 @@ public interface BookingService {
      * @param booking
      * @throws IllegalArgumentException any argument is null
      * @throws BookingManagerDataAccessException any exception on the DAO layer occurs
-     * @return true if booking found and cancelled, false otherwise
      */
-    boolean cancel(Booking booking);
+    void cancel(Booking booking);
 
     /**
      * Return all bookings currently in the system.

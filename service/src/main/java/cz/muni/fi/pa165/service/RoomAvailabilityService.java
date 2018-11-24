@@ -37,7 +37,7 @@ public interface RoomAvailabilityService {
      * @throws BookingManagerDataAccessException any exception on the DAO layer occurs
      * @return list of rooms, empty list if no rooms are available for booking
      */
-    List<Room> getAvailableRooms(DateRange range, Hotel hotel);
+    //List<Room> getAvailableRooms(DateRange range, Hotel hotel);
 
     /**
      * Find users who have some room reserved in a certain time range.
@@ -48,5 +48,5 @@ public interface RoomAvailabilityService {
      * @throws BookingManagerDataAccessException any exception on the DAO layer occurs
      * @return list of users who reserved a room inside the given timespan, empty otherwise
      */
-    List<User> listReserved(DateRange range);
+    //List<User> listReserved(DateRange range);
 }
