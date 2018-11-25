@@ -2,13 +2,13 @@ package cz.muni.fi.pa165.service;
 
 import cz.muni.fi.pa165.dao.UserDao;
 import cz.muni.fi.pa165.entity.User;
+import cz.muni.fi.pa165.service.exceptions.BookingManagerDataAccessException;
 import cz.muni.fi.pa165.utils.Security;
 import java.util.List;
 import javax.persistence.EntityExistsException;
 import javax.persistence.TransactionRequiredException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.stereotype.Service;
 
 /*
@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
         try {
             userDao.create(user);
         } catch (TransactionRequiredException | EntityExistsException | IllegalArgumentException e) {
-            throw new InvalidDataAccessApiUsageException("UserDAO could not create a new user.", e);
+            throw new BookingManagerDataAccessException("UserDAO could not create a new user.", e);
         }
         return userDao.findById(user.getId()) != null;
     }
@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService {
             User u = findById(candidate.getId());
             return u != null && u.isAdmin();
         } catch (TransactionRequiredException | IllegalArgumentException e) {
-            throw new InvalidDataAccessApiUsageException("Could not verify "
+            throw new BookingManagerDataAccessException("Could not verify "
                     + "whether the user is an administrator.", e);
         }
     }
@@ -75,7 +75,7 @@ public class UserServiceImpl implements UserService {
         try {
             return userDao.findById(id);
         } catch (IllegalArgumentException e) {
-            throw new InvalidDataAccessApiUsageException("Could not find user by id.", e);
+            throw new BookingManagerDataAccessException("Could not find user by id.", e);
         }
     }
 
@@ -87,7 +87,7 @@ public class UserServiceImpl implements UserService {
         try {
             return userDao.findByEmail(email);
         } catch (IllegalArgumentException e) {
-            throw new InvalidDataAccessApiUsageException("Could not find user by id.", e);
+            throw new BookingManagerDataAccessException("Could not find user by id.", e);
         }
     }
 
@@ -99,7 +99,7 @@ public class UserServiceImpl implements UserService {
         try {
             userDao.update(user);    
         } catch(TransactionRequiredException | IllegalArgumentException e) {
-            throw new InvalidDataAccessApiUsageException("Could not update user.", e);
+            throw new BookingManagerDataAccessException("Could not update user.", e);
         }
     }
 }
