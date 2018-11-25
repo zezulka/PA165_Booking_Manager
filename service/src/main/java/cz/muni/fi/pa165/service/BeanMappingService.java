@@ -5,6 +5,9 @@ import java.util.List;
 
 import org.dozer.Mapper;
 
+/**
+ * @author Petr Valenta
+ */
 public interface BeanMappingService {
 
     public  <T> List<T> mapTo(Collection<?> objects, Class<T> mapToClass);

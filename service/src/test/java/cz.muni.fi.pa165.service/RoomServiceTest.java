@@ -1,12 +1,10 @@
 package cz.muni.fi.pa165.service;
 
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
 
 import org.springframework.test.context.testng.AbstractTransactionalTestNGSpringContextTests;
 
@@ -30,6 +28,9 @@ import cz.muni.fi.pa165.service.config.ServiceConfiguration;
 import cz.muni.fi.pa165.dao.HotelDao;
 import cz.muni.fi.pa165.dao.RoomDao;
 
+/**
+ * @author Petr Valenta
+ */
 @ContextConfiguration(classes=ServiceConfiguration.class)
 public final class RoomServiceTest extends AbstractTransactionalTestNGSpringContextTests {
     @Mock
@@ -111,16 +112,17 @@ public final class RoomServiceTest extends AbstractTransactionalTestNGSpringCont
         Assert.assertEquals(tmp, l1);
     }
 
-//    @Test
-//    public void findAllEmpty() {
-//        List<Room> tmp = new ArrayList<>();
-//        Assert.assertTrue(tmp.isEmpty());
-//
-//        when(roomDao.findAll()).thenReturn(tmp);
-//        List<Room> tmp = roomService.findAll();
-//        verify(roomDao).findAll();
-//        Assert.assertEquals(tmp, l1);
-//    }
+
+    @Test(enabled = false)
+    public void findAllEmpty() {
+        List<Room> tmp = new ArrayList<>();
+        Assert.assertTrue(tmp.isEmpty());
+
+        when(roomDao.findAll()).thenReturn(tmp);
+        tmp = roomService.findAll();
+        verify(roomDao).findAll();
+        Assert.assertEquals(tmp, l1);
+    }
 
     @Test
     public void findByIdHappy() {
