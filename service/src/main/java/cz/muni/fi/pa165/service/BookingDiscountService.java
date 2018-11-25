@@ -2,11 +2,13 @@ package cz.muni.fi.pa165.service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Properties;
 
 import cz.muni.fi.pa165.entity.Booking;
 import cz.muni.fi.pa165.entity.User;
 
 /**
+ * @author  Petr Valenta
  *
  * This service represents a discount which can be given
  * for a particular booking.
@@ -32,7 +34,7 @@ public interface BookingDiscountService {
     /**
      * Filters out future bookings.
      *
-     * @param input
+     * @param input list of bookings
      * @return a list of past bookings
      */
     List<Booking> getPastBookings(List<Booking> input);
@@ -46,9 +48,9 @@ public interface BookingDiscountService {
     boolean isUserEligibleForDiscount(DiscountType type, User user);
 
     /**
-     *
+     * Checks for eglible discounts and calculates price
      * @param booking
-     * @return
+     * @return price after discount
      */
     BigDecimal calculateDiscount(Booking booking);
 }
