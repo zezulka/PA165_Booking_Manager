@@ -53,7 +53,12 @@ public class RoomServiceImpl implements RoomService{
 		return roomDao.findByNumber(hotel, number);
 	}
 
-	@Override
+    @Override
+    public List<Room> getAvailableRooms(DateRange range, Hotel hotel) {
+        throw new UnsupportedOperationException("Not implemented yet!");
+    }
+
+    @Override
 	public boolean createRoom(Room room) {
         if (room == null) {
             throw new IllegalArgumentException("Room cannot be null.");
