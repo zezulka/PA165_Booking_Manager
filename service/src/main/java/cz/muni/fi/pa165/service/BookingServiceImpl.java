@@ -54,6 +54,14 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    public Booking findById(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException("Id cannot be null.");
+        }
+        return bookingDao.findById(id);
+    }
+
+    @Override
     public BigDecimal getTotalPrice(Booking booking) {
         if(booking == null) {
             throw new IllegalArgumentException("Booking cannot be null.");

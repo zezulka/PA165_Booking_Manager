@@ -39,6 +39,13 @@ public interface BookingService {
      * @return {@link List} of bookings. Empty list if there are none.
      */
     List<Booking> getAll();
+    
+    /**
+     * Finds the booking by its id.
+     * @param id database identifier, must not be null
+     * @return Booking with the given database identifier, null if there is no such booking
+     */
+    Booking findById(Long id);
 
     /**
      * Calculate the accommodation price after discount. If the discount
