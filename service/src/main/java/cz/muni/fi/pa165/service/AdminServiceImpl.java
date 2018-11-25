@@ -3,6 +3,7 @@ package cz.muni.fi.pa165.service;
 import cz.muni.fi.pa165.dao.BookingDao;
 import cz.muni.fi.pa165.entity.Booking;
 import cz.muni.fi.pa165.entity.Room;
+import cz.muni.fi.pa165.entity.User;
 import cz.muni.fi.pa165.service.exceptions.BookingManagerDataAccessException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,7 +18,7 @@ import org.springframework.stereotype.Service;
  * @author Miloslav Zezulka
  */
 @Service
-public class RoomAvailabilityServiceImpl implements RoomAvailabilityService {
+public class AdminServiceImpl implements AdminService {
 
     @Autowired
     BookingDao bookingDao;
@@ -37,6 +38,11 @@ public class RoomAvailabilityServiceImpl implements RoomAvailabilityService {
         } catch (IllegalArgumentException | ConstraintViolationException e) {
             throw new BookingManagerDataAccessException("DAO exception was thrown:", e);
         }
+    }
+
+    @Override
+    public List<User> listReserved(DateRange range) {
+        throw new UnsupportedOperationException("Not implemented yet!");
     }
 
     private static boolean isBookingInsideDateRange(Booking booking, DateRange range) {
