@@ -78,4 +78,9 @@ public class RoomServiceImpl implements RoomService {
         return roomDao.update(room);
     }
 
+    @Override
+    public List<Room> getAvailableRooms(DateRange range, Hotel hotel) {
+        throw new UnsupportedOperationException("Not implemented yet!");
+    }
+
 }
