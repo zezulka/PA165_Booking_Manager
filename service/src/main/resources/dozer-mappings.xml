@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozermapper.github.io/schema/bean-mapping"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://dozermapper.github.io/schema/bean-mapping http://dozermapper.github.io/schema/bean-mapping.xsd">
+
+    <mapping>
+        <class-a>cz.muni.fi.pa165.entity.Room</class-a>
+        <class-b>cz.muni.fi.pa165.entity.RoomDTO</class-b>
+    </mapping>
+
+    <mapping>
+        <class-a>cz.muni.fi.pa165.entity.Hotel</class-a>
+        <class-b>cz.muni.fi.pa165.entity.HotelDTO</class-b>
+    </mapping>
+
+    <mapping>
+        <class-a>cz.muni.fi.pa165.entity.Booking</class-a>
+        <class-b>cz.muni.fi.pa165.entity.BookingDTO</class-b>
+    </mapping>
+
+</mappings>
