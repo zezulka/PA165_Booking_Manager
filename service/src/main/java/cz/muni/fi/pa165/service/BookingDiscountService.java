@@ -21,7 +21,34 @@ import cz.muni.fi.pa165.entity.User;
  * 
  */
 public interface BookingDiscountService {
+
+    /**
+     * Returns a list of all bookings made by selected user.
+     * @param user
+     * @return a list of bookings
+     */
     List<Booking> bookingsForUser(User user);
+
+    /**
+     * Filters out future bookings.
+     *
+     * @param input
+     * @return a list of past bookings
+     */
+    List<Booking> getPastBookings(List<Booking> input);
+
+    /**
+     * Returns true if selected user is eligible for specific discount.
+     * @param type
+     * @param user
+     * @return true if user is eligible, false otherwise
+     */
     boolean isUserEligibleForDiscount(DiscountType type, User user);
+
+    /**
+     *
+     * @param booking
+     * @return
+     */
     BigDecimal calculateDiscount(Booking booking);
 }
