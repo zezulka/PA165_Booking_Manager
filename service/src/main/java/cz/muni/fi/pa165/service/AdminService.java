@@ -16,7 +16,7 @@ import cz.muni.fi.pa165.service.exceptions.BookingManagerDataAccessException;
  * 
  * @author Miloslav Zezulka
  */
-public interface RoomAvailabilityService {
+public interface AdminService {
     /**
      * @param range range to search for bookings, must not be null
      * @param room must not be null

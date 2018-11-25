@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
  * @author Miloslav Zezulka
  */
 @Service
-public class RoomAvailabilityServiceImpl implements RoomAvailabilityService {
+public class AdminServiceImpl implements AdminService {
 
     @Autowired
     BookingDao bookingDao;
