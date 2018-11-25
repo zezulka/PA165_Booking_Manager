@@ -1,6 +1,8 @@
 package cz.muni.fi.pa165.service;
 
 import java.util.List;
+
+import cz.muni.fi.pa165.service.exceptions.BookingManagerDataAccessException;
 import org.springframework.stereotype.Service;
 import cz.muni.fi.pa165.entity.Room;
 import cz.muni.fi.pa165.entity.Hotel;
@@ -75,5 +77,16 @@ public interface RoomService {
 	 * room with this number in given hotel.
 	 */
 	Room findByNumber(Hotel hotel, Integer number);
-	
+
+	/**
+	 * List available rooms in the given hotel.
+	 * @author Martin Palenik
+	 *
+	 * @param range given time interval
+	 * @param hotel given hotel
+	 * @throws IllegalArgumentException any argument is null
+	 * @throws BookingManagerDataAccessException any exception on the DAO layer occurs
+	 * @return list of rooms, empty list if no rooms are available for booking
+	 */
+	List<Room> getAvailableRooms(DateRange range, Hotel hotel);
 }
