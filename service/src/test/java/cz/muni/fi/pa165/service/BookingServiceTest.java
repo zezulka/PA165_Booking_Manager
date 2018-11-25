@@ -228,7 +228,8 @@ public final class BookingServiceTest extends AbstractTransactionalTestNGSpringC
     public void findByIdHappyScenario() {
         when(bookingDao.findById(1L)).thenReturn(defaultBooking);
         bookingService.book(defaultBooking);
-        assertThat(bookingService.findById(1L)).isEqualTo(defaultBooking);
+        assertThat(bookingService.findById(1L))
+                .isEqualToComparingFieldByFieldRecursively(defaultBooking);
     }
 
     @Test
@@ -253,6 +254,7 @@ public final class BookingServiceTest extends AbstractTransactionalTestNGSpringC
         }).when(bookingDao).create(defaultBooking);
         bookingService.book(defaultBooking);
         defaultBooking.setId(1L);
-        assertThat(bookingService.getTotalPrice(defaultBooking)).isEqualTo(new BigDecimal("1000.0"));
+        assertThat(bookingService.getTotalPrice(defaultBooking))
+                .isEqualToComparingFieldByFieldRecursively(new BigDecimal("1000.0"));
     }
 }
