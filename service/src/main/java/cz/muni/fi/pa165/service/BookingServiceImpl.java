@@ -2,6 +2,7 @@ package cz.muni.fi.pa165.service;
 
 import cz.muni.fi.pa165.dao.BookingDao;
 import cz.muni.fi.pa165.entity.Booking;
+import cz.muni.fi.pa165.entity.Room;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
@@ -10,7 +11,9 @@ import java.util.List;
 import javax.persistence.EntityExistsException;
 import javax.persistence.TransactionRequiredException;
 import cz.muni.fi.pa165.service.exceptions.BookingManagerDataAccessException;
+import org.springframework.stereotype.Service;
 
+@Service
 public class BookingServiceImpl implements BookingService {
 
     @Autowired
@@ -52,5 +55,13 @@ public class BookingServiceImpl implements BookingService {
         // will be superseded by discount mechanism upon its completion
         // return Math.max(0, booking.getTotal() - calculateDiscount(booking));
         return bookingDao.findById(booking.getId()).getTotal();
+    }
+
+    @Override
+    public List<Booking> findByRoom(Room room) {
+        if (room == null) {
+            throw new IllegalArgumentException("Room must not be null.");
+        }
+        return bookingDao.findByRoom(room);
     }
 }
