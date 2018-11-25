@@ -49,6 +49,7 @@ public final class RoomServiceTest extends AbstractTransactionalTestNGSpringCont
 
     private Room r1;
     private Hotel h1;
+    private List<Room> l1;
 
     @BeforeMethod
     public void init(){
@@ -64,7 +65,7 @@ public final class RoomServiceTest extends AbstractTransactionalTestNGSpringCont
 
         h1.setAddress("In The Middle Of Nowhere");
         h1.setName("Noname");
-        List<Room> l1 = new ArrayList<>();
+        l1 = new ArrayList<>();
         l1.add(r1);
         h1.setRooms(l1);
     }
@@ -104,7 +105,22 @@ public final class RoomServiceTest extends AbstractTransactionalTestNGSpringCont
 
     @Test
     public void findAll() {
+        when(roomDao.findAll()).thenReturn(l1);
+        List<Room> tmp = roomService.findAll();
+        verify(roomDao).findAll();
+        Assert.assertEquals(tmp, l1);
     }
+
+//    @Test
+//    public void findAllEmpty() {
+//        List<Room> tmp = new ArrayList<>();
+//        Assert.assertTrue(tmp.isEmpty());
+//
+//        when(roomDao.findAll()).thenReturn(tmp);
+//        List<Room> tmp = roomService.findAll();
+//        verify(roomDao).findAll();
+//        Assert.assertEquals(tmp, l1);
+//    }
 
     @Test
     public void findByIdHappy() {
@@ -121,6 +137,10 @@ public final class RoomServiceTest extends AbstractTransactionalTestNGSpringCont
 
     @Test
     public void findByHotelHappy() {
+        when(roomDao.findByHotel(h1)).thenReturn(l1);
+        List<Room> tmp = roomService.findByHotel(h1);
+        verify(roomDao).findByHotel(h1);
+        Assert.assertEquals(tmp, l1);
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)
