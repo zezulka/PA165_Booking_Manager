@@ -10,7 +10,13 @@ import java.util.List;
 import javax.persistence.EntityExistsException;
 import javax.persistence.TransactionRequiredException;
 import cz.muni.fi.pa165.service.exceptions.BookingManagerDataAccessException;
+import org.springframework.stereotype.Service;
 
+/**
+ * 
+ * @author Martin Palenik
+ */
+@Service
 public class BookingServiceImpl implements BookingService {
 
     @Autowired
@@ -49,6 +55,9 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public BigDecimal getTotalPrice(Booking booking) {
+        if(booking == null) {
+            throw new IllegalArgumentException("Booking cannot be null.");
+        }
         // will be superseded by discount mechanism upon its completion
         // return Math.max(0, booking.getTotal() - calculateDiscount(booking));
         return bookingDao.findById(booking.getId()).getTotal();

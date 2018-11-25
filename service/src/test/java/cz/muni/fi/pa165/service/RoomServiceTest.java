@@ -44,7 +44,7 @@ public final class RoomServiceTest extends AbstractTransactionalTestNGSpringCont
     private RoomService roomService;
 
     @BeforeClass
-    private void SetUp() throws Exception {
+    private void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
     }
 
