@@ -247,7 +247,7 @@ public final class BookingServiceTest extends AbstractTransactionalTestNGSpringC
         when(bookingDao.findById(1L)).thenReturn(defaultBooking);
         // Let's simulate id generation for this given task
         Mockito.doAnswer((o) -> {
-            Booking b = (Booking) o.getArguments()[0];
+            Booking b = o.getArgumentAt(0, Booking.class);
             b.setId(1L);
             return null;
         }).when(bookingDao).create(defaultBooking);
