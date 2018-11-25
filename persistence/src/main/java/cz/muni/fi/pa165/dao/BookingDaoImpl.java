@@ -2,6 +2,7 @@ package cz.muni.fi.pa165.dao;
 
 import cz.muni.fi.pa165.entity.Booking;
 import cz.muni.fi.pa165.entity.Room;
+import cz.muni.fi.pa165.entity.User;
 
 import java.util.List;
 
@@ -74,5 +75,17 @@ public class BookingDaoImpl implements BookingDao {
         }
         return em.createQuery("SELECT b FROM Booking b WHERE b.room = :room",
                 Booking.class).setParameter("room", room).getResultList();
+    }
+
+    @Override
+    public List<Booking> findByUser(User user) {
+        if (user == null) {
+            throw new IllegalArgumentException("User cannot be null.");
+        }
+        if (user.getId() == null) {
+            throw new IllegalArgumentException("User must have its id set.");
+        }
+        return em.createQuery("SELECT b FROM Booking b WHERE b.user = :user",
+            Booking.class).setParameter("user", user).getResultList();
     }
 }
