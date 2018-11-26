@@ -93,7 +93,7 @@ public final class BookingServiceTest extends AbstractTransactionalTestNGSpringC
         verify(bookingDao).create(defaultBooking);
         assertThat(bookingService.getAll()).containsExactly(defaultBooking);
     }
-    
+
     @Test
     public void bookTwoDifferentInSameTime() {
         bookingService.book(defaultBooking);
@@ -104,7 +104,7 @@ public final class BookingServiceTest extends AbstractTransactionalTestNGSpringC
         r1.setNumber(111);
         r1.setRecommendedPrice(new BigDecimal("2000.0"));
         r1.setType(RoomType.DOUBLE_ROOM);
-        
+
         Booking b1 = new Booking();
         b1.setFrom(LocalDate.of(2015, Month.OCTOBER, 22));
         b1.setTo(LocalDate.of(2015, Month.OCTOBER, 30));
@@ -112,7 +112,7 @@ public final class BookingServiceTest extends AbstractTransactionalTestNGSpringC
         b1.setUser(defaultUser);
         bookingService.book(b1);
     }
-    
+
     @Test
     public void bookTwoDifferentInDifferentTime() {
         bookingService.book(defaultBooking);
@@ -123,7 +123,7 @@ public final class BookingServiceTest extends AbstractTransactionalTestNGSpringC
         r1.setNumber(111);
         r1.setRecommendedPrice(new BigDecimal("2000.0"));
         r1.setType(RoomType.DOUBLE_ROOM);
-        
+
         Booking b1 = new Booking();
         b1.setFrom(LocalDate.of(2016, Month.JANUARY, 1));
         b1.setTo(LocalDate.of(2016, Month.JANUARY, 10));
@@ -131,7 +131,7 @@ public final class BookingServiceTest extends AbstractTransactionalTestNGSpringC
         b1.setUser(defaultUser);
         bookingService.book(b1);
     }
-    
+
     @Test
     public void bookTwice() {
         bookingService.book(defaultBooking);
@@ -140,7 +140,7 @@ public final class BookingServiceTest extends AbstractTransactionalTestNGSpringC
         assertThatThrownBy(() -> bookingService.book(defaultBooking))
                 .isInstanceOf(IllegalArgumentException.class);
     }
-    
+
     @Test
     public void bookOverlapping() {
         Booking b2 = new Booking();
@@ -173,7 +173,7 @@ public final class BookingServiceTest extends AbstractTransactionalTestNGSpringC
         assertThatThrownBy(() -> bookingService.book(b2))
                 .isInstanceOf(IllegalArgumentException.class);
     }
-    
+
     @Test
     public void bookInThePast() {
         Booking inThePast = new Booking();
@@ -184,13 +184,13 @@ public final class BookingServiceTest extends AbstractTransactionalTestNGSpringC
         assertThatThrownBy(() -> bookingService.book(inThePast))
                 .isInstanceOf(IllegalArgumentException.class);
     }
-    
+
     public void cancelHappyScenario() {
         bookingService.book(defaultBooking);
         bookingService.cancel(defaultBooking);
         verify(bookingDao).remove(defaultBooking);
     }
-    
+
     @Test
     public void cancelTwice() {
         bookingService.book(defaultBooking);
@@ -202,13 +202,13 @@ public final class BookingServiceTest extends AbstractTransactionalTestNGSpringC
         assertThatThrownBy(() -> bookingService.cancel(defaultBooking))
                 .isInstanceOf(IllegalArgumentException.class);
     }
-    
+
     @Test
     public void cancelNull() {
         assertThatThrownBy(() -> bookingService.cancel(null))
                 .isInstanceOf(IllegalArgumentException.class);
     }
-    
+
     public void cancelOrderInThePast() {
         bookingService.book(defaultBooking);
         // Fast forward to future and see what happens
@@ -217,13 +217,13 @@ public final class BookingServiceTest extends AbstractTransactionalTestNGSpringC
         assertThatThrownBy(() -> bookingService.cancel(defaultBooking))
                 .isInstanceOf(IllegalArgumentException.class);
     }
-    
+
     @Test
     public void findByNullId() {
         assertThatThrownBy(() -> bookingService.findById(null))
                 .isInstanceOf(IllegalArgumentException.class);
     }
-    
+
     @Test
     public void findByIdHappyScenario() {
         when(bookingDao.findById(1L)).thenReturn(defaultBooking);
@@ -242,7 +242,7 @@ public final class BookingServiceTest extends AbstractTransactionalTestNGSpringC
         assertThatThrownBy(() -> bookingService.getTotalPrice(null))
                 .isInstanceOf(IllegalArgumentException.class);
     }
-    
+
     @Test
     public void getTotalPriceHappyScenario() {
         when(bookingDao.findById(1L)).thenReturn(defaultBooking);

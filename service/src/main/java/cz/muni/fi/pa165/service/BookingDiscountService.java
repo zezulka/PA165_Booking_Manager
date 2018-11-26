@@ -3,10 +3,10 @@ package cz.muni.fi.pa165.service;
 import cz.muni.fi.pa165.api.DiscountType;
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Properties;
 
 import cz.muni.fi.pa165.entity.Booking;
 import cz.muni.fi.pa165.entity.User;
+import org.springframework.stereotype.Service;
 
 /**
  * @author  Petr Valenta
@@ -24,6 +24,7 @@ import cz.muni.fi.pa165.entity.User;
  *     files).
  * 
  */
+@Service
 public interface BookingDiscountService {
 
     /**
