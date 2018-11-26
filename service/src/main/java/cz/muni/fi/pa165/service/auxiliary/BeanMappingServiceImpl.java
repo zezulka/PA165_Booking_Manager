@@ -1,5 +1,6 @@
-package cz.muni.fi.pa165.service;
+package cz.muni.fi.pa165.service.auxiliary;
 
+import cz.muni.fi.pa165.service.auxiliary.BeanMappingService;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;

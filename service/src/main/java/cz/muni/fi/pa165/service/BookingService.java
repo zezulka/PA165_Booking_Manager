@@ -1,6 +1,3 @@
-
-// @author Martin Palenik
-
 package cz.muni.fi.pa165.service;
 
 import cz.muni.fi.pa165.entity.Booking;
@@ -11,6 +8,10 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.List;
 
+/**
+ * 
+ * @author Martin Palenik
+ */
 @Service
 public interface BookingService {
 
@@ -39,14 +40,22 @@ public interface BookingService {
      * @return {@link List} of bookings. Empty list if there are none.
      */
     List<Booking> getAll();
+    
+    /**
+     * Finds the booking by its id.
+     * @param id database identifier, must not be null
+     * @return Booking with the given database identifier, null if there is no such booking
+     */
+    Booking findById(Long id);
 
     /**
-     * Calculate the accommodation price.
+     * Calculate the accommodation price after discount. If the discount
+     * exceeds the base price, BigDecimal.ZERO is returned instead.
      *
      * @param booking booking of given user in given time range
-     * @throws IllegalArgumentException any argument is null
+     * @throws IllegalArgumentException {@code booking} is null
      * @throws BookingManagerDataAccessException any exception on the DAO layer occurs
-     * @return total accomodation price, zero otherwise
+     * @return total accommodation price after discount
      */
     BigDecimal getTotalPrice(Booking booking);
     

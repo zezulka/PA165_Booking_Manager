@@ -1,5 +1,4 @@
 package cz.muni.fi.pa165.service;
-
 import cz.muni.fi.pa165.dao.BookingDao;
 import cz.muni.fi.pa165.dao.HotelDao;
 import cz.muni.fi.pa165.dao.RoomDao;
@@ -30,8 +29,33 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
+import org.springframework.test.context.testng.AbstractTransactionalTestNGSpringContextTests;
 
+import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+
+import org.testng.annotations.BeforeMethod;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
+import cz.muni.fi.pa165.entity.Hotel;
+import cz.muni.fi.pa165.entity.Room;
+import cz.muni.fi.pa165.enums.RoomType;
+import cz.muni.fi.pa165.service.config.ServiceConfiguration;
+import cz.muni.fi.pa165.dao.HotelDao;
+import cz.muni.fi.pa165.dao.RoomDao;
 /**
  * @author Petr Valenta
  */
@@ -42,6 +66,10 @@ public final class RoomServiceTest extends AbstractTransactionalTestNGSpringCont
     
     @Mock
     private BookingService bookingService;
+
+    @Mock
+    private HotelDao hotelDao;
+
 
     @Autowired
     @InjectMocks
@@ -120,6 +148,17 @@ public final class RoomServiceTest extends AbstractTransactionalTestNGSpringCont
     public void findAllEmpty() {
         when(roomDao.findAll()).thenReturn(Collections.EMPTY_LIST);
         assertThat(roomService.findAll()).isEmpty();
+   }
+
+    @Test(enabled = false)
+    public void findAllEmpty() {
+        List<Room> tmp = new ArrayList<>();
+        Assert.assertTrue(tmp.isEmpty());
+
+        when(roomDao.findAll()).thenReturn(tmp);
+        tmp = roomService.findAll();
+        verify(roomDao).findAll();
+        Assert.assertEquals(tmp, l1);
     }
 
     @Test
@@ -165,7 +204,7 @@ public final class RoomServiceTest extends AbstractTransactionalTestNGSpringCont
     public void findByNumberNullNumber() {
         roomService.findByNumber(h1, null);
     }
-    
+  
     @Test
     public void getAvailableRooms() {
         DateRange range = new DateRange(LocalDate.of(2015, Month.OCTOBER, 21), LocalDate.of(2015, Month.OCTOBER, 22));
