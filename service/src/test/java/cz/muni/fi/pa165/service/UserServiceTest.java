@@ -1,8 +1,3 @@
-<<<<<<< HEAD:service/src/test/java/cz.muni.fi.pa165.service/UserServiceTest.java
-// @author Martin Palenik
-
-=======
->>>>>>> 4b695a6351cf65ea80b0cb12c8fd9625f7aa4d06:service/src/test/java/cz/muni/fi/pa165/service/UserServiceTest.java
 package cz.muni.fi.pa165.service;
 
 import cz.muni.fi.pa165.dao.UserDao;
