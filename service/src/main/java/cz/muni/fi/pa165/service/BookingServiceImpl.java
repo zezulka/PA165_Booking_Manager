@@ -16,10 +16,34 @@ public class BookingServiceImpl implements BookingService {
     @Autowired
     private BookingDao bookingDao;
 
+    private boolean between(int i, int minValueInclusive, int maxValueInclusive) {
+        return (i >= minValueInclusive && i <= maxValueInclusive);
+    }
+
     @Override
     public void book(Booking booking) {
         if (booking == null) {
             throw new IllegalArgumentException("booking is null");
+        }
+
+        for (Booking existing : bookingDao.findByRoom(booking.getRoom())){
+            if (
+                    booking.getFrom().isAfter(existing.getFrom())
+                    &&
+                    booking.getFrom().isBefore(existing.getTo())
+            ) {
+                throw new BookingManagerDataAccessException(
+                        "booking start date collides with another booking");
+            }
+
+            if (
+                    booking.getTo().isAfter(existing.getFrom())
+                    &&
+                    booking.getTo().isBefore(existing.getTo())
+            ) {
+                throw new BookingManagerDataAccessException(
+                        "booking end date collides with another booking");
+            }
         }
 
         try {
