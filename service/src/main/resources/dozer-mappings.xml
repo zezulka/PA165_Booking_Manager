@@ -18,4 +18,9 @@
         <class-b>cz.muni.fi.pa165.entity.BookingDTO</class-b>
     </mapping>
 
+    <mapping>
+        <class-a>cz.muni.fi.pa165.entity.User</class-a>
+        <class-b>cz.muni.fi.pa165.entity.UserDTO</class-b>
+    </mapping>
+
 </mappings>
