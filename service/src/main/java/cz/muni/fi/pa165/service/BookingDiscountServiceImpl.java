@@ -1,22 +1,20 @@
 package cz.muni.fi.pa165.service;
 
-import org.mockito.cglib.core.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.awt.print.Book;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import cz.muni.fi.pa165.api.DiscountType;
 import cz.muni.fi.pa165.dao.BookingDao;
 import cz.muni.fi.pa165.entity.Booking;
 import cz.muni.fi.pa165.entity.User;
+import cz.muni.fi.pa165.service.auxiliary.DateService;
 import cz.muni.fi.pa165.service.exceptions.BookingManagerDataAccessException;
 import cz.muni.fi.pa165.utils.PropertiesHelper;
 
@@ -25,8 +23,12 @@ import cz.muni.fi.pa165.utils.PropertiesHelper;
  */
 @Service
 public class BookingDiscountServiceImpl implements BookingDiscountService {
+
     @Autowired
     private BookingDao bookingDao;
+
+    @Autowired
+    private DateService dateService;
 
     @Override
     public List<Booking> bookingsForUser(final User user) {
@@ -41,15 +43,14 @@ public class BookingDiscountServiceImpl implements BookingDiscountService {
     @Override
     public List<Booking> getPastBookings(final List<Booking> input) {
         List<Booking> output = new ArrayList<>();
-        LocalDate now = LocalDate.now();
+        LocalDate now = dateService.getCurrentDate();
 
         for (Booking booking : input){
             if (booking.getTo().isBefore(now)) output.add(booking);
         }
         return output;
     }
-
-
+    
     @Override
     public boolean isUserEligibleForDiscount(final DiscountType type, final User user) {
         if (type == null) throw new IllegalArgumentException("type cannot be null");
@@ -72,7 +73,7 @@ public class BookingDiscountServiceImpl implements BookingDiscountService {
                 break;
 
             case RECENTLY_ACTIVE_CUSTOMER:
-                LocalDate now = LocalDate.now();
+                LocalDate now = dateService.getCurrentDate();
                 if (bookings.get(bookings.size()).getTo() // TODO test - will this fetch the latest booking???
                             .isAfter(now.minusDays(Long.parseLong(props.getProperty("recentlyActiveDays")))))
                     return true;
