@@ -1,5 +1,6 @@
 package cz.muni.fi.pa165.service;
 
+import cz.muni.fi.pa165.api.DateRange;
 import java.util.List;
 
 import cz.muni.fi.pa165.entity.User;

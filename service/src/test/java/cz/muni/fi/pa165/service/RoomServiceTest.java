@@ -1,4 +1,5 @@
 package cz.muni.fi.pa165.service;
+import cz.muni.fi.pa165.api.DateRange;
 import cz.muni.fi.pa165.dao.HotelDao;
 import cz.muni.fi.pa165.dao.RoomDao;
 import cz.muni.fi.pa165.entity.Booking;
@@ -24,7 +25,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTransactionalTestNGSpringContextTests;
 import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 /**

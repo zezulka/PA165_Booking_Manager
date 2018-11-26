@@ -1,5 +1,6 @@
 package cz.muni.fi.pa165.service;
 
+import cz.muni.fi.pa165.api.DateRange;
 import cz.muni.fi.pa165.entity.Hotel;
 import cz.muni.fi.pa165.entity.Room;
 import cz.muni.fi.pa165.service.exceptions.BookingManagerDataAccessException;

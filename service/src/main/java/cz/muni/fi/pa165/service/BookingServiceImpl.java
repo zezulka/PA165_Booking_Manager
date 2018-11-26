@@ -1,5 +1,6 @@
 package cz.muni.fi.pa165.service;
 
+import cz.muni.fi.pa165.api.DateRange;
 import cz.muni.fi.pa165.dao.BookingDao;
 import cz.muni.fi.pa165.entity.Booking;
 import cz.muni.fi.pa165.entity.Room;
@@ -13,7 +14,7 @@ import javax.persistence.TransactionRequiredException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import static cz.muni.fi.pa165.utils.DateRangeUtils.rangesOverlap;
+import static cz.muni.fi.pa165.api.utils.DateRangeUtils.rangesOverlap;
 import java.time.LocalDate;
 
 /**
