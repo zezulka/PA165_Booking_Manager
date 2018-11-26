@@ -1,6 +1,5 @@
-package cz.muni.fi.pa165.service;
+package cz.muni.fi.pa165.api;
 
-import cz.muni.fi.pa165.api.DateRange;
 import java.time.LocalDate;
 import java.time.Month;
 import org.junit.Test;
