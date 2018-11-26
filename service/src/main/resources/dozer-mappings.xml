@@ -5,22 +5,22 @@
 
     <mapping>
         <class-a>cz.muni.fi.pa165.entity.Room</class-a>
-        <class-b>cz.muni.fi.pa165.entity.RoomDTO</class-b>
+        <class-b>cz.muni.fi.pa165.api.dto.RoomDTO</class-b>
     </mapping>
 
     <mapping>
         <class-a>cz.muni.fi.pa165.entity.Hotel</class-a>
-        <class-b>cz.muni.fi.pa165.entity.HotelDTO</class-b>
+        <class-b>cz.muni.fi.pa165.api.dto.HotelDTO</class-b>
     </mapping>
 
     <mapping>
         <class-a>cz.muni.fi.pa165.entity.Booking</class-a>
-        <class-b>cz.muni.fi.pa165.entity.BookingDTO</class-b>
+        <class-b>cz.muni.fi.pa165.api.dto.BookingDTO</class-b>
     </mapping>
 
     <mapping>
         <class-a>cz.muni.fi.pa165.entity.User</class-a>
-        <class-b>cz.muni.fi.pa165.entity.UserDTO</class-b>
+        <class-b>cz.muni.fi.pa165.api.dto.UserDTO</class-b>
     </mapping>
 
 </mappings>
