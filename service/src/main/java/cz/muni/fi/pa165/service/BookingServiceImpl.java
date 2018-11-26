@@ -7,10 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.TransactionRequiredException;
+import cz.muni.fi.pa165.service.exceptions.BookingManagerDataAccessException;
+import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * 
+ * @author Martin Palenik
+ */
+@Service
 public class BookingServiceImpl implements BookingService {
 
     @Autowired
@@ -78,7 +85,18 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    public Booking findById(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException("Id cannot be null.");
+        }
+        return bookingDao.findById(id);
+    }
+
+    @Override
     public BigDecimal getTotalPrice(Booking booking) {
+        if(booking == null) {
+            throw new IllegalArgumentException("Booking cannot be null.");
+        }
         // will be superseded by discount mechanism upon its completion
         // return Math.max(0, booking.getTotal() - calculateDiscount(booking));
         return bookingDao.findById(booking.getId()).getTotal();

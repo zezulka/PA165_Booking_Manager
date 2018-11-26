@@ -1,4 +1,4 @@
-package cz.muni.fi.pa165.service;
+package cz.muni.fi.pa165.service.auxiliary;
 
 import java.util.Collection;
 import java.util.List;

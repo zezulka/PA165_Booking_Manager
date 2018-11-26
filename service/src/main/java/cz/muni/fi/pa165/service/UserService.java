@@ -20,7 +20,7 @@ public interface UserService {
      * @throws BookingManagerDataAccessException any exception on the DAO layer occurs
      * @return True if registration was successful, false otherwise.
      */
-    boolean register(User user, String password) throws BookingManagerDataAccessException;
+    boolean register(User user, String password);
 
     /**
      * Get all registered users.
@@ -37,7 +37,7 @@ public interface UserService {
      * @throws IllegalArgumentException {@code user} or {@code password}
      * is null or empty
      */
-    boolean authenticate(User user, String password) throws BookingManagerDataAccessException;
+    boolean authenticate(User user, String password);
 
     /**
      * Checks if the given user is an administrator.
@@ -47,7 +47,7 @@ public interface UserService {
      * @throws IllegalArgumentException candidate is null
      * @throws BookingManagerDataAccessException any exception on the DAO layer occurs
      */
-    boolean isAdmin(User candidate) throws BookingManagerDataAccessException;
+    boolean isAdmin(User candidate);
 
     /**
      * Finds user by the database identifier.
@@ -58,7 +58,7 @@ public interface UserService {
      * @return {@link User} instance with the given id or null if there is no
      * such user.
      */
-    User findById(Long id) throws BookingManagerDataAccessException;
+    User findById(Long id);
 
     /**
      * Finds user by {@code email} which is guaranteed to be unique in the
@@ -69,7 +69,7 @@ public interface UserService {
      * @return {@link User} instance with the given email or null if there is no
      * such user.
      */
-    User findByEmail(String email) throws BookingManagerDataAccessException;
+    User findByEmail(String email);
     
     /**
      * Updates the given {@code user} in the database.
@@ -78,5 +78,5 @@ public interface UserService {
      * @throws BookingManagerDataAccessException any exception on the DAO layer occurs
      * @throws IllegalArgumentException user is null
      */
-    void update(User user) throws BookingManagerDataAccessException;
+    void update(User user);
 }
