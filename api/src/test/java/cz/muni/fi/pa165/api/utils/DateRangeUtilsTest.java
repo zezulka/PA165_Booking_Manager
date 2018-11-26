@@ -1,10 +1,10 @@
-package cz.muni.fi.pa165.utils;
+package cz.muni.fi.pa165.api.utils;
 
 import org.junit.Test;
 import static org.assertj.core.api.Assertions.*;
 import java.time.LocalDate;
 import java.time.Month;
-import cz.muni.fi.pa165.service.DateRange;
+import cz.muni.fi.pa165.api.DateRange;
 /**
  *
  * @author Miloslav Zezulka
