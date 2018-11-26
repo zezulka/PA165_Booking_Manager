@@ -3,20 +3,21 @@ package cz.muni.fi.pa165.service;
 import cz.muni.fi.pa165.dao.BookingDao;
 import cz.muni.fi.pa165.entity.Booking;
 import cz.muni.fi.pa165.entity.Room;
-
+import cz.muni.fi.pa165.service.auxiliary.DateService;
 import cz.muni.fi.pa165.service.exceptions.BookingManagerDataAccessException;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.math.BigDecimal;
+import java.util.List;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.TransactionRequiredException;
-import cz.muni.fi.pa165.service.exceptions.BookingManagerDataAccessException;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.math.BigDecimal;
+import static cz.muni.fi.pa165.utils.DateRangeUtils.rangesOverlap;
 import java.time.LocalDate;
-import java.util.List;
 
 /**
- * 
+ *
  * @author Martin Palenik
  */
 @Service
@@ -25,34 +26,28 @@ public class BookingServiceImpl implements BookingService {
     @Autowired
     private BookingDao bookingDao;
 
+    @Autowired
+    private DateService dateService;
+
     @Override
     public void book(Booking booking) {
         if (booking == null) {
             throw new IllegalArgumentException("booking is null");
         }
 
-        if (!booking.getFrom().isAfter(LocalDate.now())) {
-            throw new BookingManagerDataAccessException(
+        if (!booking.getFrom().isAfter(dateService.getCurrentDate())) {
+            throw new IllegalArgumentException(
                     "trying to create booking in the past");
         }
 
-        for (Booking existing : bookingDao.findByRoom(booking.getRoom())) {
-            if (
-                    booking.getFrom().isAfter(existing.getFrom())
-                            &&
-                            booking.getFrom().isBefore(existing.getTo())
-            ) {
-                throw new BookingManagerDataAccessException(
-                        "booking start date collides with another booking");
-            }
+        DateRange candidateRange = new DateRange(booking.getFrom(),
+                booking.getTo());
 
-            if (
-                    booking.getTo().isAfter(existing.getFrom())
-                            &&
-                            booking.getTo().isBefore(existing.getTo())
-            ) {
-                throw new BookingManagerDataAccessException(
-                        "booking end date collides with another booking");
+        for (Booking b : bookingDao.findByRoom(booking.getRoom())) {
+            DateRange nextRange = new DateRange(b.getFrom(), b.getTo());
+            if (rangesOverlap(candidateRange, nextRange)) {
+                throw new IllegalArgumentException("Booking overlaps with an "
+                        + "already existing booking in the database.");
             }
         }
 
@@ -68,10 +63,18 @@ public class BookingServiceImpl implements BookingService {
         if (booking == null) {
             throw new IllegalArgumentException("booking cannot be null");
         }
+        LocalDate date = dateService.getCurrentDate();
+        if (booking.getTo().isBefore(dateService.getCurrentDate())) {
+            throw new IllegalArgumentException(
+                    "Trying to cancel booking of a reservation that already passed.");
+        }
 
-        if (!booking.getTo().isBefore(LocalDate.now())) {
-            throw new BookingManagerDataAccessException(
-                    "trying to cancel booking of a reservation that already passed");
+        if (booking.getFrom().isBefore(dateService.getCurrentDate())) {
+            throw new IllegalArgumentException("This booking is active now.");
+        }
+
+        if(!bookingDao.findByRoom(booking.getRoom()).contains(booking)) {
+            throw new IllegalArgumentException("This booking does not exist in the database.");
         }
 
         try {
@@ -96,7 +99,7 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public BigDecimal getTotalPrice(Booking booking) {
-        if(booking == null) {
+        if (booking == null) {
             throw new IllegalArgumentException("Booking cannot be null.");
         }
         // will be superseded by discount mechanism upon its completion

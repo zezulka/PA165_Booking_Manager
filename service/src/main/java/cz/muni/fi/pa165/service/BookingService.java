@@ -16,10 +16,11 @@ import java.util.List;
 public interface BookingService {
 
     /**
-     * Create a booking.
+     * Create a valid booking. Booking is valid only if it is created with the
+     * starting date of today and no other existing booking overlaps with it.
      *
      * @param booking
-     * @throws IllegalArgumentException any argument is null
+     * @throws IllegalArgumentException any argument is null or booking is not valid
      * @throws BookingManagerDataAccessException any exception on the DAO layer occurs
      */
     void book(Booking booking);

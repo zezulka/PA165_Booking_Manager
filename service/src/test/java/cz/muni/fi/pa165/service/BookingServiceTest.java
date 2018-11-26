@@ -69,22 +69,14 @@ public final class BookingServiceTest extends AbstractTransactionalTestNGSpringC
         defaultHotel.setName("Noname");
 
         defaultBooking = new Booking();
-        defaultBooking.setFrom(LocalDate.of(2015, Month.OCTOBER, 21));
+        defaultBooking.setFrom(LocalDate.of(2015, Month.OCTOBER, 22));
         defaultBooking.setTo(LocalDate.of(2015, Month.OCTOBER, 30));
         defaultBooking.setRoom(defaultRoom);
         defaultBooking.setTotal(new BigDecimal("1000.0"));
         defaultBooking.setUser(defaultUser);
     }
-    
-    @BeforeMethod
-    public void mockReturnValues() {
-        // By default, there are no bookings present in the database.
-        // Tests must override this behaviour should they expect something 
-        // different.
-        when(bookingDao.findAll()).thenReturn(Collections.emptyList());
-    }
 
-    @BeforeClass
+    @BeforeMethod
     private void setup() throws Exception {
         MockitoAnnotations.initMocks(this);
     }
@@ -115,7 +107,7 @@ public final class BookingServiceTest extends AbstractTransactionalTestNGSpringC
         r1.setType(RoomType.DOUBLE_ROOM);
         
         Booking b1 = new Booking();
-        b1.setFrom(LocalDate.of(2015, Month.OCTOBER, 21));
+        b1.setFrom(LocalDate.of(2015, Month.OCTOBER, 22));
         b1.setTo(LocalDate.of(2015, Month.OCTOBER, 30));
         b1.setRoom(r1);
         b1.setUser(defaultUser);
@@ -144,19 +136,23 @@ public final class BookingServiceTest extends AbstractTransactionalTestNGSpringC
     @Test
     public void bookTwice() {
         bookingService.book(defaultBooking);
+        when(bookingDao.findByRoom(defaultBooking.getRoom()))
+                .thenReturn(Collections.singletonList(defaultBooking));
         assertThatThrownBy(() -> bookingService.book(defaultBooking))
                 .isInstanceOf(IllegalArgumentException.class);
     }
     
     @Test
     public void bookOverlapping() {
-        bookingService.book(defaultBooking);
         Booking b2 = new Booking();
         b2.setFrom(LocalDate.of(2015, Month.OCTOBER, 22));
         b2.setTo(LocalDate.of(2015, Month.OCTOBER, 31));
         b2.setRoom(defaultRoom);
         b2.setUser(defaultUser);
-        assertThatThrownBy(() -> bookingService.book(defaultBooking))
+        bookingService.book(defaultBooking);
+        when(bookingDao.findByRoom(defaultBooking.getRoom()))
+                .thenReturn(Collections.singletonList(defaultBooking));
+        assertThatThrownBy(() -> bookingService.book(b2))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -173,6 +169,8 @@ public final class BookingServiceTest extends AbstractTransactionalTestNGSpringC
         b2.setRoom(defaultRoom);
         b2.setUser(defaultUser);
         bookingService.book(b1);
+        when(bookingDao.findByRoom(defaultBooking.getRoom()))
+                .thenReturn(Collections.singletonList(b1));
         assertThatThrownBy(() -> bookingService.book(b2))
                 .isInstanceOf(IllegalArgumentException.class);
     }
@@ -192,13 +190,16 @@ public final class BookingServiceTest extends AbstractTransactionalTestNGSpringC
         bookingService.book(defaultBooking);
         bookingService.cancel(defaultBooking);
         verify(bookingDao).remove(defaultBooking);
-        assertThat(bookingService.getAll()).isEmpty();
     }
     
     @Test
     public void cancelTwice() {
         bookingService.book(defaultBooking);
+        when(bookingDao.findByRoom(defaultBooking.getRoom()))
+                .thenReturn(Collections.singletonList(defaultBooking));
         bookingService.cancel(defaultBooking);
+        when(bookingDao.findByRoom(defaultBooking.getRoom()))
+                .thenReturn(Collections.EMPTY_LIST);
         assertThatThrownBy(() -> bookingService.cancel(defaultBooking))
                 .isInstanceOf(IllegalArgumentException.class);
     }

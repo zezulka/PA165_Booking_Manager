@@ -1,6 +1,3 @@
-
-// @author Martin Palenik
-
 package cz.muni.fi.pa165.service;
 
 import cz.muni.fi.pa165.dao.UserDao;
@@ -18,6 +15,10 @@ import org.testng.annotations.Test;
 
 import static org.mockito.Mockito.verify;
 
+/**
+ * 
+ * @author Martin Palenik
+ */
 @ContextConfiguration(classes = ServiceConfiguration.class)
 public class UserServiceTest extends AbstractTransactionalTestNGSpringContextTests {
 

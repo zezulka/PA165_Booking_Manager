@@ -1,5 +1,4 @@
 package cz.muni.fi.pa165.service;
-import cz.muni.fi.pa165.dao.BookingDao;
 import cz.muni.fi.pa165.dao.HotelDao;
 import cz.muni.fi.pa165.dao.RoomDao;
 import cz.muni.fi.pa165.entity.Booking;
@@ -12,9 +11,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
+import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.*;
 import org.mockito.InjectMocks;
@@ -29,33 +27,6 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import org.springframework.test.context.testng.AbstractTransactionalTestNGSpringContextTests;
-
-import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-
-import org.testng.annotations.BeforeMethod;
-
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-
-import cz.muni.fi.pa165.entity.Hotel;
-import cz.muni.fi.pa165.entity.Room;
-import cz.muni.fi.pa165.enums.RoomType;
-import cz.muni.fi.pa165.service.config.ServiceConfiguration;
-import cz.muni.fi.pa165.dao.HotelDao;
-import cz.muni.fi.pa165.dao.RoomDao;
 /**
  * @author Petr Valenta
  */
@@ -70,12 +41,11 @@ public final class RoomServiceTest extends AbstractTransactionalTestNGSpringCont
     @Mock
     private HotelDao hotelDao;
 
-
     @Autowired
     @InjectMocks
     private RoomService roomService;
 
-    @BeforeClass
+    @BeforeMethod
     private void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
     }
@@ -143,12 +113,6 @@ public final class RoomServiceTest extends AbstractTransactionalTestNGSpringCont
         verify(roomDao).findAll();
         Assert.assertEquals(tmp, l1);
     }
-
-    @Test
-    public void findAllEmpty() {
-        when(roomDao.findAll()).thenReturn(Collections.EMPTY_LIST);
-        assertThat(roomService.findAll()).isEmpty();
-   }
 
     @Test(enabled = false)
     public void findAllEmpty() {
