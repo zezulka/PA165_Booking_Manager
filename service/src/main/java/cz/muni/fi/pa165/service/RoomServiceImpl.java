@@ -1,10 +1,11 @@
 package cz.muni.fi.pa165.service;
 
+import cz.muni.fi.pa165.api.DateRange;
 import cz.muni.fi.pa165.dao.RoomDao;
 import cz.muni.fi.pa165.entity.Hotel;
 import cz.muni.fi.pa165.entity.Room;
 import cz.muni.fi.pa165.service.exceptions.BookingManagerDataAccessException;
-import static cz.muni.fi.pa165.utils.DateRangeUtils.rangesOverlap;
+import static cz.muni.fi.pa165.api.utils.DateRangeUtils.rangesOverlap;
 import java.util.List;
 import java.util.stream.Collectors;
 

@@ -1,4 +1,4 @@
-package cz.muni.fi.pa165.service;
+package cz.muni.fi.pa165.api;
 
 /**
  * Enumeration representing all possible discounts in the system.
