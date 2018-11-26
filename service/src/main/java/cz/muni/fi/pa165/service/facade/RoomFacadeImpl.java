@@ -30,11 +30,17 @@ public class RoomFacadeImpl implements RoomFacade {
 
     @Override
     public void createRoom(final RoomCreateDTO room) {
+        if(room == null){
+            throw new IllegalArgumentException("Room cannot be null");
+        }
         roomService.createRoom(bms.mapTo(room, Room.class));
     }
 
     @Override
     public void deleteRoom(final RoomDTO room) {
+        if(room == null){
+            throw new IllegalArgumentException("Room cannot be null");
+        }
         roomService.deleteRoom(bms.mapTo(room, Room.class));
     }
 
@@ -45,7 +51,8 @@ public class RoomFacadeImpl implements RoomFacade {
 
     @Override
     public RoomDTO findById(final Long id) {
-        return bms.mapTo(roomService.findById(id),RoomDTO.class);
+        Room room = roomService.findById(id);
+        return (room == null) ? null : bms.mapTo(room, RoomDTO.class);
     }
 
     @Override
@@ -57,8 +64,7 @@ public class RoomFacadeImpl implements RoomFacade {
 
     @Override
     public RoomDTO findByNumber(final HotelDTO hotel, final Integer number) {
-        return bms.mapTo(
-            roomService.findByNumber(bms.mapTo(hotel, Hotel.class), number),
-            RoomDTO.class);
+        Room room = roomService.findByNumber(bms.mapTo(hotel, Hotel.class), number);
+        return (room == null) ? null : bms.mapTo(room, RoomDTO.class);
     }
 }
