@@ -21,11 +21,11 @@ public class PropertiesHelper {
             if (inputStream != null) {
                 prop.load(inputStream);
             } else {
-                throw new FileNotFoundException("property file '" + propFileName + "' not found in the classpath");
+                throw new FileNotFoundException("property file '" + propFileName + "' not found on the classpath");
             }
 
         } catch (IOException e) {
-            throw e; //TODO dirty
+            throw new RuntimeException("Could not open properties file.", e);
         } finally {
             inputStream.close();
         }
