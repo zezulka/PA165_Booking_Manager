@@ -60,6 +60,11 @@ public class BookingServiceImpl implements BookingService {
             throw new IllegalArgumentException("booking cannot be null");
         }
 
+        if (!booking.getTo().isBefore(LocalDate.now())) {
+            throw new BookingManagerDataAccessException(
+                    "trying to cancel booking of a reservation that already passed");
+        }
+
         try {
             bookingDao.remove(booking);
         } catch (TransactionRequiredException | IllegalArgumentException e) {
