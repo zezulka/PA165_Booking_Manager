@@ -1,8 +1,6 @@
 package cz.muni.fi.pa165.service.config;
 
 import cz.muni.fi.pa165.PersistenceApplicationContext;
-import cz.muni.fi.pa165.service.RoomServiceImpl;
-import cz.muni.fi.pa165.service.UserServiceImpl;
 
 import java.util.Arrays;
 
@@ -19,7 +17,7 @@ import org.springframework.context.annotation.Import;
  */
 @Configuration
 @Import(PersistenceApplicationContext.class)
-@ComponentScan(basePackageClasses = {RoomServiceImpl.class, UserServiceImpl.class})
+@ComponentScan(basePackages = {"cz.muni.fi.pa165.service"})
 public class ServiceConfiguration {
     @Bean
     public Mapper dozer(){

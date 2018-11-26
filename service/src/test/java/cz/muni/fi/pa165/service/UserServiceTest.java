@@ -4,22 +4,20 @@ import cz.muni.fi.pa165.dao.UserDao;
 import cz.muni.fi.pa165.entity.User;
 import cz.muni.fi.pa165.service.config.ServiceConfiguration;
 import cz.muni.fi.pa165.utils.Security;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTransactionalTestNGSpringContextTests;
 import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 /**
  * 
@@ -41,8 +39,8 @@ public class UserServiceTest extends AbstractTransactionalTestNGSpringContextTes
 
     private List<User> users;
 
-    @BeforeClass
-    private void SetUp() throws Exception {
+    @BeforeMethod
+    private void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
     }
 

@@ -7,7 +7,10 @@ import cz.muni.fi.pa165.entity.Room;
 import cz.muni.fi.pa165.entity.User;
 import cz.muni.fi.pa165.service.exceptions.BookingManagerDataAccessException;
 import static cz.muni.fi.pa165.api.utils.DateRangeUtils.isBookingInsideDateRange;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.validation.ConstraintViolationException;
@@ -18,7 +21,7 @@ import org.springframework.stereotype.Service;
 /**
  * Implementation of hotel rooms availability using BookingDao and Java 8
  * Streams API.
- * 
+ *
  * @author Miloslav Zezulka
  */
 @Service
@@ -46,6 +49,16 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public List<User> listReserved(DateRange range) {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        if (range == null) {
+            throw new IllegalArgumentException("Range cannot be null.");
+        }
+        List<Booking> bookingsInRange = bookingDao.findAll().stream()
+                .filter(booking -> isBookingInsideDateRange(booking, range))
+                .collect(Collectors.toList());
+        Set<User> result = new HashSet<>();
+        bookingsInRange.forEach((b) -> {
+            result.add(b.getUser());
+        });
+        return new ArrayList<>(result);
     }
 }
