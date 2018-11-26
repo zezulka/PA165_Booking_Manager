@@ -15,9 +15,10 @@ import cz.muni.fi.pa165.entity.User;
  * for a particular booking.
  * 
  * There are two possible scenarios when a discount will be applied:
- * 1 (recently active customer). The user has already made a certain amount of
- *     bookings during a past year (the amount will be a constant specified in
- *     configuration files).
+ *
+ * 1 (recently active customer). The user had a booking in last x days
+ *   (the amount of days will be a constant specified in configuration files).
+ *
  * 2 (repeat customer). The user has already made a certain amount of bookings
  *     in total (again, the specific amount will be specified in configuration
  *     files).
