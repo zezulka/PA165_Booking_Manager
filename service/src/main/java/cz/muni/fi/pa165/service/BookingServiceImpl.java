@@ -2,23 +2,19 @@ package cz.muni.fi.pa165.service;
 
 import cz.muni.fi.pa165.dao.BookingDao;
 import cz.muni.fi.pa165.entity.Booking;
+import cz.muni.fi.pa165.service.exceptions.BookingManagerDataAccessException;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.math.BigDecimal;
-import java.util.List;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.TransactionRequiredException;
-import cz.muni.fi.pa165.service.exceptions.BookingManagerDataAccessException;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.List;
 
 public class BookingServiceImpl implements BookingService {
 
     @Autowired
     private BookingDao bookingDao;
-
-    private boolean between(int i, int minValueInclusive, int maxValueInclusive) {
-        return (i >= minValueInclusive && i <= maxValueInclusive);
-    }
 
     @Override
     public void book(Booking booking) {
@@ -26,11 +22,16 @@ public class BookingServiceImpl implements BookingService {
             throw new IllegalArgumentException("booking is null");
         }
 
-        for (Booking existing : bookingDao.findByRoom(booking.getRoom())){
+        if (!booking.getFrom().isAfter(LocalDate.now())) {
+            throw new BookingManagerDataAccessException(
+                    "trying to create booking in the past");
+        }
+
+        for (Booking existing : bookingDao.findByRoom(booking.getRoom())) {
             if (
                     booking.getFrom().isAfter(existing.getFrom())
-                    &&
-                    booking.getFrom().isBefore(existing.getTo())
+                            &&
+                            booking.getFrom().isBefore(existing.getTo())
             ) {
                 throw new BookingManagerDataAccessException(
                         "booking start date collides with another booking");
@@ -38,8 +39,8 @@ public class BookingServiceImpl implements BookingService {
 
             if (
                     booking.getTo().isAfter(existing.getFrom())
-                    &&
-                    booking.getTo().isBefore(existing.getTo())
+                            &&
+                            booking.getTo().isBefore(existing.getTo())
             ) {
                 throw new BookingManagerDataAccessException(
                         "booking end date collides with another booking");
@@ -55,7 +56,7 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public void cancel(Booking booking) {
-        if (booking == null){
+        if (booking == null) {
             throw new IllegalArgumentException("booking cannot be null");
         }
 
