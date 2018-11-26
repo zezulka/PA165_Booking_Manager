@@ -15,14 +15,14 @@ public interface RoomFacade {
      * @param room to be created
      * @return true if created
      */
-    boolean createRoom(RoomCreateDTO room);
+    void createRoom(RoomCreateDTO room);
 
     /**
      * Deletes a room.
-     * @param id of the room to be deleted
+     * @param room room to be deleted
      * @return true if deleted
      */
-    boolean deleteRoom(Long id);
+    void deleteRoom(RoomDTO room);
 
     /**
      * Returns a list of all rooms.
