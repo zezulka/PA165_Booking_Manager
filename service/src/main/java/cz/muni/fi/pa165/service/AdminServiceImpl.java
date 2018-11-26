@@ -1,13 +1,17 @@
 package cz.muni.fi.pa165.service;
 
+import cz.muni.fi.pa165.api.DateRange;
 import cz.muni.fi.pa165.dao.BookingDao;
 import cz.muni.fi.pa165.entity.Booking;
 import cz.muni.fi.pa165.entity.Room;
 import cz.muni.fi.pa165.entity.User;
 import cz.muni.fi.pa165.service.exceptions.BookingManagerDataAccessException;
+import static cz.muni.fi.pa165.api.utils.DateRangeUtils.isBookingInsideDateRange;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import javax.validation.ConstraintViolationException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,10 +48,4 @@ public class AdminServiceImpl implements AdminService {
     public List<User> listReserved(DateRange range) {
         throw new UnsupportedOperationException("Not implemented yet!");
     }
-
-    private static boolean isBookingInsideDateRange(Booking booking, DateRange range) {
-        return !booking.getFrom().isBefore(range.getFromDate())
-                && !booking.getTo().isAfter(range.getToDate());
-    }
-
 }

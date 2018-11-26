@@ -1,5 +1,6 @@
 package cz.muni.fi.pa165.service;
 
+import cz.muni.fi.pa165.api.DiscountType;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Properties;
