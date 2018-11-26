@@ -1,8 +1,6 @@
 package cz.muni.fi.pa165.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,7 +11,6 @@ import javax.validation.ConstraintViolationException;
 
 import cz.muni.fi.pa165.dao.HotelDao;
 import cz.muni.fi.pa165.entity.Hotel;
-import cz.muni.fi.pa165.entity.Room;
 
 import cz.muni.fi.pa165.service.exceptions.BookingManagerDataAccessException;
 

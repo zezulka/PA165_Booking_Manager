@@ -1,6 +1,7 @@
 package cz.muni.fi.pa165.service;
 
 import cz.muni.fi.pa165.entity.Booking;
+import cz.muni.fi.pa165.entity.Room;
 import cz.muni.fi.pa165.service.exceptions.BookingManagerDataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -57,4 +58,14 @@ public interface BookingService {
      * @return total accommodation price after discount
      */
     BigDecimal getTotalPrice(Booking booking);
+    
+    /**
+     *  Finds bookings by room.
+     * 
+     * @param room must not be null
+     * @throws IllegalArgumentException {@code room} is null
+     * @throw BookingManagerDataAccessException any exception on the DAO layer occurs
+     * @return bookings for the given room, empty List if there are none
+     */
+    List<Booking> findByRoom(Room room);
 }
