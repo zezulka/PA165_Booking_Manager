@@ -4,6 +4,11 @@
           xsi:schemaLocation="http://dozermapper.github.io/schema/bean-mapping http://dozermapper.github.io/schema/bean-mapping.xsd">
 
     <mapping>
+        <class-a>cz.muni.fi.pa165.entity.User</class-a>
+        <class-b>cz.muni.fi.pa165.api.dto.UserDTO</class-b>
+    </mapping>
+    
+    <mapping>
         <class-a>cz.muni.fi.pa165.entity.Room</class-a>
         <class-b>cz.muni.fi.pa165.api.dto.RoomDTO</class-b>
     </mapping>
@@ -11,6 +16,10 @@
     <mapping>
         <class-a>cz.muni.fi.pa165.entity.Hotel</class-a>
         <class-b>cz.muni.fi.pa165.api.dto.HotelDTO</class-b>
+        <field-exclude>
+            <a>rooms</a>
+            <b>rooms</b>
+        </field-exclude>
     </mapping>
 
     <mapping>
@@ -19,8 +28,8 @@
     </mapping>
 
     <mapping>
-        <class-a>cz.muni.fi.pa165.entity.User</class-a>
-        <class-b>cz.muni.fi.pa165.api.dto.UserDTO</class-b>
+        <class-a>cz.muni.fi.pa165.entity.Room</class-a>
+        <class-b>cz.muni.fi.pa165.api.dto.RoomCreateDTO</class-b>
     </mapping>
 
 </mappings>
