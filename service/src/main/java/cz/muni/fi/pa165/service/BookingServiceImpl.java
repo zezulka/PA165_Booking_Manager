@@ -2,14 +2,14 @@ package cz.muni.fi.pa165.service;
 
 import cz.muni.fi.pa165.dao.BookingDao;
 import cz.muni.fi.pa165.entity.Booking;
+import cz.muni.fi.pa165.service.exceptions.BookingManagerDataAccessException;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.math.BigDecimal;
-import java.util.List;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.TransactionRequiredException;
-import cz.muni.fi.pa165.service.exceptions.BookingManagerDataAccessException;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.List;
 
 public class BookingServiceImpl implements BookingService {
 
@@ -22,6 +22,31 @@ public class BookingServiceImpl implements BookingService {
             throw new IllegalArgumentException("booking is null");
         }
 
+        if (!booking.getFrom().isAfter(LocalDate.now())) {
+            throw new BookingManagerDataAccessException(
+                    "trying to create booking in the past");
+        }
+
+        for (Booking existing : bookingDao.findByRoom(booking.getRoom())) {
+            if (
+                    booking.getFrom().isAfter(existing.getFrom())
+                            &&
+                            booking.getFrom().isBefore(existing.getTo())
+            ) {
+                throw new BookingManagerDataAccessException(
+                        "booking start date collides with another booking");
+            }
+
+            if (
+                    booking.getTo().isAfter(existing.getFrom())
+                            &&
+                            booking.getTo().isBefore(existing.getTo())
+            ) {
+                throw new BookingManagerDataAccessException(
+                        "booking end date collides with another booking");
+            }
+        }
+
         try {
             bookingDao.create(booking);
         } catch (TransactionRequiredException | EntityExistsException | IllegalArgumentException e) {
@@ -31,8 +56,13 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public void cancel(Booking booking) {
-        if (booking == null){
+        if (booking == null) {
             throw new IllegalArgumentException("booking cannot be null");
+        }
+
+        if (!booking.getTo().isBefore(LocalDate.now())) {
+            throw new BookingManagerDataAccessException(
+                    "trying to cancel booking of a reservation that already passed");
         }
 
         try {
