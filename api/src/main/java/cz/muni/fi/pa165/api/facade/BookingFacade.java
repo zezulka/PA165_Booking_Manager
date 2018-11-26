@@ -1,8 +1,8 @@
 package cz.muni.fi.pa165.api.facade;
 
 import cz.muni.fi.pa165.api.dto.BookingDTO;
-import cz.muni.fi.pa165.service.DateRange;
-import cz.muni.fi.pa165.service.DiscountType;
+import cz.muni.fi.pa165.api.DateRange;
+import cz.muni.fi.pa165.api.DiscountType;
 import java.util.List;
 
 public interface BookingFacade {

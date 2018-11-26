@@ -1,7 +1,7 @@
-package cz.muni.fi.pa165.utils;
+package cz.muni.fi.pa165.api.utils;
 
 import cz.muni.fi.pa165.entity.Booking;
-import cz.muni.fi.pa165.service.DateRange;
+import cz.muni.fi.pa165.api.DateRange;
 import java.time.LocalDate;
 
 /**
