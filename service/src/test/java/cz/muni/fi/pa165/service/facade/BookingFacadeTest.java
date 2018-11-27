@@ -1,7 +1,5 @@
 package cz.muni.fi.pa165.service.facade;
 
-
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
@@ -18,26 +16,31 @@ import cz.muni.fi.pa165.api.dto.UserDTO;
 import cz.muni.fi.pa165.api.facade.BookingFacade;
 import cz.muni.fi.pa165.enums.RoomType;
 import cz.muni.fi.pa165.service.config.ServiceConfiguration;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * 
+ *
  * @author Soňa Barteková
  *
  */
+@ContextConfiguration(classes = ServiceConfiguration.class)
+public class BookingFacadeTest extends AbstractTransactionalTestNGSpringContextTests {
 
-@ContextConfiguration(classes=ServiceConfiguration.class)
-public class BookingFacadeTest extends AbstractTransactionalTestNGSpringContextTests{
-
+    @Autowired
     private BookingFacade bookingFacade = new BookingFacadeImpl();
 
     private RoomDTO rDTO;
     private HotelDTO hDTO;
     private BookingDTO bDTO;
     private UserDTO uDTO;
-    
 
     @BeforeMethod
     public void init() {
+
+        rDTO = new RoomDTO();
+        hDTO = new HotelDTO();
+        bDTO = new BookingDTO();
+        uDTO = new UserDTO();
 
         rDTO.setDescription("Single room, beautiful view.");
         rDTO.setHotel(hDTO);
@@ -55,16 +58,12 @@ public class BookingFacadeTest extends AbstractTransactionalTestNGSpringContextT
         bDTO.setRoom(rDTO);
         bDTO.setTotal(new BigDecimal("1000.0"));
         bDTO.setUser(uDTO);
-        
+
     }
 
-    
     @Test
     public void getAllBookingsTest() {
-    	bookingFacade.getAllBookings();
+        bookingFacade.getAllBookings();
     }
-    
-
-    
 
 }
