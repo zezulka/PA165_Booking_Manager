@@ -15,12 +15,12 @@ public class DateRangeUtils {
     }
     
     public static boolean isBookingInsideDateRange(Booking booking, DateRange range) {
-        return !booking.getFrom().isBefore(range.getFromDate())
-                && !booking.getTo().isAfter(range.getToDate());
+        return !booking.getFromDate().isBefore(range.getFromDate())
+                && !booking.getToDate().isAfter(range.getToDate());
     }
 
     public static DateRange rangeFromBooking(Booking booking) {
-        return new DateRange(booking.getFrom(), booking.getTo());
+        return new DateRange(booking.getFromDate(), booking.getToDate());
     }
     
     public static boolean rangesOverlap(DateRange first, DateRange second) {

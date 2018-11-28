@@ -130,8 +130,8 @@ public class RoomServiceImpl implements RoomService {
     private boolean isRoomAvailableInRange(Room room, DateRange range) {
         return bookingService.findByRoom(room).stream()
                 .filter((booking) -> {
-                    DateRange bookingRange = new DateRange(booking.getFrom(),
-                            booking.getTo());
+                    DateRange bookingRange = new DateRange(booking.getFromDate(),
+                            booking.getToDate());
                     return rangesOverlap(bookingRange, range);
                 })
                 .collect(Collectors.toList()).isEmpty();

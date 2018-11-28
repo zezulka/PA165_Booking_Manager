@@ -13,6 +13,9 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.util.Collections;
 import static org.assertj.core.api.Assertions.*;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Mock;
@@ -21,15 +24,14 @@ import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.testng.AbstractTransactionalTestNGSpringContextTests;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * @author Miloslav Zezulka
  */
 @ContextConfiguration(classes = ServiceConfiguration.class)
-public final class BookingServiceTest extends AbstractTransactionalTestNGSpringContextTests {
+@RunWith(SpringJUnit4ClassRunner.class)
+public final class BookingServiceTest {
 
     @Mock
     BookingDao bookingDao;
@@ -46,13 +48,13 @@ public final class BookingServiceTest extends AbstractTransactionalTestNGSpringC
     private Booking defaultBooking;
     private User defaultUser;
 
-    @BeforeMethod
+    @Before
     public void simulateSystemDate() {
         LocalDate backToTheFuture = LocalDate.of(2015, Month.OCTOBER, 21);
         when(dateService.getCurrentDate()).thenReturn(backToTheFuture);
     }
 
-    @BeforeMethod
+    @Before
     public void entities() {
         defaultRoom = new Room();
         defaultHotel = new Hotel();
@@ -68,15 +70,15 @@ public final class BookingServiceTest extends AbstractTransactionalTestNGSpringC
         defaultHotel.setName("Noname");
 
         defaultBooking = new Booking();
-        defaultBooking.setFrom(LocalDate.of(2015, Month.OCTOBER, 22));
-        defaultBooking.setTo(LocalDate.of(2015, Month.OCTOBER, 30));
+        defaultBooking.setFromDate(LocalDate.of(2015, Month.OCTOBER, 22));
+        defaultBooking.setToDate(LocalDate.of(2015, Month.OCTOBER, 30));
         defaultBooking.setRoom(defaultRoom);
         defaultBooking.setTotal(new BigDecimal("1000.0"));
         defaultBooking.setUser(defaultUser);
     }
 
-    @BeforeMethod
-    private void setup() throws Exception {
+    @Before
+    public void setup() throws Exception {
         MockitoAnnotations.initMocks(this);
     }
 
@@ -106,8 +108,8 @@ public final class BookingServiceTest extends AbstractTransactionalTestNGSpringC
         r1.setType(RoomType.DOUBLE_ROOM);
 
         Booking b1 = new Booking();
-        b1.setFrom(LocalDate.of(2015, Month.OCTOBER, 22));
-        b1.setTo(LocalDate.of(2015, Month.OCTOBER, 30));
+        b1.setFromDate(LocalDate.of(2015, Month.OCTOBER, 22));
+        b1.setToDate(LocalDate.of(2015, Month.OCTOBER, 30));
         b1.setRoom(r1);
         b1.setUser(defaultUser);
         bookingService.book(b1);
@@ -125,8 +127,8 @@ public final class BookingServiceTest extends AbstractTransactionalTestNGSpringC
         r1.setType(RoomType.DOUBLE_ROOM);
 
         Booking b1 = new Booking();
-        b1.setFrom(LocalDate.of(2016, Month.JANUARY, 1));
-        b1.setTo(LocalDate.of(2016, Month.JANUARY, 10));
+        b1.setFromDate(LocalDate.of(2016, Month.JANUARY, 1));
+        b1.setToDate(LocalDate.of(2016, Month.JANUARY, 10));
         b1.setRoom(r1);
         b1.setUser(defaultUser);
         bookingService.book(b1);
@@ -144,8 +146,8 @@ public final class BookingServiceTest extends AbstractTransactionalTestNGSpringC
     @Test
     public void bookOverlapping() {
         Booking b2 = new Booking();
-        b2.setFrom(LocalDate.of(2015, Month.OCTOBER, 22));
-        b2.setTo(LocalDate.of(2015, Month.OCTOBER, 31));
+        b2.setFromDate(LocalDate.of(2015, Month.OCTOBER, 22));
+        b2.setToDate(LocalDate.of(2015, Month.OCTOBER, 31));
         b2.setRoom(defaultRoom);
         b2.setUser(defaultUser);
         bookingService.book(defaultBooking);
@@ -158,13 +160,13 @@ public final class BookingServiceTest extends AbstractTransactionalTestNGSpringC
     @Test
     public void bookOverlapping2() {
         Booking b1 = new Booking();
-        b1.setFrom(LocalDate.of(2016, Month.JANUARY, 1));
-        b1.setTo(LocalDate.of(2016, Month.JANUARY, 10));
+        b1.setFromDate(LocalDate.of(2016, Month.JANUARY, 1));
+        b1.setToDate(LocalDate.of(2016, Month.JANUARY, 10));
         b1.setRoom(defaultRoom);
         b1.setUser(defaultUser);
         Booking b2 = new Booking();
-        b2.setFrom(LocalDate.of(2015, Month.DECEMBER, 28));
-        b2.setTo(LocalDate.of(2016, Month.JANUARY, 5));
+        b2.setFromDate(LocalDate.of(2015, Month.DECEMBER, 28));
+        b2.setToDate(LocalDate.of(2016, Month.JANUARY, 5));
         b2.setRoom(defaultRoom);
         b2.setUser(defaultUser);
         bookingService.book(b1);
@@ -177,8 +179,8 @@ public final class BookingServiceTest extends AbstractTransactionalTestNGSpringC
     @Test
     public void bookInThePast() {
         Booking inThePast = new Booking();
-        inThePast.setFrom(LocalDate.of(2015, Month.OCTOBER, 15));
-        inThePast.setTo(LocalDate.of(2015, Month.OCTOBER, 20));
+        inThePast.setFromDate(LocalDate.of(2015, Month.OCTOBER, 15));
+        inThePast.setToDate(LocalDate.of(2015, Month.OCTOBER, 20));
         inThePast.setRoom(defaultRoom);
         inThePast.setUser(defaultUser);
         assertThatThrownBy(() -> bookingService.book(inThePast))

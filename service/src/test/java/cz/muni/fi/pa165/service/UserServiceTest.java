@@ -5,7 +5,11 @@ import cz.muni.fi.pa165.entity.User;
 import cz.muni.fi.pa165.service.config.ServiceConfiguration;
 import cz.muni.fi.pa165.utils.Security;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import org.junit.Before;
+import org.junit.Test;
+import static org.assertj.core.api.Assertions.*;
 
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -14,17 +18,17 @@ import static org.mockito.Mockito.when;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.testng.AbstractTransactionalTestNGSpringContextTests;
-import org.testng.Assert;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import static org.junit.Assert.*;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
- * 
+ *
  * @author Martin Palenik
  */
 @ContextConfiguration(classes = ServiceConfiguration.class)
-public class UserServiceTest extends AbstractTransactionalTestNGSpringContextTests {
+@RunWith(SpringJUnit4ClassRunner.class)
+public class UserServiceTest {
 
     @Mock
     private UserDao userDao;
@@ -39,12 +43,12 @@ public class UserServiceTest extends AbstractTransactionalTestNGSpringContextTes
 
     private List<User> users;
 
-    @BeforeMethod
-    private void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
     }
 
-    @BeforeMethod
+    @Before
     public void init() {
         user = new User();
         admin = new User();
@@ -63,7 +67,7 @@ public class UserServiceTest extends AbstractTransactionalTestNGSpringContextTes
         admin.setAdmin(true);
         admin.setPasswordHash(hash);
 
-        users = new ArrayList<User>();
+        users = new ArrayList<>();
         users.add(user);
         users.add(admin);
     }
@@ -74,14 +78,16 @@ public class UserServiceTest extends AbstractTransactionalTestNGSpringContextTes
         verify(userDao).create(user);
     }
 
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test
     public void registerNullUser() {
-        userService.register(null, password);
+        assertThatThrownBy(() -> userService.register(null, password))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test
     public void registerNullPassword() {
-        userService.register(user, null);
+        assertThatThrownBy(() -> userService.register(user, null))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
@@ -90,9 +96,10 @@ public class UserServiceTest extends AbstractTransactionalTestNGSpringContextTes
         verify(userDao).update(user);
     }
 
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test
     public void updateUserNull() {
-        userService.update(null);
+        assertThatThrownBy(() -> userService.update(null))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
@@ -100,16 +107,16 @@ public class UserServiceTest extends AbstractTransactionalTestNGSpringContextTes
         when(userDao.findAll()).thenReturn(users);
         List<User> u = userService.getAll();
         verify(userDao).findAll();
-        Assert.assertEquals(u, users);
+        assertEquals(u, users);
     }
 
-    @Test(enabled = false)
+    @Test
     public void getAllEmpty() {
         List<User> u = new ArrayList<>();
         when(userDao.findAll()).thenReturn(u);
         u = userService.getAll();
         verify(userDao).findAll();
-        Assert.assertEquals(u, users);
+        assertEquals(u, Collections.EMPTY_LIST);
     }
 
     @Test
@@ -117,12 +124,13 @@ public class UserServiceTest extends AbstractTransactionalTestNGSpringContextTes
         when(userDao.findById(1L)).thenReturn(user);
         User u = userService.findById(1L);
         verify(userDao).findById(1L);
-        Assert.assertEquals(u, user);
+        assertEquals(u, user);
     }
 
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test
     public void findByIdNull() {
-        userService.findById(null);
+        assertThatThrownBy(() -> userService.findById(null))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
@@ -130,48 +138,51 @@ public class UserServiceTest extends AbstractTransactionalTestNGSpringContextTes
         when(userDao.findByEmail("user@gmail.com")).thenReturn(user);
         User u = userService.findByEmail("user@gmail.com");
         verify(userDao).findByEmail("user@gmail.com");
-        Assert.assertEquals(u, user);
+        assertEquals(u, user);
     }
 
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test
     public void findByEmailNull() {
-        userService.findByEmail(null);
+        assertThatThrownBy(() -> userService.findByEmail(null))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     public void isAdmin() {
         when(userDao.findByEmail("admin@gmail.com")).thenReturn(admin);
         User a = userService.findByEmail("admin@gmail.com");
-        Assert.assertTrue(a.isAdmin());
+        assertTrue(a.isAdmin());
     }
 
     @Test
     public void isNotAdmin() {
         when(userDao.findByEmail("user@gmail.com")).thenReturn(user);
         User u = userService.findByEmail("user@gmail.com");
-        Assert.assertFalse(u.isAdmin());
+        assertFalse(u.isAdmin());
     }
 
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test
     public void authenticateUserNull() {
-        userService.authenticate(null, user.getPasswordHash());
+        assertThatThrownBy(() -> userService.authenticate(null, user.getPasswordHash()))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test
     public void authenticatePasswordNull() {
-        userService.authenticate(user, null);
+        assertThatThrownBy(() -> userService.authenticate(user, null))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     public void authenticateHappy() {
-        Assert.assertTrue(
+        assertTrue(
                 userService.authenticate(user, password)
         );
     }
 
     @Test
     public void authenticateIncorrectPassword() {
-        Assert.assertFalse(
+        assertFalse(
                 userService.authenticate(user, Security.createHash(password + "incorrect"))
         );
     }

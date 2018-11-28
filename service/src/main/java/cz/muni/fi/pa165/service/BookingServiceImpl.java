@@ -36,16 +36,16 @@ public class BookingServiceImpl implements BookingService {
             throw new IllegalArgumentException("booking is null");
         }
 
-        if (!booking.getFrom().isAfter(dateService.getCurrentDate())) {
+        if (!booking.getFromDate().isAfter(dateService.getCurrentDate())) {
             throw new IllegalArgumentException(
                     "trying to create booking in the past");
         }
 
-        DateRange candidateRange = new DateRange(booking.getFrom(),
-                booking.getTo());
+        DateRange candidateRange = new DateRange(booking.getFromDate(),
+                booking.getToDate());
 
         for (Booking b : bookingDao.findByRoom(booking.getRoom())) {
-            DateRange nextRange = new DateRange(b.getFrom(), b.getTo());
+            DateRange nextRange = new DateRange(b.getFromDate(), b.getToDate());
             if (rangesOverlap(candidateRange, nextRange)) {
                 throw new IllegalArgumentException("Booking overlaps with an "
                         + "already existing booking in the database.");
@@ -65,12 +65,12 @@ public class BookingServiceImpl implements BookingService {
             throw new IllegalArgumentException("booking cannot be null");
         }
         LocalDate date = dateService.getCurrentDate();
-        if (booking.getTo().isBefore(dateService.getCurrentDate())) {
+        if (booking.getToDate().isBefore(dateService.getCurrentDate())) {
             throw new IllegalArgumentException(
                     "Trying to cancel booking of a reservation that already passed.");
         }
 
-        if (booking.getFrom().isBefore(dateService.getCurrentDate())) {
+        if (booking.getFromDate().isBefore(dateService.getCurrentDate())) {
             throw new IllegalArgumentException("This booking is active now.");
         }
 

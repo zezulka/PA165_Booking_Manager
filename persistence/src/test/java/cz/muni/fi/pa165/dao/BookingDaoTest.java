@@ -106,14 +106,14 @@ public class BookingDaoTest extends AbstractTestNGSpringContextTests {
         c2.setPasswordHash("TurnToPage394");
 
         b1.setTotal(new BigDecimal("1.5"));
-        b1.setFrom(LocalDate.of(2030, 6, 23));
-        b1.setTo(LocalDate.of(2030, 6, 25));
+        b1.setFromDate(LocalDate.of(2030, 6, 23));
+        b1.setToDate(LocalDate.of(2030, 6, 25));
         b1.setUser(c1);
         b1.setRoom(r1);
 
         b2.setTotal(new BigDecimal("2.5"));
-        b2.setFrom(LocalDate.of(2032,6,23));
-        b2.setTo(LocalDate.of(2032,6,25));
+        b2.setFromDate(LocalDate.of(2032,6,23));
+        b2.setToDate(LocalDate.of(2032,6,25));
         b2.setUser(c2);
         b2.setRoom(r2);
 
@@ -249,8 +249,8 @@ public class BookingDaoTest extends AbstractTestNGSpringContextTests {
         assertThat(bookingDao.findAll()).hasSize(2);
         Booking b4 = new Booking();
         b4.setTotal(new BigDecimal("2800.98"));
-        b4.setFrom(LocalDate.of(2033,6,23));
-        b4.setTo(LocalDate.of(2033,6,20));
+        b4.setFromDate(LocalDate.of(2033,6,23));
+        b4.setToDate(LocalDate.of(2033,6,20));
         b4.setUser(c2);
         b4.setRoom(r2);
         bookingDao.create(b4);

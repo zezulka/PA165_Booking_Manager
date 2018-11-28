@@ -15,24 +15,25 @@ import java.util.Collections;
 import java.util.List;
 import org.assertj.core.util.Arrays;
 import org.dozer.inject.Inject;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.testng.AbstractTransactionalTestNGSpringContextTests;
-import static org.testng.Assert.*;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  *
  * @author Miloslav Zezulka
  */
 @ContextConfiguration(classes = ServiceConfiguration.class)
-public class RoomFacadeTest extends AbstractTransactionalTestNGSpringContextTests {
+@RunWith(SpringJUnit4ClassRunner.class)
+@Ignore
+public class RoomFacadeTest {
 
     @Autowired
     private RoomFacade roomFacade = new RoomFacadeImpl();
@@ -46,12 +47,12 @@ public class RoomFacadeTest extends AbstractTransactionalTestNGSpringContextTest
     public RoomFacadeTest() {
     }
 
-    @BeforeMethod
+    @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
     }
 
-    @BeforeMethod
+    @Before
     public void init() {
         roomCreate = new RoomCreateDTO();
         room = new RoomDTO();

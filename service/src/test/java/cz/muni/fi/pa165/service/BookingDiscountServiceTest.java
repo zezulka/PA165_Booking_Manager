@@ -20,7 +20,9 @@ import java.util.Properties;
 import static org.junit.Assert.*;
 import static org.assertj.core.api.Assertions.*;
 import org.dozer.inject.Inject;
-import org.testng.annotations.Test;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import static org.mockito.Mockito.verify;
@@ -28,15 +30,15 @@ import static org.mockito.Mockito.when;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.testng.AbstractTransactionalTestNGSpringContextTests;
-import org.testng.annotations.BeforeMethod;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  *
  * @author Miloslav Zezulka
  */
 @ContextConfiguration(classes = ServiceConfiguration.class)
-public final class BookingDiscountServiceTest extends AbstractTransactionalTestNGSpringContextTests {
+@RunWith(SpringJUnit4ClassRunner.class)
+public final class BookingDiscountServiceTest {
 
     @Mock
     private BookingDao bookingDao;
@@ -53,18 +55,18 @@ public final class BookingDiscountServiceTest extends AbstractTransactionalTestN
     private Booking booking;
     private User user;
 
-    @BeforeMethod
-    private void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
     }
 
-    @BeforeMethod
+    @Before
     public void simulateSystemDate() {
         LocalDate backToTheFuture = LocalDate.of(2015, Month.OCTOBER, 21);
         when(dateService.getCurrentDate()).thenReturn(backToTheFuture);
     }
 
-    @BeforeMethod
+    @Before
     public void entities() {
         room = new Room();
         hotel = new Hotel();
@@ -90,8 +92,8 @@ public final class BookingDiscountServiceTest extends AbstractTransactionalTestN
         hotel.setName("Noname");
 
         booking = new Booking();
-        booking.setFrom(LocalDate.of(2015, Month.OCTOBER, 22));
-        booking.setTo(LocalDate.of(2015, Month.OCTOBER, 30));
+        booking.setFromDate(LocalDate.of(2015, Month.OCTOBER, 22));
+        booking.setToDate(LocalDate.of(2015, Month.OCTOBER, 30));
         booking.setRoom(room);
         booking.setTotal(new BigDecimal("1000.0"));
         booking.setUser(user);

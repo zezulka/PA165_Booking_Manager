@@ -37,20 +37,20 @@
             <version>3.11.1</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+        </dependency>
        <dependency>
-          <groupId>org.mockito</groupId>
-          <artifactId>mockito-core</artifactId>
-       </dependency>
-       <dependency>
-          <groupId>org.testng</groupId>
-          <artifactId>testng</artifactId>
-          <scope>test</scope>
-       </dependency>
-       <dependency>
-          <groupId>com.github.dozermapper</groupId>
-          <artifactId>dozer-core</artifactId>
-          <version>6.1.0</version>
-       </dependency>
+            <groupId>com.github.dozermapper</groupId>
+            <artifactId>dozer-core</artifactId>
+            <version>6.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>io.craftsman</groupId>
+            <artifactId>dozer-jdk8-support</artifactId>
+            <version>1.0.4</version>
+        </dependency>
         <dependency>
             <groupId>org.glassfish</groupId>
             <artifactId>javax.el</artifactId>
@@ -61,6 +61,11 @@
             <artifactId>slf4j-simple</artifactId>
             <version>1.6.2</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.inject</groupId>
+            <artifactId>javax.inject</artifactId>
+            <type>jar</type>
         </dependency>
     </dependencies>
 </project>
