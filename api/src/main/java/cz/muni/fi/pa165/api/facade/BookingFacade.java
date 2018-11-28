@@ -23,7 +23,7 @@ public interface BookingFacade {
      * Returns a List of all bookings in a given range for a given room.
      * @param range
      * @param roomId
-     * @returnL ist of bookings
+     * @return list of bookings
      */
     List<BookingDTO> findBookingsByRange(DateRange range, Long roomId);
 

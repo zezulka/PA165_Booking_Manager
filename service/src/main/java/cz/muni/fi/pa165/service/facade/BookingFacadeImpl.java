@@ -17,6 +17,7 @@ import cz.muni.fi.pa165.service.BookingDiscountService;
 import cz.muni.fi.pa165.service.BookingService;
 import cz.muni.fi.pa165.service.RoomService;
 import cz.muni.fi.pa165.service.auxiliary.BeanMappingService;
+import javax.inject.Inject;
 
 /**
  * @author Petr Valenta
@@ -24,44 +25,44 @@ import cz.muni.fi.pa165.service.auxiliary.BeanMappingService;
 @Service
 @Transactional
 public class BookingFacadeImpl implements BookingFacade {
-    @Autowired
+
+    @Inject
     private BookingService bookingService;
 
-    @Autowired
+    @Inject
     private AdminService adminService;
 
-    @Autowired
+    @Inject
     private RoomService roomService;
 
-    @Autowired
+    @Inject
     private BookingDiscountService bookingDiscountService;
 
-    @Autowired
+    @Inject
     private BeanMappingService beanMappingService;
 
     @Override
-    public List<BookingDTO> getAllBookings(){
+    public List<BookingDTO> getAllBookings() {
         return beanMappingService.mapTo(bookingService.getAll(), BookingDTO.class);
     }
 
     @Override
-    public List<BookingDTO> findBookingsByRange(DateRange range, Long roomId){
+    public List<BookingDTO> findBookingsByRange(DateRange range, Long roomId) {
         Room room = roomService.findById(roomId);
         return beanMappingService.mapTo(adminService.getBookingsInRange(range, room), BookingDTO.class);
     }
 
     @Override
-    public void cancelBooking(Long id){
+    public void cancelBooking(Long id) {
         Booking booking = bookingService.findById(id);
         bookingService.cancel(booking);
     }
 
     @Override
-    public BigDecimal calculateDiscount(BookingDTO booking){
+    public BigDecimal calculateDiscount(BookingDTO booking) {
         if (booking == null) {
             throw new IllegalArgumentException("Booking cannot be null.");
         }
         return bookingDiscountService.calculateDiscount(beanMappingService.mapTo(booking, Booking.class));
     }
 }
-

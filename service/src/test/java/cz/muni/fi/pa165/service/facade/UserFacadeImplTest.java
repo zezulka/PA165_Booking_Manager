@@ -1,27 +1,42 @@
 package cz.muni.fi.pa165.service.facade;
 
-import static org.testng.Assert.*;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.testng.AbstractTransactionalTestNGSpringContextTests;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-import static org.testng.Assert.assertEquals;
+import org.junit.Before;
+import org.junit.Test;
 import java.util.List;
 import cz.muni.fi.pa165.api.dto.UserAuthenticateDTO;
 import cz.muni.fi.pa165.api.dto.UserDTO;
 import cz.muni.fi.pa165.api.facade.UserFacade;
+import cz.muni.fi.pa165.service.UserService;
+import cz.muni.fi.pa165.service.auxiliary.BeanMappingService;
 import cz.muni.fi.pa165.service.config.ServiceConfiguration;
 import cz.muni.fi.pa165.utils.Security;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Spy;
+import org.dozer.inject.Inject;
+import org.junit.runner.RunWith;
+import org.mockito.MockitoAnnotations;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import static org.junit.Assert.*;
+import org.junit.Ignore;
 
 /**
  * @author Petr Valenta
  */
-@ContextConfiguration(classes=ServiceConfiguration.class)
-public class UserFacadeImplTest extends AbstractTransactionalTestNGSpringContextTests {
+@ContextConfiguration(classes = ServiceConfiguration.class)
+@RunWith(SpringJUnit4ClassRunner.class)
+@Ignore
+public class UserFacadeImplTest {
 
-    @Autowired
+    @Mock
+    private UserService userService;
+
+    @Spy
+    @Inject
+    private BeanMappingService beanMappingService;
+
+    @InjectMocks
     private UserFacade userFacade = new UserFacadeImpl();
 
     private UserDTO userDTO1;
@@ -30,8 +45,9 @@ public class UserFacadeImplTest extends AbstractTransactionalTestNGSpringContext
     private String password = "password";
     private String hash = Security.createHash(password);
 
-    @BeforeMethod
-    public void init(){
+    @Before
+    public void init() {
+        MockitoAnnotations.initMocks(this);
         userDTO1 = new UserDTO();
         newUserDTO = new UserDTO();
 

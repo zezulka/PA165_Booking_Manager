@@ -66,7 +66,7 @@ public class BookingDiscountServiceImpl implements BookingDiscountService {
         LocalDate now = dateService.getCurrentDate();
 
         for (Booking booking : input) {
-            if (booking.getTo().isBefore(now)) {
+            if (booking.getToDate().isBefore(now)) {
                 output.add(booking);
             }
         }
@@ -142,9 +142,9 @@ public class BookingDiscountServiceImpl implements BookingDiscountService {
             throw new IllegalArgumentException("Cannot determine latest booking.");
         }
         Iterator<Booking> it = bookings.iterator();
-        LocalDate candidate = it.next().getTo();
+        LocalDate candidate = it.next().getToDate();
         while(it.hasNext()) {
-            LocalDate nextCand = it.next().getTo();
+            LocalDate nextCand = it.next().getToDate();
             if(nextCand.isAfter(candidate)) {
                 candidate = nextCand;
             }

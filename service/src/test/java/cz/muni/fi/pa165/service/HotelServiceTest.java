@@ -1,40 +1,38 @@
-
 package cz.muni.fi.pa165.service;
 
-import org.testng.Assert;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import org.springframework.test.context.testng.AbstractTransactionalTestNGSpringContextTests;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
+import cz.muni.fi.pa165.dao.HotelDao;
 import cz.muni.fi.pa165.entity.Hotel;
 import cz.muni.fi.pa165.entity.Room;
 import cz.muni.fi.pa165.enums.RoomType;
 import cz.muni.fi.pa165.service.config.ServiceConfiguration;
-import cz.muni.fi.pa165.dao.HotelDao;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.*;
+import org.junit.Before;
+import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
- * 
+ *
  * @author Soňa Barteková
  *
  */
-
-@ContextConfiguration(classes=ServiceConfiguration.class)
-public final class HotelServiceTest extends AbstractTransactionalTestNGSpringContextTests {
-    
+@ContextConfiguration(classes = ServiceConfiguration.class)
+@RunWith(SpringJUnit4ClassRunner.class)
+public final class HotelServiceTest {
 
     @Mock
     private HotelDao hotelDao;
@@ -43,8 +41,8 @@ public final class HotelServiceTest extends AbstractTransactionalTestNGSpringCon
     @InjectMocks
     private HotelService hotelService;
 
-    @BeforeClass
-    private void SetUp() throws Exception {
+    @Before
+    public void SetUp() throws Exception {
         MockitoAnnotations.initMocks(this);
     }
 
@@ -56,9 +54,9 @@ public final class HotelServiceTest extends AbstractTransactionalTestNGSpringCon
     private Hotel h2;
 
     private List<Hotel> hotels;
-    
-    @BeforeMethod
-    private void init() {
+
+    @Before
+    public void init() {
         r1 = new Room();
         r2 = new Room();
         r3 = new Room();
@@ -94,7 +92,7 @@ public final class HotelServiceTest extends AbstractTransactionalTestNGSpringCon
         h2.setAddress("Pobrezni 1, Prague");
         h2.setName("Hilton");
         h2.setRooms(Arrays.asList(r3));
-        
+
         hotels = new ArrayList<Hotel>();
         hotels.add(h1);
         hotels.add(h2);
@@ -107,31 +105,34 @@ public final class HotelServiceTest extends AbstractTransactionalTestNGSpringCon
         verify(hotelDao).create(h1);
     }
 
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test
     public void createHotelNullTest() {
-        hotelService.create(null);
+        assertThatThrownBy(() -> hotelService.create(null))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     public void deleteHotelCorrectTest() {
-    	hotelService.delete(h1);
+        hotelService.delete(h1);
         verify(hotelDao).remove(h1);
     }
 
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test
     public void deleteHotelNullTest() {
-    	hotelService.delete(null);
+        assertThatThrownBy(() -> hotelService.delete(null))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     public void updateHotelCorrectTest() {
-    	hotelService.update(h1);
+        hotelService.update(h1);
         verify(hotelDao).update(h1);
     }
 
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test
     public void updateHotelNullTest() {
-        hotelService.update(null);
+        assertThatThrownBy(() -> hotelService.update(null))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
@@ -139,17 +140,16 @@ public final class HotelServiceTest extends AbstractTransactionalTestNGSpringCon
         when(hotelDao.findAll()).thenReturn(hotels);
         List<Hotel> h = hotelService.findAll();
         verify(hotelDao).findAll();
-        Assert.assertEquals(h, hotels);
+        assertEquals(h, hotels);
     }
-    
-    @Test(enabled = false)
+
+    @Test
     public void findAllNullTest() {
         List<Hotel> h = new ArrayList<>();
         when(hotelDao.findAll()).thenReturn(h);
         h = hotelService.findAll();
         verify(hotelDao).findAll();
-        Assert.assertEquals(h, hotels);
-    	
+        assertEquals(h, Collections.EMPTY_LIST);
     }
 
     @Test
@@ -157,12 +157,13 @@ public final class HotelServiceTest extends AbstractTransactionalTestNGSpringCon
         when(hotelDao.findById(1L)).thenReturn(h1);
         Hotel h = hotelService.findById(1L);
         verify(hotelDao).findById(1L);
-        Assert.assertEquals(h, h1);
+        assertEquals(h, h1);
     }
 
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test
     public void findByIdNullTest() {
-        hotelService.findById(null);
+        assertThatThrownBy(() -> hotelService.findById(null))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
@@ -170,13 +171,13 @@ public final class HotelServiceTest extends AbstractTransactionalTestNGSpringCon
         when(hotelDao.findByName("Noname")).thenReturn(h1);
         Hotel h = hotelService.findByName("Noname");
         verify(hotelDao).findByName("Noname");
-        Assert.assertEquals(h, h1);
+        assertEquals(h, h1);
     }
 
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test
     public void findByNameNullTest() {
-        hotelService.findByName(null);
+        assertThatThrownBy(() -> hotelService.findByName(null))
+                .isInstanceOf(IllegalArgumentException.class);
     }
-
 
 }
