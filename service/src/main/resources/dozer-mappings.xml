@@ -36,5 +36,9 @@
         <class-a>cz.muni.fi.pa165.entity.Room</class-a>
         <class-b>cz.muni.fi.pa165.api.dto.RoomCreateDTO</class-b>
     </mapping>
-
+    
+    <mapping>
+        <class-a>cz.muni.fi.pa165.entity.Booking</class-a>
+        <class-b>cz.muni.fi.pa165.api.dto.BookingCreateDTO</class-b>
+    </mapping>
 </mappings>

@@ -64,7 +64,6 @@ public class BookingServiceImpl implements BookingService {
         if (booking == null) {
             throw new IllegalArgumentException("booking cannot be null");
         }
-        LocalDate date = dateService.getCurrentDate();
         if (booking.getToDate().isBefore(dateService.getCurrentDate())) {
             throw new IllegalArgumentException(
                     "Trying to cancel booking of a reservation that already passed.");

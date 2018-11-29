@@ -1,6 +1,5 @@
 package cz.muni.fi.pa165.service.facade;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -8,6 +7,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import cz.muni.fi.pa165.api.DateRange;
+import cz.muni.fi.pa165.api.dto.BookingCreateDTO;
 import cz.muni.fi.pa165.api.dto.BookingDTO;
 import cz.muni.fi.pa165.api.facade.BookingFacade;
 import cz.muni.fi.pa165.entity.Booking;
@@ -64,5 +64,13 @@ public class BookingFacadeImpl implements BookingFacade {
             throw new IllegalArgumentException("Booking cannot be null.");
         }
         return bookingDiscountService.calculateDiscount(beanMappingService.mapTo(booking, Booking.class));
+    }
+
+    @Override
+    public void createBooking(BookingCreateDTO bookingCreate) {
+        if(bookingCreate == null) {
+            throw new IllegalArgumentException("Booking create DTO cannot be null.");
+        }
+        bookingService.book(beanMappingService.mapTo(bookingCreate, Booking.class));
     }
 }

@@ -2,7 +2,7 @@ package cz.muni.fi.pa165.api.facade;
 
 import cz.muni.fi.pa165.api.dto.BookingDTO;
 import cz.muni.fi.pa165.api.DateRange;
-import cz.muni.fi.pa165.api.DiscountType;
+import cz.muni.fi.pa165.api.dto.BookingCreateDTO;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -27,6 +27,12 @@ public interface BookingFacade {
      */
     List<BookingDTO> findBookingsByRange(DateRange range, Long roomId);
 
+    /**
+     * 
+     * @param bookingCreate 
+     */
+    void createBooking(BookingCreateDTO bookingCreate);
+    
     /**
      * Cancels a booking.
      * @param id of the specified booking
