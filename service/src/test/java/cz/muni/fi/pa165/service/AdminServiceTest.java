@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.mockito.InjectMocks;
@@ -68,7 +69,7 @@ public final class AdminServiceTest {
 
     @Before
     public void simulateSystemDate() {
-        LocalDate backToTheFuture = LocalDate.of(2015, Month.OCTOBER, 21);
+        LocalDate backToTheFuture = LocalDate.of(2015, Month.OCTOBER, 2);
         when(dateService.getCurrentDate()).thenReturn(backToTheFuture);
     }
 
@@ -138,7 +139,40 @@ public final class AdminServiceTest {
     public void setup() throws Exception {
         MockitoAnnotations.initMocks(this);
     }
-
+    
+    @Test
+    public void getBookingsInRangeCorrectTest() {
+        bookingService.book(booking1);
+        bookingService.book(booking2);
+        bookingService.book(booking3);
+        when(bookingDao.findByRoom(room)).thenReturn(bookings);
+        assertThat(adminService.getBookingsInRange(dr,room)).hasSize(3).containsExactly(booking1, booking2, booking3);
+    }
+    
+    @Test
+    public void getBookingsInRangeNotBookedRoomTest() {
+    	Room notBookedRoom = new Room();
+        bookingService.book(booking1);
+        when(bookingDao.findByRoom(room)).thenReturn(Collections.singletonList(booking1));
+        assertThat(adminService.getBookingsInRange(dr,notBookedRoom)).isEmpty();
+    }
+    
+    @Test
+    public void getBookingsInRangeNoBookingInRangeTest() {
+    	DateRange newdr = new DateRange(LocalDate.of(2015, Month.MAY, 21), LocalDate.of(2015, Month.MAY, 30));
+        bookingService.book(booking1);
+        when(bookingDao.findByRoom(room)).thenReturn(Collections.singletonList(booking1));
+        assertThat(adminService.getBookingsInRange(newdr,room)).isEmpty();
+    }    
+    
+    @Test
+    public void getBookingsInRangePartiallyBookedRoomTest() {
+    	DateRange newdr = new DateRange(LocalDate.of(2015, Month.OCTOBER, 25), LocalDate.of(2015, Month.NOVEMBER, 1));
+        bookingService.book(booking1);
+        when(bookingDao.findByRoom(room)).thenReturn(Collections.singletonList(booking1));
+        assertThat(adminService.getBookingsInRange(newdr,room)).hasSize(1).containsExactly(booking1);
+    }
+    
     @Test
     public void getBookingsInRangeNullTest() {
         assertThatThrownBy(() -> adminService.getBookingsInRange(null, null))
@@ -146,15 +180,22 @@ public final class AdminServiceTest {
     }
 
     @Test
-    public void listReservedTest() {
-        when(bookingDao.findAll()).thenReturn(bookings);
+    public void listReservedCorrectTest() {
         bookingService.book(booking1);
         bookingService.book(booking2);
         bookingService.book(booking3);
-        verify(bookingDao).create(booking1);
-        verify(bookingDao).create(booking2);
-        verify(bookingDao).create(booking3);
+        when(bookingDao.findAll()).thenReturn(bookings);
         assertThat(adminService.listReserved(dr)).hasSize(2).containsExactly(user, admin);
+    }    
+    
+    @Test
+    public void listReservedNoResultsTest() {
+    	DateRange newdr = new DateRange(LocalDate.of(2015, Month.MAY, 21), LocalDate.of(2015, Month.MAY, 30));
+        bookingService.book(booking1);
+        bookingService.book(booking2);
+        bookingService.book(booking3);
+        when(bookingDao.findAll()).thenReturn(bookings);
+        assertThat(adminService.listReserved(newdr)).isEmpty();
     }
 
     @Test
