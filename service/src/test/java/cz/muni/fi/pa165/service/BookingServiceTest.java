@@ -200,7 +200,7 @@ public final class BookingServiceTest {
                 .thenReturn(Collections.singletonList(defaultBooking));
         bookingService.cancel(defaultBooking);
         when(bookingDao.findByRoom(defaultBooking.getRoom()))
-                .thenReturn(Collections.EMPTY_LIST);
+                .thenReturn(Collections.<Booking>emptyList());
         assertThatThrownBy(() -> bookingService.cancel(defaultBooking))
                 .isInstanceOf(IllegalArgumentException.class);
     }
@@ -250,7 +250,7 @@ public final class BookingServiceTest {
         when(bookingDao.findById(1L)).thenReturn(defaultBooking);
         // Let's simulate id generation for this given task
         Mockito.doAnswer((o) -> {
-            Booking b = o.getArgumentAt(0, Booking.class);
+            Booking b = o.getArgument(0);
             b.setId(1L);
             return null;
         }).when(bookingDao).create(defaultBooking);
