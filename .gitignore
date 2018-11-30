@@ -30,4 +30,3 @@ hs_err_pid*
 *.iml
 /persistence/nbproject/
 /service/nbproject/
-/web/nb-configuration.xml

@@ -5,7 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Email;
+import org.hibernate.validator.constraints.Email;
 
 import java.util.Objects;
 import javax.persistence.Entity;

@@ -15,6 +15,7 @@ import javax.persistence.TransactionRequiredException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import static cz.muni.fi.pa165.api.utils.DateRangeUtils.rangesOverlap;
+import java.time.LocalDate;
 
 /**
  *

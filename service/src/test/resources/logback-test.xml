@@ -5,10 +5,10 @@
         </encoder>
     </appender>
 
-    <root level="INFO">
+    <root level="warn">
         <appender-ref ref="APP"/>
     </root>
 
-    <logger name="org.hibernate.tool.hbm2ddl.SchemaExport" level="OFF" />
-    <logger name="org.hibernate.engine.jdbc.spi.SqlExceptionHelper" level="OFF" />
+    <logger name="org.hibernate.tool.hbm2ddl.SchemaExport" level="off" />
+    <logger name="org.hibernate.engine.jdbc.spi.SqlExceptionHelper" level="off" />
 </configuration>

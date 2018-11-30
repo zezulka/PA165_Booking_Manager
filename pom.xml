@@ -5,82 +5,17 @@
     <artifactId>booking-manager</artifactId>
     <name>Booking Manager</name>
     
-    <!-- see https://docs.spring.io/spring-boot/docs/current/reference/html/using-boot-build-systems.html#using-boot-maven-parent-pom -->
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.1.1.RELEASE</version>
-        <relativePath/>
-    </parent>
-    
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>net.sf.dozer</groupId>
-                <artifactId>dozer</artifactId>
-                <version>5.5.1</version>
-            </dependency>
-            <dependency>
-                <groupId>org.testng</groupId>
-                <artifactId>testng</artifactId>
-                <version>6.14.3</version>
-            </dependency>
-            <dependency>
-                <groupId>javax.inject</groupId>
-                <artifactId>javax.inject</artifactId>
-                <version>1</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.taglibs</groupId>
-                <artifactId>taglibs-standard-impl</artifactId>
-                <version>1.2.5</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.taglibs</groupId>
-                <artifactId>taglibs-standard-spec</artifactId>
-                <version>1.2.5</version>
+                <groupId>io.spring.platform</groupId>
+                <artifactId>platform-bom</artifactId>
+                <version>1.1.5.RELEASE</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
-    
-    <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <configuration>
-                        <compilerArgument>-Xlint:unchecked,deprecation</compilerArgument>
-                    </configuration>
-                </plugin>
-                <!-- embedded Tomcat 9 plugin configuration, use "mvn cargo:run" to run -->
-                <plugin>
-                    <groupId>org.codehaus.cargo</groupId>
-                    <artifactId>cargo-maven2-plugin</artifactId>
-                    <version>1.7.0</version>
-                    <configuration>
-                        <container>
-                            <containerId>tomcat9x</containerId>
-                            <artifactInstaller>
-                                <groupId>org.apache.tomcat</groupId>
-                                <artifactId>tomcat</artifactId>
-                                <version>${tomcat.version}</version>
-                            </artifactInstaller>
-                        </container>
-                    </configuration>
-                </plugin>
-                <!-- workaround for broken OpenJDK 8u181-b13-2 on Debian/Ubuntu which causes
-                unit tests to fail, see https://issues.apache.org/jira/browse/SUREFIRE-1588 -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-surefire-plugin</artifactId>
-                    <configuration>
-                        <argLine>-Djdk.net.URLClassPath.disableClassPathURLCheck=true</argLine>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-    </build>
     
     <version>0.1</version>
     <packaging>pom</packaging>
@@ -88,9 +23,7 @@
         <module>persistence</module>
         <module>service</module>
         <module>api</module>
-        <module>web</module>
     </modules>
-    
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>

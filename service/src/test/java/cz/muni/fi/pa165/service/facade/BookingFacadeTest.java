@@ -198,12 +198,24 @@ public class BookingFacadeTest {
      * would have the same date range.
      */
     private ArgumentMatcher<Booking> bookingArgMatcher() {
-        return (Booking b) -> bDTO.getFromDate().equals(b.getFromDate())
-                && bDTO.getToDate().equals(b.getToDate());
+        return new ArgumentMatcher<Booking>() {
+            @Override
+            public boolean matches(Object arg) {
+                Booking b = (Booking) arg;
+                return bDTO.getFromDate().equals(b.getFromDate())
+                        && bDTO.getToDate().equals(b.getToDate());
+            }
+        };
     }
 
     private ArgumentMatcher<Booking> bookingCreateArgMatcher() {
-        return (Booking b) -> bCreateDTO.getFromDate().equals(b.getFromDate())
-                && bCreateDTO.getToDate().equals(b.getToDate());
+        return new ArgumentMatcher<Booking>() {
+            @Override
+            public boolean matches(Object argument) {
+                Booking b = (Booking) argument;
+                return bCreateDTO.getFromDate().equals(b.getFromDate())
+                        && bCreateDTO.getToDate().equals(b.getToDate());
+            }
+        };
     }
 }
