@@ -118,7 +118,7 @@ public final class BookingDiscountServiceTest {
         usr.setAdmin(false);
         usr.setPasswordHash(hash);
         when(bookingDao.findByUser(user)).thenReturn(Collections.singletonList(booking));
-        when(bookingDao.findByUser(usr)).thenReturn(Collections.EMPTY_LIST);
+        when(bookingDao.findByUser(usr)).thenReturn(Collections.<Booking>emptyList());
         assertThat(bookingDiscountService.bookingsForUser(usr)).isEmpty();
     }
 
