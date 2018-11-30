@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.inject.Inject;
+
 import cz.muni.fi.pa165.api.dto.HotelCreateDTO;
 import cz.muni.fi.pa165.api.dto.HotelDTO;
 import cz.muni.fi.pa165.api.facade.HotelFacade;
@@ -22,11 +24,11 @@ import cz.muni.fi.pa165.service.auxiliary.BeanMappingService;
 @Service
 @Transactional
 public class HotelFacadeImpl implements HotelFacade{
-	
-    @Autowired
+
+    @Inject
     private BeanMappingService beanMappingService;
-    
-    @Autowired
+
+    @Inject
     private HotelService hotelService;
 
 	@Override
