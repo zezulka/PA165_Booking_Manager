@@ -89,6 +89,7 @@
         <module>service</module>
         <module>api</module>
         <module>web</module>
+        <module>sampledata</module>
     </modules>
     
     <properties>
