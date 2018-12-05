@@ -20,16 +20,11 @@
     </properties>
     
     <dependencies>
-        <!-- dependency on eshop sample data, other eshop parts are imported by transitive dependencies of this one-->
-        <!-- TODO
         <dependency>
             <groupId>cz.muni.fi.pa165</groupId>
-            <artifactId>eshop-sample-data</artifactId>
+            <artifactId>sampledata</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
-        -->
-        <!-- servlet, JSP, JSTL -->
-        <!-- must be this instead of javaee-web for the springmvc-tests to succeed -->
         <dependency>
             <groupId>org.apache.tomcat</groupId>
             <artifactId>tomcat-api</artifactId>
