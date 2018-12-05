@@ -103,7 +103,7 @@
 
     <build>
         <defaultGoal>cargo:run</defaultGoal>
-        <finalName>eshop</finalName>
+        <finalName>pa165</finalName>
         <plugins>
             <plugin>
                 <groupId>org.codehaus.cargo</groupId>
@@ -123,7 +123,6 @@
                         <link>https://docs.oracle.com/javase/8/docs/api/</link>
                     </links>
                 </configuration>
-                <version>3.0.0</version>
             </plugin>
         </plugins>
     </build>
