@@ -3,8 +3,6 @@ package cz.muni.fi.pa165.entity;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
-import javax.persistence.CascadeType;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -53,11 +51,6 @@ public class Hotel {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public void addRoom(Room room) {
-        Objects.requireNonNull(room);
-        rooms.add(room);
     }
     
     public List<Room> getRooms() {
