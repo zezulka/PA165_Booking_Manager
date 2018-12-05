@@ -2,16 +2,13 @@ package cz.muni.fi.pa165.entity;
 
 import cz.muni.fi.pa165.enums.RoomType;
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Objects;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 
@@ -48,9 +45,6 @@ public class Room {
     public Room() {
     }
 
-    // getters and setters
-    // https://www.yegor256.com/2014/09/16/getters-and-setters-are-evil.html
-    // JPA [...] rely on the get/set notation
     public Long getId() {
         return id;
     }

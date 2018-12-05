@@ -36,6 +36,9 @@ public class SampleDataLoadingFacadeImpl implements SampleDataLoadingFacade {
     BookingService bookingService;
 
     @Override
+    //TODO commented out bookings: bookings must be booked only in the future 
+    //    (which is the expected and needed behaviour, we somehow need to inject
+    //     bookings in the past, though)
     public void loadData() throws IOException {
         User john = user("john", "John", "Doe", "john.doe@gmail.com");
         User alice = user("alice", "Alice", "Foobar", "alice.foobar@gmail.com");
@@ -51,17 +54,17 @@ public class SampleDataLoadingFacadeImpl implements SampleDataLoadingFacade {
         Room third = room(103, "The most luxurious suite you will find around. Free champagne and stunning city view.",
                 new BigDecimal("1800.0"), new byte[0], RoomType.SUITE);
         hotelAndRooms("First World Hotel", "Malaysia, Genting Islands", Arrays.asList(first, second, third));
-        booking(past, alice, first);
+        //booking(past, alice, first);
         booking(future, alice, first);
-        booking(ongoing, john, second);
+        //booking(ongoing, john, second);
 
         first = room(101, "One large bed. Basic.", new BigDecimal("800.0"), new byte[0], RoomType.SINGLE_ROOM);
         second = room(102, "Two single beds. Entire unit is wheelchair accessible.", new BigDecimal("1200.0"), new byte[0], RoomType.DOUBLE_ROOM);
         third = room(103, "Very comfy double bed. It is also possible to admire the capital from a terrace.", 
                 new BigDecimal("2500.0"), new byte[0], RoomType.COMFORT_DOUBLE_ROOM);
         hotelAndRooms("Izmailovo Hotel", "Russia, Moscow", Arrays.asList(first, second, third));
-        booking(past, peter, third);
-        booking(past, john, first);
+        //booking(past, peter, third);
+        //booking(past, john, first);
 
         first = room(72, "No alcohol. Just a double bed.", new BigDecimal("1050.0"), new byte[0], RoomType.DOUBLE_ROOM);
         second = room(100, "A place to sleep.", new BigDecimal("1100.0"), new byte[0], RoomType.DOUBLE_ROOM);
@@ -83,7 +86,7 @@ public class SampleDataLoadingFacadeImpl implements SampleDataLoadingFacade {
         second = room(456, "", new BigDecimal("1500.0"), new byte[0], RoomType.DOUBLE_ROOM);
         third = room(789, "", new BigDecimal("1350.0"), new byte[0], RoomType.COMFORT_SINGLE_ROOM);
         hotelAndRooms("Caesars Palace", "USA, Las Vegas", Arrays.asList(first, second, third));
-        booking(ongoing, john, second);
+        //booking(ongoing, john, second);
     }
 
     private void hotelAndRooms(String name, String address, List<Room> rooms) {
@@ -92,9 +95,7 @@ public class SampleDataLoadingFacadeImpl implements SampleDataLoadingFacade {
         h.setAddress(address);
         h.setRooms(rooms);
         hotelService.create(h);
-
         for (Room r : rooms) {
-            h.addRoom(r);
             r.setHotel(h);
             roomService.createRoom(r);
         }
@@ -128,6 +129,7 @@ public class SampleDataLoadingFacadeImpl implements SampleDataLoadingFacade {
         b.setToDate(range.getToDate());
         b.setRoom(room);
         b.setUser(user);
+        b.setTotal(room.getRecommendedPrice());
         bookingService.book(b);
     }
 
