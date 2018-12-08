@@ -30,7 +30,7 @@ public class HotelFacadeImpl implements HotelFacade {
     private HotelService hotelService;
 
     @Override
-    public void createHotel(HotelCreateDTO hotel) {
+    public void create(HotelCreateDTO hotel) {
         if (hotel == null) {
             throw new IllegalArgumentException("Hotel cannot be null.");
         }
@@ -55,6 +55,11 @@ public class HotelFacadeImpl implements HotelFacade {
     public HotelDTO findByName(String name) {
         Hotel hotel = hotelService.findByName(name);
         return (hotel == null) ? null : beanMappingService.mapTo(hotel, HotelDTO.class);
+    }
+
+    @Override
+    public void delete(long id) {
+        hotelService.delete(hotelService.findById(id));
     }
 
 }

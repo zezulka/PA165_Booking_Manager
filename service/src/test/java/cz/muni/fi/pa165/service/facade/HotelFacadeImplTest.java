@@ -112,7 +112,7 @@ public class HotelFacadeImplTest {
 
     @Test
     public void testCreateHotel() {
-        hotelFacade.createHotel(hCreateDTO1);
+        hotelFacade.create(hCreateDTO1);
         verify(hotelService).create(argThat(hCreateDTO1ArgMatcher()));
 
     }
