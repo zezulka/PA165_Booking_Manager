@@ -1,21 +1,24 @@
 package cz.muni.fi.pa165.sampledata;
 
 import cz.muni.fi.pa165.api.DateRange;
-import cz.muni.fi.pa165.enums.RoomType;
-import cz.muni.fi.pa165.service.HotelService;
-import cz.muni.fi.pa165.service.RoomService;
-import cz.muni.fi.pa165.service.UserService;
 import cz.muni.fi.pa165.entity.Booking;
 import cz.muni.fi.pa165.entity.Hotel;
 import cz.muni.fi.pa165.entity.Room;
 import cz.muni.fi.pa165.entity.User;
+import cz.muni.fi.pa165.enums.RoomType;
 import cz.muni.fi.pa165.service.BookingService;
+import cz.muni.fi.pa165.service.HotelService;
+import cz.muni.fi.pa165.service.RoomService;
+import cz.muni.fi.pa165.service.UserService;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
+
+import javax.annotation.Resource;
 import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -24,21 +27,18 @@ import org.springframework.stereotype.Component;
 public class SampleDataLoadingFacadeImpl implements SampleDataLoadingFacade {
 
     @Autowired
-    HotelService hotelService;
+    private HotelService hotelService;
 
     @Autowired
-    RoomService roomService;
+    private RoomService roomService;
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
-    @Autowired
-    BookingService bookingService;
+    @Resource(name="noCheck")
+    private BookingService bookingService;
 
     @Override
-    //TODO commented out bookings: bookings must be booked only in the future 
-    //    (which is the expected and needed behaviour, we somehow need to inject
-    //     bookings in the past, though)
     public void loadData() throws IOException {
         User john = user("john", "John", "Doe", "john.doe@gmail.com");
         User alice = user("alice", "Alice", "Foobar", "alice.foobar@gmail.com");
@@ -54,17 +54,17 @@ public class SampleDataLoadingFacadeImpl implements SampleDataLoadingFacade {
         Room third = room(103, "The most luxurious suite you will find around. Free champagne and stunning city view.",
                 new BigDecimal("1800.0"), new byte[0], RoomType.SUITE);
         hotelAndRooms("First World Hotel", "Malaysia, Genting Islands", Arrays.asList(first, second, third));
-        //booking(past, alice, first);
+        booking(past, alice, first);
         booking(future, alice, first);
-        //booking(ongoing, john, second);
+        booking(ongoing, john, second);
 
         first = room(101, "One large bed. Basic.", new BigDecimal("800.0"), new byte[0], RoomType.SINGLE_ROOM);
         second = room(102, "Two single beds. Entire unit is wheelchair accessible.", new BigDecimal("1200.0"), new byte[0], RoomType.DOUBLE_ROOM);
         third = room(103, "Very comfy double bed. It is also possible to admire the capital from a terrace.", 
                 new BigDecimal("2500.0"), new byte[0], RoomType.COMFORT_DOUBLE_ROOM);
         hotelAndRooms("Izmailovo Hotel", "Russia, Moscow", Arrays.asList(first, second, third));
-        //booking(past, peter, third);
-        //booking(past, john, first);
+        booking(past, peter, third);
+        booking(past, john, first);
 
         first = room(72, "No alcohol. Just a double bed.", new BigDecimal("1050.0"), new byte[0], RoomType.DOUBLE_ROOM);
         second = room(100, "A place to sleep.", new BigDecimal("1100.0"), new byte[0], RoomType.DOUBLE_ROOM);
@@ -86,7 +86,7 @@ public class SampleDataLoadingFacadeImpl implements SampleDataLoadingFacade {
         second = room(456, "", new BigDecimal("1500.0"), new byte[0], RoomType.DOUBLE_ROOM);
         third = room(789, "", new BigDecimal("1350.0"), new byte[0], RoomType.COMFORT_SINGLE_ROOM);
         hotelAndRooms("Caesars Palace", "USA, Las Vegas", Arrays.asList(first, second, third));
-        //booking(ongoing, john, second);
+        booking(ongoing, john, second);
     }
 
     private void hotelAndRooms(String name, String address, List<Room> rooms) {
