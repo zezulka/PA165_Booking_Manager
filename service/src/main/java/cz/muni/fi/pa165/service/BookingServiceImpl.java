@@ -15,11 +15,13 @@ import javax.persistence.TransactionRequiredException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import static cz.muni.fi.pa165.api.utils.DateRangeUtils.rangesOverlap;
+import org.springframework.context.annotation.Primary;
 
 /**
  *
  * @author Martin Palenik
  */
+@Primary
 @Service
 public class BookingServiceImpl implements BookingService {
 
@@ -29,17 +31,19 @@ public class BookingServiceImpl implements BookingService {
     @Autowired
     private DateService dateService;
 
+    protected boolean bookingInFuture(Booking booking) {
+        return booking.getFromDate().isAfter(dateService.getCurrentDate());
+    }
+
     @Override
     public void book(Booking booking) {
         if (booking == null) {
             throw new IllegalArgumentException("booking is null");
         }
-
-        if (!booking.getFromDate().isAfter(dateService.getCurrentDate())) {
+        if (!bookingInFuture(booking)) {
             throw new IllegalArgumentException(
-                    "trying to create booking in the past");
+                    "trying to create booking not in the future");
         }
-
         DateRange candidateRange = new DateRange(booking.getFromDate(),
                 booking.getToDate());
 
@@ -72,7 +76,7 @@ public class BookingServiceImpl implements BookingService {
             throw new IllegalArgumentException("This booking is active now.");
         }
 
-        if(!bookingDao.findByRoom(booking.getRoom()).contains(booking)) {
+        if (!bookingDao.findByRoom(booking.getRoom()).contains(booking)) {
             throw new IllegalArgumentException("This booking does not exist in the database.");
         }
 
