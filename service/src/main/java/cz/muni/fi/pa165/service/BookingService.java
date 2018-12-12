@@ -33,6 +33,13 @@ public interface BookingService {
      * @throws BookingManagerDataAccessException any exception on the DAO layer occurs
      */
     void cancel(Booking booking);
+    
+    /**
+     * Update a booking.
+     * @throws IllegalArgumentException any argument is null
+     * @param booking
+     */
+    void update(Booking booking);
 
     /**
      * Return all bookings currently in the system.

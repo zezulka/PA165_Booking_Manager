@@ -23,6 +23,13 @@ public interface HotelFacade {
      * @param hotel hotel to create
      */
     void create(HotelCreateDTO hotel);
+    
+    /**
+     * Update a hotel.
+     * 
+     * @param id identifier to search by
+     */
+    void update(Long id);
 
     /**
      * List all hotels.

@@ -38,6 +38,12 @@ public interface BookingFacade {
      * @param id of the specified booking
      */
     void cancelBooking(Long id);
+    
+    /**
+     * Updates a booking.
+     * @param id of the specified booking
+     */
+    void updateBooking(Long id);	
 
     /**
      * Calculates discount for a given booking.

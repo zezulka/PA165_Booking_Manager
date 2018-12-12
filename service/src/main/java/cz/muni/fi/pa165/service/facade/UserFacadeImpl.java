@@ -62,4 +62,10 @@ public class UserFacadeImpl implements UserFacade {
         return (user == null) ? null : beanMappingService.mapTo(user, UserDTO.class);
     }
 
+	@Override
+	public void update(UserDTO user) {
+        User userEntity = beanMappingService.mapTo(user, User.class);
+        userService.update(userEntity);
+	}
+
 }

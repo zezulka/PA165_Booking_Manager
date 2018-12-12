@@ -2,6 +2,7 @@ package cz.muni.fi.pa165.api.facade;
 
 import cz.muni.fi.pa165.api.dto.UserAuthenticateDTO;
 import cz.muni.fi.pa165.api.dto.UserDTO;
+
 import java.util.List;
 
 /**
@@ -53,4 +54,11 @@ public interface UserFacade {
      * @return user with the given email, null if there is no such user
      */
     UserDTO findByEmail(String email);
+    
+    /**
+     * Updates the given {@code user} in the database.
+     * 
+     * @param user user to be updated in the database, must not be null
+     */
+    void update(UserDTO user);
 }

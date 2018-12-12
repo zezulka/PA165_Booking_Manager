@@ -67,4 +67,13 @@ public class RoomFacadeImpl implements RoomFacade {
         Room room = roomService.findByNumber(bms.mapTo(hotel, Hotel.class), number);
         return (room == null) ? null : bms.mapTo(room, RoomDTO.class);
     }
+
+	@Override
+	public void updateRoom(RoomDTO room) {
+        if(room == null){
+            throw new IllegalArgumentException("Room cannot be null");
+        }
+        roomService.updateRoom(bms.mapTo(room, Room.class));
+		
+	}
 }
