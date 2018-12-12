@@ -23,6 +23,12 @@ public interface RoomFacade {
      * @return true if deleted
      */
     void deleteRoom(RoomDTO room);
+    
+    /**
+     * Updates a room.
+     * @param room room to be updated
+     */
+    void updateRoom(RoomDTO room);
 
     /**
      * Returns a list of all rooms.
