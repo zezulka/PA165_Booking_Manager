@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import cz.muni.fi.pa165.api.dto.HotelDTO;
 import cz.muni.fi.pa165.api.dto.RoomDTO;
-import java.util.Collections;
 import java.util.List;
 import org.springframework.hateoas.ResourceSupport;
 import org.springframework.hateoas.core.Relation;
@@ -42,7 +41,7 @@ public class HotelResource extends ResourceSupport {
     }
 
     public List<RoomDTO> getRooms() {
-        return Collections.unmodifiableList(rooms);
+        return rooms;
     }
     
     
