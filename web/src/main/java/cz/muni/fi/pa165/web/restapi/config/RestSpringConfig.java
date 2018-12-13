@@ -32,7 +32,7 @@ import static org.springframework.hateoas.config.EnableHypermediaSupport.Hyperme
 @EnableWebMvc
 @Configuration
 @Import({BookingManagerSampleDataConfiguration.class})
-@ComponentScan(basePackages = {"cz.muni.fi.pa165.web.restapi.controllers", "cz.muni.fi.pa165.web.restapi.hateoas"})
+@ComponentScan(basePackages = {"cz.muni.fi.pa165.web.restapi.controller", "cz.muni.fi.pa165.web.restapi.hateoas"})
 public class RestSpringConfig implements WebMvcConfigurer {
 
     @Bean
