@@ -117,4 +117,30 @@ public class BookingServiceImpl implements BookingService {
         }
         return bookingDao.findByRoom(room);
     }
+
+	@Override
+	public void update(Booking booking) {
+        if (booking == null) {
+            throw new IllegalArgumentException("booking cannot be null");
+        }
+        if (booking.getToDate().isBefore(dateService.getCurrentDate())) {
+            throw new IllegalArgumentException(
+                    "Trying to update booking of a reservation that already passed.");
+        }
+
+        if (booking.getFromDate().isBefore(dateService.getCurrentDate())) {
+            throw new IllegalArgumentException("This booking is active now.");
+        }
+
+        if (!bookingDao.findByRoom(booking.getRoom()).contains(booking)) {
+            throw new IllegalArgumentException("This booking does not exist in the database.");
+        }
+
+        try {
+            bookingDao.update(booking);
+        } catch (TransactionRequiredException | IllegalArgumentException e) {
+            throw new BookingManagerDataAccessException("Error during service.", e);
+        }
+		
+	}
 }

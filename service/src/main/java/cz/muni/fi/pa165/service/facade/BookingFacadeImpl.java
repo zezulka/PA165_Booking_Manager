@@ -73,4 +73,11 @@ public class BookingFacadeImpl implements BookingFacade {
         }
         bookingService.book(beanMappingService.mapTo(bookingCreate, Booking.class));
     }
+
+	@Override
+	public void updateBooking(Long id) {
+        Booking booking = bookingService.findById(id);
+        bookingService.update(booking);
+	}
+    
 }
