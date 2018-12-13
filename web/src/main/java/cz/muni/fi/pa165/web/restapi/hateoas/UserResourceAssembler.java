@@ -9,6 +9,7 @@ import org.springframework.hateoas.EntityLinks;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 import org.springframework.stereotype.Component;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
 /**
  * @author Petr Valenta
@@ -17,7 +18,7 @@ import org.springframework.stereotype.Component;
 public class UserResourceAssembler extends ResourceAssemblerSupport<UserDTO, UserResource> {
 
     private EntityLinks entityLinks;
-    private final static Logger LOGGER = LoggerFactory.getLogger(HotelResourceAssembler.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(UserResourceAssembler.class);
 
     public UserResourceAssembler(@SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired EntityLinks entityLinks) {
@@ -33,7 +34,7 @@ public class UserResourceAssembler extends ResourceAssemblerSupport<UserDTO, Use
             Link catLink = entityLinks.linkForSingleResource(UserDTO.class, id).withSelfRel();
             resource.add(catLink);
 
-            Link productsLink = entityLinks.linkForSingleResource(UserDTO.class, id).slash("/users").withRel("users");
+            Link productsLink = linkTo(UsersRestController.class).withRel("users");
             resource.add(productsLink);
 
         } catch (Exception ex) {
