@@ -27,6 +27,7 @@ bookingManager.config(['$routeProvider',
                 when('/admin/browse_users', {templateUrl: 'partials/admin_browse_customers.html', controller: 'AdminBrowseCustomersCtrl'}).
                 when('/admin/newroom', {templateUrl: 'partials/admin_new_room.html', controller: 'AdminNewRoomCtrl'}).
                 when('/admin/hotels', {templateUrl: 'partials/admin_hotels.html', controller: 'AllHotelsCtrl'}).
+                when('/login', {templateUrl: 'partials/login.html', controller: 'LoginCtrl'}).
                 otherwise({redirectTo: '/browse'});
     }]);
 
@@ -49,6 +50,12 @@ function loadHotelRooms($http, hotel, roomLink) {
         console.log('AJAX loaded ${hotel.rooms.length} rooms to the hotel ${hotel.name}');
     });
 }
+
+controllers.controller('LoginCtrl', function($scope, $http) {
+    $http.get('/pa165/rest/users/authenticate').then(function (response) {
+        console.log('Authenticating user...');
+    });
+});
 
 controllers.controller('BrowseHotelsCtrl',function ($scope, $http) {
     console.log('/pa165/rest/hotels/');

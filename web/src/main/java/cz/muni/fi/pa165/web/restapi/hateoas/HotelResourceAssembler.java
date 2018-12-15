@@ -30,11 +30,11 @@ public class HotelResourceAssembler extends ResourceAssemblerSupport<HotelDTO, H
         long id = dto.getId();
         HotelResource resource = new HotelResource(dto);
         try {
-            Link catLink = entityLinks.linkForSingleResource(HotelDTO.class, id).withSelfRel();
-            resource.add(catLink);
+            Link hotelLink = entityLinks.linkForSingleResource(HotelDTO.class, id).withSelfRel();
+            resource.add(hotelLink);
 
-            Link productsLink = entityLinks.linkForSingleResource(HotelDTO.class, id).slash("/hotels").withRel("hotels");
-            resource.add(productsLink);
+            Link roomsLink = entityLinks.linkForSingleResource(HotelDTO.class, id).slash("/rooms").withRel("rooms");
+            resource.add(roomsLink);
 
         } catch (Exception ex) {
             LOGGER.error("cannot link HATEOAS", ex);
