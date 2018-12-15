@@ -1,0 +1,17 @@
+<div ng-repeat="hotel in hotels">
+    <h1>{{hotel.name}}</h1>
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-4 col-md-3 col-lg-2" ng-repeat="room in hotel.rooms">
+            <a href="#!/rooms/{{room.id}}">
+                <div class="thumbnail">
+                    <img ng-src="{{rooms._links.image.href}}"><br>
+
+                    <div class="caption">
+                        <h3>{{room.name}}</h3>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>

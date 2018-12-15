@@ -1,20 +1,22 @@
 package cz.muni.fi.pa165.web.restapi.hateoas;
 
+import cz.muni.fi.pa165.api.dto.BookingDTO;
+import cz.muni.fi.pa165.web.restapi.controller.BookingsRestController;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityLinks;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
-
-import cz.muni.fi.pa165.api.dto.BookingDTO;
-import cz.muni.fi.pa165.web.restapi.controller.BookingsRestController;
+import org.springframework.stereotype.Component;
 
 /**
  * 
  * @author Soňa Barteková
  *
  */
+@Component
 public class BookingResourceAssembler extends ResourceAssemblerSupport<BookingDTO, BookingResource>{
 
     private EntityLinks entityLinks;

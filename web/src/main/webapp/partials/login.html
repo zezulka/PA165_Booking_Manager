@@ -1,0 +1,38 @@
+<main>
+    <div class="container">
+        <tm-alerts></tm-alerts>
+
+        <form name="form" class="form-horizontal" novalidate>
+
+            <div class="form-group" ng-class="{ 'has-error': !(form.email.$valid) }">
+                <label for="email" class="control-label col-sm-2">Email</label>
+                <div class="col-sm-5">
+                    <input ng-model="userAuthenticate.email" id="email" name="email" type="email" class="form-control" required />
+                </div>
+                <div class="col-sm-5">
+                    <p ng-show="form.email.$error.required" class="help-block">Email is required.</p>
+                    <p ng-show="form.email.$error.email" class="help-block">The value is not a valid email.</p>
+                </div>
+            </div>
+
+            <div class="form-group" ng-class="{ 'has-error': !(form.password.$valid) }">
+                <label for="password" class="control-label col-sm-2">Password</label>
+                <div class="col-sm-5">
+                    <input ng-model="userAuthenticate.password" id="password" name="password" type="password" class="form-control" required />
+                </div>
+                <div class="col-sm-5">
+                    <p ng-show="form.password.$error.required" class="help-block">Password is required.</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-10 col-sm-offset-2">
+                    <button ng-click="login(userAuthenticate)" ng-disabled="!form.$valid" class="btn btn-primary" type="submit">
+                        <i class="fa fa-sign-in"></i> Submit
+                    </button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</main>
