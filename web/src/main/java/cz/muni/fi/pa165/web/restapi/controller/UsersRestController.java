@@ -63,10 +63,9 @@ public class UsersRestController {
         UserResource resource = resourceAssembler.toResource(userDTO);
         return new ResponseEntity<>(resource, HttpStatus.OK);
     }
-
-/*
-    @RequestMapping(value = "/email", method = RequestMethod.GET)
-    public final HttpEntity<UserResource> getUserByEmail(@RequestBody String email)
+    
+    @RequestMapping(value = "?email={email}", method = RequestMethod.GET)
+    public final HttpEntity<UserResource> getUserByEmail(@PathVariable("email") String email)
         throws ResourceNotFoundException {
         LOGGER.debug("[REST] getUserByEmail({})", email);
         UserDTO userDTO = facade.findByEmail(email);
@@ -76,7 +75,6 @@ public class UsersRestController {
         UserResource resource = resourceAssembler.toResource(userDTO);
         return new ResponseEntity<>(resource, HttpStatus.OK);
     }
-    */
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     public boolean authenticateUser(@RequestBody UserAuthenticateDTO userAuthenticateDTO)
