@@ -1,0 +1,375 @@
+#%RAML 1.0
+title: Booking Manager
+version: 1.0
+baseUri: http://localhost:8080/pa165/rest
+
+uses:
+  assets:  assets.lib.raml
+
+/bookings:
+  displayName: Bookings
+  description: Bookings for hotel rooms. There can be only one room for a given booking.
+  get:
+    description: Returns all bookings present in the database, including those done in the past.
+  /create:
+    post:
+      description: Creates a new booking if such operation is possible, i.e. no other bookings overlap with the new one.
+  /{id}:
+    delete:
+      description: Delete the booking. This can be only done if the booking is to happen in the future.
+    get:
+      description: Retrieve booking with the given database identifier.
+  /bookings/{id}/discount:
+    get:
+      description: Calculate discount for the given booking.
+
+/users:
+  displayName: Users
+  description: Users
+  get:
+    description: Return all users registered in this system, including administrators.
+    responses:
+      200:
+        body:
+          application/json:
+            example: {
+    "_embedded": {
+        "users": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http://localhost:8080/pa165/rest/users/1"
+                    },
+                    "users": {
+                        "href": "http://localhost:8080/pa165/rest/users"
+                    }
+                },
+                "email": "john.doe@gmail.com",
+                "firstName": "John",
+                "id": 1,
+                "surname": "Doe"
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": "http://localhost:8080/pa165/rest/users/2"
+                    },
+                    "users": {
+                        "href": "http://localhost:8080/pa165/rest/users"
+                    }
+                },
+                "email": "alice.foobar@gmail.com",
+                "firstName": "Alice",
+                "id": 2,
+                "surname": "Foobar"
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": "http://localhost:8080/pa165/rest/users/3"
+                    },
+                    "users": {
+                        "href": "http://localhost:8080/pa165/rest/users"
+                    }
+                },
+                "email": "peter.gabriel@gene.sis",
+                "firstName": "Peter",
+                "id": 3,
+                "surname": "Gabriel"
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": "http://localhost:8080/pa165/rest/users/4"
+                    },
+                    "users": {
+                        "href": "http://localhost:8080/pa165/rest/users"
+                    }
+                },
+                "email": "booking.manager.admin@gmail.com",
+                "firstName": "Admin",
+                "id": 4,
+                "surname": "Istrator"
+            }
+        ]
+    },
+    "_links": {
+        "authenticate": {
+            "href": "http://localhost:8080/pa165/rest/users/authenticate"
+        },
+        "self": {
+            "href": "http://localhost:8080/pa165/rest/users"
+        }
+    }
+}
+  /{id}:
+    get:
+      description: Return user with the given id if such one exists.
+      responses:
+        200:
+          body:
+            application/json:
+              example: {
+    "_links": {
+        "self": {
+            "href": "http://localhost:8080/pa165/rest/users/1"
+        },
+        "users": {
+            "href": "http://localhost:8080/pa165/rest/users"
+        }
+    },
+    "email": "john.doe@gmail.com",
+    "firstName": "John",
+    "id": 1,
+    "surname": "Doe"
+}
+
+  /authenticate:
+    post:
+      description: Authenticate user using his email address and password. Returned value is either "true" or "false".
+
+/hotels:
+  displayName: Hotels
+  description: Hotels
+  get:
+    description: Return all hotels present in the database.
+    responses:
+      200:
+        body:
+          application/json:
+            example: {
+    "_embedded": {
+        "hotels": [
+            {
+                "_links": {
+                    "rooms": {
+                        "href": "http://localhost:8080/pa165/rest/hotels/5/rooms"
+                    },
+                    "self": {
+                        "href": "http://localhost:8080/pa165/rest/hotels/5"
+                    }
+                },
+                "address": "Malaysia, Genting Islands",
+                "id": 5,
+                "name": "First World Hotel",
+                "rooms": null
+            },
+            {
+                "_links": {
+                    "rooms": {
+                        "href": "http://localhost:8080/pa165/rest/hotels/12/rooms"
+                    },
+                    "self": {
+                        "href": "http://localhost:8080/pa165/rest/hotels/12"
+                    }
+                },
+                "address": "Russia, Moscow",
+                "id": 12,
+                "name": "Izmailovo Hotel",
+                "rooms": null
+            },
+            {
+                "_links": {
+                    "rooms": {
+                        "href": "http://localhost:8080/pa165/rest/hotels/18/rooms"
+                    },
+                    "self": {
+                        "href": "http://localhost:8080/pa165/rest/hotels/18"
+                    }
+                },
+                "address": "Saudi Arabia, Mecca",
+                "id": 18,
+                "name": "Makkah Abraj Al Tayseer",
+                "rooms": null
+            },
+            {
+                "_links": {
+                    "rooms": {
+                        "href": "http://localhost:8080/pa165/rest/hotels/25/rooms"
+                    },
+                    "self": {
+                        "href": "http://localhost:8080/pa165/rest/hotels/25"
+                    }
+                },
+                "address": "USA, Las Vegas",
+                "id": 25,
+                "name": "City Center",
+                "rooms": null
+            },
+            {
+                "_links": {
+                    "rooms": {
+                        "href": "http://localhost:8080/pa165/rest/hotels/29/rooms"
+                    },
+                    "self": {
+                        "href": "http://localhost:8080/pa165/rest/hotels/29"
+                    }
+                },
+                "address": "USA, Las Vegas",
+                "id": 29,
+                "name": "Caesars Palace",
+                "rooms": null
+            }
+        ]
+    },
+    "_links": {
+        "create": {
+            "href": "http://localhost:8080/pa165/rest/hotels/create"
+        },
+        "self": {
+            "href": "http://localhost:8080/pa165/rest/hotels"
+        }
+    }
+}
+           
+  /{id}:
+    get:
+      description: Return hotel with the given id if such one exists.
+      responses:
+        200:
+          body:
+            application/json:
+              example: {
+		  "_links": {
+		    "rooms": {
+	              "href": "http://localhost:8080/pa165/rest/hotels/29/rooms"
+		    },
+		    "self": {
+		      "href": "http://localhost:8080/pa165/rest/hotels/29"
+		    }
+		  },
+    		  "address": "USA, Las Vegas",
+    		  "id": 29,
+    		  "name": "Caesars Palace",
+    		  "rooms": null
+		}
+        404:
+          body:
+            application/json:
+              example: {
+    "code": "ResourceNotFoundException",
+    "message": "hotel 1 not found"
+}
+    delete:
+      description: Delete hotel with the given id if such one exists.
+  /{id}/rooms:
+    get:
+      description: Return all rooms for the given hotel.
+      responses:
+        200:
+          body:
+            application/json: {
+    "_embedded": {
+        "rooms": [
+            {
+                "id": 6,
+                "number": 101,
+                "type": "SINGLE_ROOM",
+                "description": "One large bed. Free Wi-Fi included.",
+                "recommendedPrice": 1000,
+                "hotel": {
+                    "id": 5,
+                    "address": "Malaysia, Genting Islands",
+                    "name": "First World Hotel",
+                    "rooms": null
+                },
+                "image": "",
+                "_links": {
+                    "self": {
+                        "href": "http://localhost:8080/pa165/rest/rooms/6"
+                    },
+                    "rooms": {
+                        "href": "http://localhost:8080/pa165/rest/rooms/6/rooms"
+                    }
+                }
+            },
+            {
+                "id": 7,
+                "number": 102,
+                "type": "DOUBLE_ROOM",
+                "description": "One large double bed. Flat-screen TV available.",
+                "recommendedPrice": 1200,
+                "hotel": {
+                    "id": 5,
+                    "address": "Malaysia, Genting Islands",
+                    "name": "First World Hotel",
+                    "rooms": null
+                },
+                "image": "",
+                "_links": {
+                    "self": {
+                        "href": "http://localhost:8080/pa165/rest/rooms/7"
+                    },
+                    "rooms": {
+                        "href": "http://localhost:8080/pa165/rest/rooms/7/rooms"
+                    }
+                }
+            },
+            {
+                "id": 8,
+                "number": 103,
+                "type": "SUITE",
+                "description": "The most luxurious suite you will find around. Free champagne and stunning city view.",
+                "recommendedPrice": 1800,
+                "hotel": {
+                    "id": 5,
+                    "address": "Malaysia, Genting Islands",
+                    "name": "First World Hotel",
+                    "rooms": null
+                },
+                "image": "",
+                "_links": {
+                    "self": {
+                        "href": "http://localhost:8080/pa165/rest/rooms/8"
+                    },
+                    "rooms": {
+                        "href": "http://localhost:8080/pa165/rest/rooms/8/rooms"
+                    }
+                }
+            }
+        ]
+    },
+    "_links": {
+        "self": {
+            "href": "http://localhost:8080/pa165/rest/hotels/5/rooms"
+        }
+    }
+}
+
+
+
+/rooms:
+  displayName: Rooms
+  description: All the rooms in the system. Room belongs exactly to one hotel.
+  get:
+    description: Return all rooms present in the database.
+  /{id}:
+    get:
+      description: Return room with the given id if such one exists.
+      responses:
+        200:
+          body:
+            application/json: {
+    "id": 20,
+    "number": 100,
+    "type": "DOUBLE_ROOM",
+    "description": "A place to sleep.",
+    "recommendedPrice": 1100,
+    "hotel": {
+        "id": 18,
+        "address": "Saudi Arabia, Mecca",
+        "name": "Makkah Abraj Al Tayseer",
+        "rooms": null
+    },
+    "image": "",
+    "_links": {
+        "self": {
+            "href": "http://localhost:8080/pa165/rest/rooms/20"
+        },
+        "rooms": {
+            "href": "http://localhost:8080/pa165/rest/rooms/20/rooms"
+        }
+    }
+}
+    delete:
+      description: Delete room with the given id if such one exists.

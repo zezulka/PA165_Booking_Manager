@@ -65,7 +65,6 @@ public class HotelsRestController {
                 linkTo(HotelsRestController.class).withSelfRel(),
                 linkTo(HotelsRestController.class).slash("/create").withRel("create"));
         return new ResponseEntity<>(hotels, HttpStatus.OK);
-
     }
 
     @RequestMapping(value = "/{id}/rooms", method = RequestMethod.GET)

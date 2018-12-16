@@ -95,6 +95,7 @@ public class SampleDataLoadingFacadeImpl implements SampleDataLoadingFacade {
         h.setAddress(address);
         h.setRooms(rooms);
         hotelService.create(h);
+        assert(h.getId() != null);
         for (Room r : rooms) {
             r.setHotel(h);
             roomService.createRoom(r);

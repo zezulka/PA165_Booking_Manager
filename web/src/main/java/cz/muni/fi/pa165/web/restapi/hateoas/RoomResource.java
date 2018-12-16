@@ -17,7 +17,7 @@ import cz.muni.fi.pa165.enums.RoomType;
  * @author Soňa Barteková
  *
  */
-@Relation(value = "room", collectionRelation = "roomss")
+@Relation(value = "room", collectionRelation = "rooms")
 @JsonPropertyOrder({"id", "number", "type", "description", "recommendedPrice"})
 public class RoomResource extends ResourceSupport{
 	
