@@ -14,11 +14,5 @@ mvn clean install && cd web && mvn cargo:run
 * Petr Valenta (učo 487561)
 * Martin Páleník (učo 359817)
 
-### Class Diagram: 
-![Class Diagram](docs/class%20diagram.svg "Class Diagram")
-
-### Usecase Diagram: 
-![Usecase Diagram](docs/usecase%20diagram.svg "Class Diagram")
-
 ### REST API Documentation
-![link to HTML](api.html "REST API")
+[link to HTML](api.html) (REST API)
