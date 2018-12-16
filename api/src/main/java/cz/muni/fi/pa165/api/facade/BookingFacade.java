@@ -18,6 +18,14 @@ public interface BookingFacade {
      * @return List of bookings
      */
     List<BookingDTO> getAllBookings();
+    
+    /**
+     * Returns booking with given identifier.
+     * 
+     * @param id given id
+     * @return booking with given identifier
+     */
+    BookingDTO getBooking(Long id);
 
     /**
      * Returns a List of all bookings in a given range for a given room.
