@@ -21,4 +21,4 @@ mvn clean install && cd web && mvn cargo:run
 ![Usecase Diagram](docs/usecase%20diagram.svg "Class Diagram")
 
 ### REST API Documentation
-![link to HTML](docs/api.html "REST API")
+![link to HTML](api.html "REST API")
