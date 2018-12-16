@@ -3,7 +3,7 @@
 This project is developed for the PA165 course at FI MUNI.
 
 ### Build and execution of this project
-mvn clean install && cd web && mvn cargo:run
+```mvn clean install && cd web && mvn cargo:run```
 
 ### The official assignment
 > Let us imagine a Booking Manager for hotels: every customer can choose desired hotel and a particular room. There is also an information about accommodation price. It should be possible to browse hotels and available rooms. System Administrator should be also able to find customers who have some room reserved in a certain time range.
@@ -14,5 +14,4 @@ mvn clean install && cd web && mvn cargo:run
 * Petr Valenta (učo 487561)
 * Martin Páleník (učo 359817)
 
-### REST API Documentation
-[link to HTML](api.html)
+[REST API Documentation](api.html)
