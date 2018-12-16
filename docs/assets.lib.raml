@@ -1,0 +1,39 @@
+#%RAML 1.0 Library
+
+types:
+  Hotel:
+    type: object
+    properties:
+      id: integer
+      address: string
+      name: string
+      rooms: Room[]     
+
+  Room:
+    type: object
+    properties:
+      id: integer
+      hotelNumber: integer
+      description: string
+      recommendedPrice: string
+      type: string
+
+  Booking:
+    type: object
+    properties:
+      id: integer
+      total: string
+      fromDate: string
+      toDate: string
+      usr: User
+      room: Room
+
+  User:
+    type: object
+    properties:
+      id: integer
+      email: string
+      firstName: string
+      surname: string
+      administrator: boolean
+      passwordHash: string

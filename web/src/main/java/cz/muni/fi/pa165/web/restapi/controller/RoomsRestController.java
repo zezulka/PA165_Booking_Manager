@@ -107,17 +107,6 @@ public class RoomsRestController {
         RoomResource resource = resourceAssembler.toResource(roomDTO);
         return new ResponseEntity<>(resource, HttpStatus.OK);
 	}
-
-    @RequestMapping(value = "/hotel", method = RequestMethod.GET)
-	public final HttpEntity<Resources<RoomResource>> getRoomByHotel(@RequestBody HotelDTO hotel) 
-            throws ResourceNotFoundException {
-        LOGGER.debug("[REST] getRoomByHotel()");
-        List<RoomResource> resourceCollection = resourceAssembler.toResources(roomFacade.findByHotel(hotel));
-        Resources<RoomResource> rooms = new Resources<>(resourceCollection,
-                linkTo(RoomsRestController.class).withSelfRel(),
-                linkTo(RoomsRestController.class).slash("/create").withRel("create"));
-        return new ResponseEntity<>(rooms, HttpStatus.OK);
-	}
     
     @RequestMapping(value = "?number={number}", method = RequestMethod.GET)
 	public final HttpEntity<RoomResource> getRoomByNumber(@RequestBody HotelDTO hotel, @PathVariable("number") Integer number) 
