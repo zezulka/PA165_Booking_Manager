@@ -15,4 +15,4 @@ mvn clean install && cd web && mvn cargo:run
 * Martin Páleník (učo 359817)
 
 ### REST API Documentation
-[link to HTML](api.html) (REST API)
+[link to HTML](api.html)
