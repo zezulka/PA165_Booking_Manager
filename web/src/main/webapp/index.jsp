@@ -31,7 +31,7 @@
                     <a class="navbar-brand" href="#">BookingManager v0.999</a>
                 </div>
                 <div id="navbar" class="collapse navbar-collapse">
-                    <ul class="nav navbar-nav">
+                    <ul class="nav navbar-nav navbar-left">
                         <li class="active"><a href="#">Home</a></li>
                         <li><a href="#about">About</a></li>
                         <li class="dropdown">
@@ -42,9 +42,9 @@
                             </ul>
                         </li>
                     </ul>
-                </div>
-                <div class="navbar navbar-right">
-                    <button type="button" class="btn btn-lg btn-success">Login</button>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="#!/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                    </ul>
                 </div>
             </div>
         </nav>
