@@ -106,7 +106,7 @@ public class BookingsRestController {
         return new ResponseEntity<>(resource, HttpStatus.OK);
 	}
 
-    @RequestMapping(value = "/discount/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/bookings/{id}/discount", method = RequestMethod.GET)
     public BigDecimal getDiscount(@PathVariable("id") long id) 
             throws ResourceNotFoundException {
         LOGGER.debug("[REST] getDiscount({})", id);
@@ -118,11 +118,11 @@ public class BookingsRestController {
         return discount;
 	}
     
-    @RequestMapping(value = "/room/{id}/dateFrom/{from}/dateTo/{to}", method = RequestMethod.GET)
-	public final HttpEntity<Resources<BookingResource>> getBookingsByRange(@PathVariable("id") long roomId, 
-			@PathVariable("from") String from, @PathVariable("to") String to) 
+    @RequestMapping(value = "/bookings?from={from}&to={to}&room={roomId}", method = RequestMethod.GET)
+	public final HttpEntity<Resources<BookingResource>> getBookingsByRange(@PathVariable("from") String from, 
+			@PathVariable("to") String to, @PathVariable("id") long roomId) 
             throws ResourceNotFoundException {
-        LOGGER.debug("[REST] getBookingsByRange({}, {}, {})", roomId, from, to);
+        LOGGER.debug("[REST] getBookingsByRange({}, {}, {})", from, to, roomId);
         DateRange range = getRange(from, to);
         List<BookingResource> resourceCollection = resourceAssembler.toResources(bookingFacade.findBookingsByRange(range, roomId));
         Resources<BookingResource> rooms = new Resources<>(resourceCollection,
