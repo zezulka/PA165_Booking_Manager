@@ -14,4 +14,10 @@ This project is developed for the PA165 course at FI MUNI.
 * Petr Valenta (učo 487561)
 * Martin Páleník (učo 359817)
 
+### Class Diagram: 
+![Class Diagram](class%20diagram.svg "Class Diagram")
+
+### Usecase Diagram: 
+![Usecase Diagram](usecase%20diagram.svg "Class Diagram")
+
 [REST API Documentation](api.html)
