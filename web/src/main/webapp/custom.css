@@ -1,0 +1,5 @@
+
+/* fix for navbar covering content */
+body {
+    padding-top: 120px;
+}
