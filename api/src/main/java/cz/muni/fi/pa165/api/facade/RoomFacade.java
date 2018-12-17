@@ -1,5 +1,6 @@
 package cz.muni.fi.pa165.api.facade;
 
+import cz.muni.fi.pa165.api.DateRange;
 import cz.muni.fi.pa165.api.dto.HotelDTO;
 import cz.muni.fi.pa165.api.dto.RoomCreateDTO;
 import cz.muni.fi.pa165.api.dto.RoomDTO;
@@ -57,4 +58,6 @@ public interface RoomFacade {
      * @return found room or null
      */
     RoomDTO findByNumber(HotelDTO hotel, Integer number);
+
+    List<RoomDTO> getAvailableRooms(DateRange dateRange, HotelDTO hotelDTO);
 }
