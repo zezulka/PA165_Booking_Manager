@@ -108,7 +108,7 @@ public class RoomsRestController {
         return new ResponseEntity<>(resource, HttpStatus.OK);
 	}
     
-    @RequestMapping(value = "?number={number}", method = RequestMethod.GET)
+    @RequestMapping(value = "/number/{number}", method = RequestMethod.GET)
 	public final HttpEntity<RoomResource> getRoomByNumber(@RequestBody HotelDTO hotel, @PathVariable("number") Integer number) 
             throws ResourceNotFoundException {
         LOGGER.debug("[REST] getRoomByNumber({})", number);

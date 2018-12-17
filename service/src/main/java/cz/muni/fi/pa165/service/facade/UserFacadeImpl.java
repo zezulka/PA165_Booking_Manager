@@ -41,8 +41,8 @@ public class UserFacadeImpl implements UserFacade {
         if (auth == null) {
             throw new IllegalArgumentException("Authentication details cannot be null.");
         }
-        return userService.authenticate(
-                userService.findById(auth.getUserId()), auth.getPassword());
+        User user = userService.findByEmail(auth.getEmail());
+        return userService.authenticate(user, auth.getPassword());
     }
 
     @Override

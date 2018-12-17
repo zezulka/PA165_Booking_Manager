@@ -20,6 +20,7 @@ import cz.muni.fi.pa165.web.restapi.exception.ResourceNotFoundException;
 import cz.muni.fi.pa165.web.restapi.exception.ServerProblemException;
 import cz.muni.fi.pa165.web.restapi.hateoas.UserResource;
 import cz.muni.fi.pa165.web.restapi.hateoas.UserResourceAssembler;
+import java.util.Collections;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
 /**
@@ -45,14 +46,14 @@ public class UsersRestController {
         LOGGER.debug("[REST] getUsers()");
         List<UserResource> resourceCollection = resourceAssembler.toResources(facade.getAll());
         Resources<UserResource> users = new Resources<>(resourceCollection,
-            linkTo(UsersRestController.class).withSelfRel(),
-            linkTo(UsersRestController.class).slash("/authenticate").withRel("authenticate"));
+                linkTo(UsersRestController.class).withSelfRel(),
+                linkTo(UsersRestController.class).slash("/authenticate").withRel("authenticate"));
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public final HttpEntity<UserResource> getUserById(@PathVariable("id") long id)
-        throws ResourceNotFoundException {
+            throws ResourceNotFoundException {
         LOGGER.debug("[REST] getUserById({})", id);
         UserDTO userDTO = facade.findById(id);
         if (userDTO == null) {
@@ -61,10 +62,10 @@ public class UsersRestController {
         UserResource resource = resourceAssembler.toResource(userDTO);
         return new ResponseEntity<>(resource, HttpStatus.OK);
     }
-    
-    @RequestMapping(value = "?email={email}", method = RequestMethod.GET)
+
+    @RequestMapping(value = "/email/{email}/", method = RequestMethod.GET)
     public final HttpEntity<UserResource> getUserByEmail(@PathVariable("email") String email)
-        throws ResourceNotFoundException {
+            throws ResourceNotFoundException {
         LOGGER.debug("[REST] getUserByEmail({})", email);
         UserDTO userDTO = facade.findByEmail(email);
         if (userDTO == null) {
@@ -76,13 +77,13 @@ public class UsersRestController {
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     public boolean authenticateUser(@RequestBody UserAuthenticateDTO userAuthenticateDTO)
-        throws ServerProblemException {
+            throws ServerProblemException {
         LOGGER.debug("[REST] authenticateUser({})");
 
         try {
             boolean ret = facade.authenticate(userAuthenticateDTO);
             return ret;
-        } catch(IllegalArgumentException ex) {
+        } catch (IllegalArgumentException ex) {
             throw new IllegalRequestException("authentication error");
         }
     }

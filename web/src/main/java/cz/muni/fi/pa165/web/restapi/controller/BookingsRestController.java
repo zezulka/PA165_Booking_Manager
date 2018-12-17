@@ -29,9 +29,10 @@ import cz.muni.fi.pa165.web.restapi.exception.RestApiException;
 import cz.muni.fi.pa165.web.restapi.exception.ServerProblemException;
 import cz.muni.fi.pa165.web.restapi.hateoas.BookingResource;
 import cz.muni.fi.pa165.web.restapi.hateoas.BookingResourceAssembler;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
- * 
+ *
  * @author Soňa Barteková
  *
  */
@@ -83,19 +84,36 @@ public class BookingsRestController {
             throw new ServerProblemException(rootCause.getMessage());
         }
     }
-    
+
     @RequestMapping(method = RequestMethod.GET)
-    public final HttpEntity<Resources<BookingResource>> getBookings() {
-        LOGGER.debug("[REST] getBookings()");
-        List<BookingResource> resourceCollection = resourceAssembler.toResources(bookingFacade.getAllBookings());
+    public final HttpEntity<Resources<BookingResource>> getBookings(
+            @RequestParam(name = "from", required = false) String from,
+            @RequestParam(name = "to", required = false) String to,
+            @RequestParam(name = "room", required = false) Long room) {
+
+        List<BookingResource> resourceCollection;
+        if (room != null) {
+            LOGGER.debug("[REST] getBookingsByRange({}, {}, {})", from, to, room);
+            if(from == null) {
+                from = LocalDate.MIN.toString();
+            }
+            if(to == null) {
+                to = LocalDate.MAX.toString();
+            }
+            DateRange range = getRange(from, to);
+            resourceCollection = resourceAssembler.toResources(bookingFacade.findBookingsByRange(range, room));
+        } else {
+            LOGGER.debug("[REST] getBookings()");
+            resourceCollection = resourceAssembler.toResources(bookingFacade.getAllBookings());
+        }
         Resources<BookingResource> rooms = new Resources<>(resourceCollection,
                 linkTo(BookingsRestController.class).withSelfRel(),
                 linkTo(BookingsRestController.class).slash("/create").withRel("create"));
         return new ResponseEntity<>(rooms, HttpStatus.OK);
     }
-    
+
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public final HttpEntity<BookingResource> getBooking(@PathVariable("id") long id) 
+    public final HttpEntity<BookingResource> getBooking(@PathVariable("id") long id)
             throws ResourceNotFoundException {
         LOGGER.debug("[REST] getBooking({})", id);
         BookingDTO booking = bookingFacade.getBooking(id);
@@ -104,10 +122,10 @@ public class BookingsRestController {
         }
         BookingResource resource = resourceAssembler.toResource(booking);
         return new ResponseEntity<>(resource, HttpStatus.OK);
-	}
+    }
 
-    @RequestMapping(value = "/bookings/{id}/discount", method = RequestMethod.GET)
-    public BigDecimal getDiscount(@PathVariable("id") long id) 
+    @RequestMapping(value = "/{id}/discount", method = RequestMethod.GET)
+    public BigDecimal getDiscount(@PathVariable("id") long id)
             throws ResourceNotFoundException {
         LOGGER.debug("[REST] getDiscount({})", id);
         BookingDTO booking = bookingFacade.getBooking(id);
@@ -116,24 +134,11 @@ public class BookingsRestController {
         }
         BigDecimal discount = bookingFacade.calculateDiscount(booking);
         return discount;
-	}
-    
-    @RequestMapping(value = "/bookings?from={from}&to={to}&room={roomId}", method = RequestMethod.GET)
-	public final HttpEntity<Resources<BookingResource>> getBookingsByRange(@PathVariable("from") String from, 
-			@PathVariable("to") String to, @PathVariable("id") long roomId) 
-            throws ResourceNotFoundException {
-        LOGGER.debug("[REST] getBookingsByRange({}, {}, {})", from, to, roomId);
-        DateRange range = getRange(from, to);
-        List<BookingResource> resourceCollection = resourceAssembler.toResources(bookingFacade.findBookingsByRange(range, roomId));
-        Resources<BookingResource> rooms = new Resources<>(resourceCollection,
-                linkTo(BookingsRestController.class).withSelfRel(),
-                linkTo(BookingsRestController.class).slash("/create").withRel("create"));
-        return new ResponseEntity<>(rooms, HttpStatus.OK);
-	}
-    
+    }
+
     private DateRange getRange(String from, String to) {
-    	LocalDate fromDate = LocalDate.parse(from);
-    	LocalDate toDate = LocalDate.parse(to);
-    	return new DateRange(fromDate, toDate);
+        LocalDate fromDate = LocalDate.parse(from);
+        LocalDate toDate = LocalDate.parse(to);
+        return new DateRange(fromDate, toDate);
     }
 }
