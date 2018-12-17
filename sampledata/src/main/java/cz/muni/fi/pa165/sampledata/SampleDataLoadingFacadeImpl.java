@@ -167,7 +167,7 @@ public class SampleDataLoadingFacadeImpl implements SampleDataLoadingFacade {
             return buffer.toByteArray();
         }
         catch (IOException e) {
-            return new byte[0];
+            return null;
         }
     }
 }

@@ -2,3 +2,15 @@
     <h3>{{hotel.name}}</h3>
     <p>{{hotel.address}}</p>
 </div>
+
+<div ng-repeat="room in hotel.rooms">
+    <a href="#!/room/{{room.id}}">{{room.number}}</a>
+</div>
+<!--
+<div ng-repeat="room in hotel.rooms">
+    <h3>{{room.number}}</h3>
+    <a href="#!/room/{{room.id}}">
+        <img class="img-responsive img-rounded" ng-src="{{room._links.image.href}}"><br>
+    </a>
+</div>
+--!>
