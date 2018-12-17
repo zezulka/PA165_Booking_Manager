@@ -17,3 +17,11 @@
         </a>
     </div>
 </div>
+
+<div ng-app="app" ng-controller="ctrl">
+    <form ng-submit="save($element.action)">
+        <input type="date" name="from"/>
+        <input type="date" name="to"/>
+        <button type="submit">Send Message</button>
+    </form>
+</div>

@@ -55,7 +55,7 @@ bookingManager.run(function ($rootScope, $http) {
         $rootScope.errorAlert = undefined;
     };
     $http.defaults.headers.common.Accept = 'application/hal+json, */*';
-    
+
 });
 
 function loadHotelRooms($http, hotel, roomLink) {
@@ -63,6 +63,24 @@ function loadHotelRooms($http, hotel, roomLink) {
         hotel.rooms = response.data['_embedded']['rooms'];
         console.log('AJAX loaded ${hotel.rooms.length} rooms to the hotel ${hotel.name}');
     });
+}
+
+/**
+ * Date
+ */
+var ctrl = function ($scope, $http, $log) {
+    $scope.save = function (form) {
+        //if (!$scope.contactForm.$valid) return;
+
+        var url = form.attributes["target"];
+        $log.debug(url);
+
+        $http
+                .post(url, {email: $scope.email, name: $scope.name})
+                .success(function (response) {
+                    $log.debug(response);
+                })
+    }
 }
 
 controllers.controller('BrowseHotelsCtrl', function ($scope, $http) {
@@ -112,8 +130,8 @@ controllers.controller('RoomDetailCtrl',
                     }
             );
         });
-        
-        
+
+
 /**
  * Authentication stuff.
  */
@@ -135,15 +153,25 @@ controllers.factory('PageService', function ($rootScope, $http, $location, $cook
             return title;
         },
 
-        setTitle: function (title) { _title = title; },
+        setTitle: function (title) {
+            _title = title;
+        },
 
-        getPageName: function () { return _pageName; },
+        getPageName: function () {
+            return _pageName;
+        },
 
-        setPageName: function (pageName) { _pageName = pageName; },
+        setPageName: function (pageName) {
+            _pageName = pageName;
+        },
 
-        isSchedulerLayoutUsed: function () { return _useSchedulerLayout; },
+        isSchedulerLayoutUsed: function () {
+            return _useSchedulerLayout;
+        },
 
-        useSchedulerLayout: function () { _useSchedulerLayout = true; },
+        useSchedulerLayout: function () {
+            _useSchedulerLayout = true;
+        },
 
         isEditing: function (route) {
             return route.current.$$route.edit === true;
@@ -240,23 +268,22 @@ controllers.factory('PageService', function ($rootScope, $http, $location, $cook
                 method: 'POST',
                 data: userAuthenticate
             })
-            .then(function (response) {
-                    if (response.data === "true") {
-                        console.log("login OK");
-                        _this.getDataAsync('/users/email/' + userAuthenticate.email + '/').then(function (user) {
-                            _this.setUser(user);
-                            $location.path('/');
-                        });
-                    }
-                    else {
+                    .then(function (response) {
+                        if (response.data === "true") {
+                            console.log("login OK");
+                            _this.getDataAsync('/users/email/' + userAuthenticate.email + '/').then(function (user) {
+                                _this.setUser(user);
+                                $location.path('/');
+                            });
+                        } else {
+                            $rootScope.errorAlert = 'User authentication failed. Wrong email or password';
+                            _this.consumeMessages();
+                        }
+                    }, function (reason) {
                         $rootScope.errorAlert = 'User authentication failed. Wrong email or password';
                         _this.consumeMessages();
                     }
-                }, function (reason) {
-                    $rootScope.errorAlert = 'User authentication failed. Wrong email or password';
-                    _this.consumeMessages();
-                }
-            )
+                    )
         },
 
         logout: function () {
@@ -266,13 +293,13 @@ controllers.factory('PageService', function ($rootScope, $http, $location, $cook
             $location.path('/');
         },
 
-        requireLogin: function() {
+        requireLogin: function () {
             if (!this.isLoggedIn()) {
                 $location.path('/');
             }
         },
 
-        requireAdmin: function() {
+        requireAdmin: function () {
             if (!this.isAdministrator()) {
                 $location.path('/');
             }
