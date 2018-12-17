@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import cz.muni.fi.pa165.api.DateRange;
 import cz.muni.fi.pa165.api.dto.HotelDTO;
 import cz.muni.fi.pa165.api.dto.RoomCreateDTO;
 import cz.muni.fi.pa165.api.dto.RoomDTO;
@@ -76,4 +77,11 @@ public class RoomFacadeImpl implements RoomFacade {
         roomService.updateRoom(bms.mapTo(room, Room.class));
 		
 	}
+
+    @Override
+    public List<RoomDTO> getAvailableRooms(DateRange range, HotelDTO hotel) {
+        return bms.mapTo(
+            roomService.getAvailableRooms(range, bms.mapTo(hotel, Hotel.class)),
+            RoomDTO.class);
+    }
 }
