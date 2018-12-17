@@ -22,6 +22,8 @@ public class RoomDTO {
 
     private byte[] image;
 
+    private String imageMimeType;
+
     private RoomType type;
 
     public Long getId() {
@@ -71,6 +73,10 @@ public class RoomDTO {
     public void setImage(byte[] image) {
         this.image = image;
     }
+
+    public String getImageMimeType() { return imageMimeType; }
+
+    public void setImageMimeType(String imageMimeType) { this.imageMimeType = imageMimeType; }
 
     public RoomType getType() {
         return type;
