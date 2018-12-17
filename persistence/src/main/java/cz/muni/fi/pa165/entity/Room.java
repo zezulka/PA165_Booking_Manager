@@ -8,6 +8,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
@@ -36,9 +37,11 @@ public class Room {
     @DecimalMin("0.0")
     private BigDecimal recommendedPrice;
 
-    @NotNull
+    @Lob
     private byte[] image;
 
+    private String imageMimeType;
+    
     @Enumerated
     private RoomType type;
 
@@ -92,6 +95,10 @@ public class Room {
     public void setImage(byte[] image) {
         this.image = image;
     }
+
+    public String getImageMimeType() { return imageMimeType; }
+
+    public void setImageMimeType(String imageMimeType) { this.imageMimeType = imageMimeType; }
 
     public RoomType getType() {
         return type;
