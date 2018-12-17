@@ -249,14 +249,11 @@ controllers.factory('PageService', function ($rootScope, $http, $location, $cook
                         });
                     }
                     else {
-                        console.log("login NOK");
-                        _this.pushErrorMessage('User authentication failed. Wrong email or password');
+                        $rootScope.errorAlert = 'User authentication failed. Wrong email or password';
                         _this.consumeMessages();
                     }
                 }, function (reason) {
-                    console.log("login NOK");
-                    console.log(reason);
-                    _this.pushErrorMessage('User authentication failed. Wrong email or password');
+                    $rootScope.errorAlert = 'User authentication failed. Wrong email or password';
                     _this.consumeMessages();
                 }
             )

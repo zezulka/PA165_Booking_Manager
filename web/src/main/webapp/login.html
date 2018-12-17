@@ -1,6 +1,10 @@
 <main>
     <div class="container">
-        <tm-alerts></tm-alerts>
+        <div ng-app="bookingManager">
+            <div ng-show="errorAlert" class="alert alert-danger alert-dismissible" role="alert">
+                <alert type="danger" ng-click="hideErrorAlert()">{{errorAlert}}</alert>
+            </div>
+        </div>
 
         <form name="form" class="form-horizontal" novalidate>
 
@@ -25,9 +29,9 @@
                 </div>
             </div>
             <div class="col-sm-10 col-sm-offset-2">
-                    <button ng-click="login(userAuthenticate)" ng-disabled="!form.$valid" class="btn btn-primary" type="submit">
-                        <i class="fa fa-sign-in"></i> Submit
-                    </button>
+                <button ng-click="login(userAuthenticate)" ng-disabled="!form.$valid" class="btn btn-primary" type="submit">
+                    <i class="fa fa-sign-in"></i> Submit
+                </button>
             </div>
 
         </form>
