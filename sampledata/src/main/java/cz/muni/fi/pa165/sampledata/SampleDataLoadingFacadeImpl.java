@@ -10,7 +10,10 @@ import cz.muni.fi.pa165.service.BookingService;
 import cz.muni.fi.pa165.service.HotelService;
 import cz.muni.fi.pa165.service.RoomService;
 import cz.muni.fi.pa165.service.UserService;
+
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -25,6 +28,8 @@ import org.springframework.stereotype.Component;
 @Component
 @Transactional
 public class SampleDataLoadingFacadeImpl implements SampleDataLoadingFacade {
+
+    private static final String JPEG = "image/jpeg";
 
     @Autowired
     private HotelService hotelService;
@@ -49,42 +54,42 @@ public class SampleDataLoadingFacadeImpl implements SampleDataLoadingFacade {
         DateRange ongoing = ongoingRange();
         DateRange future = futureRange();
 
-        Room first = room(101, "One large bed. Free Wi-Fi included.", new BigDecimal("1000.0"), new byte[0], RoomType.SINGLE_ROOM);
-        Room second = room(102, "One large double bed. Flat-screen TV available.", new BigDecimal("1200.0"), new byte[0], RoomType.DOUBLE_ROOM);
+        Room first = room(101, "One large bed. Free Wi-Fi included.", new BigDecimal("1000.0"), "1.jpeg", RoomType.SINGLE_ROOM);
+        Room second = room(102, "One large double bed. Flat-screen TV available.", new BigDecimal("1200.0"), "2.jpeg", RoomType.DOUBLE_ROOM);
         Room third = room(103, "The most luxurious suite you will find around. Free champagne and stunning city view.",
-                new BigDecimal("1800.0"), new byte[0], RoomType.SUITE);
+                new BigDecimal("1800.0"), "3.jpeg", RoomType.SUITE);
         hotelAndRooms("First World Hotel", "Malaysia, Genting Islands", Arrays.asList(first, second, third));
         booking(past, alice, first);
         booking(future, alice, first);
         booking(ongoing, john, second);
 
-        first = room(101, "One large bed. Basic.", new BigDecimal("800.0"), new byte[0], RoomType.SINGLE_ROOM);
-        second = room(102, "Two single beds. Entire unit is wheelchair accessible.", new BigDecimal("1200.0"), new byte[0], RoomType.DOUBLE_ROOM);
+        first = room(101, "One large bed. Basic.", new BigDecimal("800.0"), "4.jpeg", RoomType.SINGLE_ROOM);
+        second = room(102, "Two single beds. Entire unit is wheelchair accessible.", new BigDecimal("1200.0"), "5.jpeg", RoomType.DOUBLE_ROOM);
         third = room(103, "Very comfy double bed. It is also possible to admire the capital from a terrace.", 
-                new BigDecimal("2500.0"), new byte[0], RoomType.COMFORT_DOUBLE_ROOM);
+                new BigDecimal("2500.0"), "6.jpeg", RoomType.COMFORT_DOUBLE_ROOM);
         hotelAndRooms("Izmailovo Hotel", "Russia, Moscow", Arrays.asList(first, second, third));
         booking(past, peter, third);
         booking(past, john, first);
 
-        first = room(72, "No alcohol. Just a double bed.", new BigDecimal("1050.0"), new byte[0], RoomType.DOUBLE_ROOM);
-        second = room(100, "A place to sleep.", new BigDecimal("1100.0"), new byte[0], RoomType.DOUBLE_ROOM);
-        third = room(101, "A place to sleep, pray and sit.", new BigDecimal("1200.0"), new byte[0], RoomType.DOUBLE_ROOM);
+        first = room(72, "No alcohol. Just a double bed.", new BigDecimal("1050.0"), "7.jpeg", RoomType.DOUBLE_ROOM);
+        second = room(100, "A place to sleep.", new BigDecimal("1100.0"), "8.jpeg", RoomType.DOUBLE_ROOM);
+        third = room(101, "A place to sleep, pray and sit.", new BigDecimal("1200.0"), "9.jpeg", RoomType.DOUBLE_ROOM);
         hotelAndRooms("Makkah Abraj Al Tayseer", "Saudi Arabia, Mecca", Arrays.asList(first, second, third));
         booking(future, john, first);
         booking(future, alice, second);
         booking(future, peter, third);
 
-        first = room(101, "Lots of alcohol in the minibar.", new BigDecimal("2500.0"), new byte[0], RoomType.SINGLE_ROOM);
+        first = room(101, "Lots of alcohol in the minibar.", new BigDecimal("2500.0"), "10.jpeg", RoomType.SINGLE_ROOM);
         second = room(102, "Lots of alcohol in the minibar. As a free gift, you'll get up to 100 chips "
-                + "to any casino of your choice.", new BigDecimal("3000.0"), new byte[0], RoomType.DOUBLE_ROOM);
+                + "to any casino of your choice.", new BigDecimal("3000.0"), "11.jpeg", RoomType.DOUBLE_ROOM);
         third = room(103, "Lots of alcohol in the minibar. As a free gift, you'll get up to 100 chips "
-                + "to any casino of your choice.", new BigDecimal("3000.0"), new byte[0], RoomType.DOUBLE_ROOM);
+                + "to any casino of your choice.", new BigDecimal("3000.0"), "12.jpeg", RoomType.DOUBLE_ROOM);
         hotelAndRooms("City Center", "USA, Las Vegas", Arrays.asList(first, second, third));
 
         // Let's leave those without any description to see what it does with the frontend.
-        first = room(123, "", new BigDecimal("1260.0"), new byte[0], RoomType.SINGLE_ROOM);
-        second = room(456, "", new BigDecimal("1500.0"), new byte[0], RoomType.DOUBLE_ROOM);
-        third = room(789, "", new BigDecimal("1350.0"), new byte[0], RoomType.COMFORT_SINGLE_ROOM);
+        first = room(123, "", new BigDecimal("1260.0"), "13.jpeg", RoomType.SINGLE_ROOM);
+        second = room(456, "", new BigDecimal("1500.0"), "14.jpeg", RoomType.DOUBLE_ROOM);
+        third = room(789, "", new BigDecimal("1350.0"), "15.jpeg", RoomType.COMFORT_SINGLE_ROOM);
         hotelAndRooms("Caesars Palace", "USA, Las Vegas", Arrays.asList(first, second, third));
         booking(ongoing, john, second);
     }
@@ -102,11 +107,12 @@ public class SampleDataLoadingFacadeImpl implements SampleDataLoadingFacade {
         }
     }
 
-    private Room room(Integer number, String description, BigDecimal recommendedPrice, byte[] image, RoomType type) {
+    private Room room(Integer number, String description, BigDecimal recommendedPrice, String imageFile, RoomType type) {
         Room r = new Room();
         r.setNumber(number);
         r.setDescription(description);
-        r.setImage(image);
+        r.setImage(readImage(imageFile));
+        r.setImageMimeType(JPEG);
         r.setRecommendedPrice(recommendedPrice);
         r.setType(type);
         return r;
@@ -147,5 +153,21 @@ public class SampleDataLoadingFacadeImpl implements SampleDataLoadingFacade {
     private DateRange futureRange() {
         LocalDate now = LocalDate.now();
         return new DateRange(now.plusDays(1), now.plusDays(6));
+    }
+
+    private byte[] readImage(String file) {
+        try (InputStream is = this.getClass().getResourceAsStream("/" + file)) {
+            int nRead;
+            ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+            byte[] data = new byte[1024];
+            while ((nRead = is.read(data, 0, data.length)) != -1) {
+                buffer.write(data, 0, nRead);
+            }
+            buffer.flush();
+            return buffer.toByteArray();
+        }
+        catch (IOException e) {
+            return new byte[0];
+        }
     }
 }
