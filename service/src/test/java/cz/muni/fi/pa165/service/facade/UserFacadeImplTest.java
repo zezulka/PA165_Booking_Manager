@@ -60,7 +60,7 @@ public class UserFacadeImplTest {
         userDTO1.setPasswordHash(hash);
         userDTO1.setAdministrator(false);
 
-        userAuthDTO1.setUserId(1L);
+        userAuthDTO1.setEmail(userDTO1.getEmail());
         userAuthDTO1.setPassword(password);
 
         newUserDTO.setEmail("new@user.com");
@@ -85,8 +85,7 @@ public class UserFacadeImplTest {
     @Test
     public void testAuthenticate() throws Exception {
         userFacade.register(newUserDTO, password);
-        long id = newUserDTO.getId();
-        userAuthDTO1.setUserId(id);
+        userAuthDTO1.setEmail(newUserDTO.getEmail());
 
         boolean ret = userFacade.authenticate(userAuthDTO1);
         assertTrue(ret);
