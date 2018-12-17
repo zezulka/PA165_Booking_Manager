@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 import cz.muni.fi.pa165.entity.Hotel;
-import cz.muni.fi.pa165.entity.Room;
 import cz.muni.fi.pa165.service.exceptions.BookingManagerDataAccessException;
 
 /**

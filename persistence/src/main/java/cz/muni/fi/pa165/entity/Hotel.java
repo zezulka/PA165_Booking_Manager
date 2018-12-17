@@ -52,7 +52,7 @@ public class Hotel {
     public void setName(String name) {
         this.name = name;
     }
-
+    
     public List<Room> getRooms() {
         return Collections.unmodifiableList(rooms);
     }
@@ -63,6 +63,10 @@ public class Hotel {
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     @Override

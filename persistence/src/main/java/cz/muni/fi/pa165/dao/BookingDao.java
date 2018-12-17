@@ -2,6 +2,7 @@ package cz.muni.fi.pa165.dao;
 
 import cz.muni.fi.pa165.entity.Booking;
 import cz.muni.fi.pa165.entity.Room;
+import cz.muni.fi.pa165.entity.User;
 
 import java.util.List;
 
@@ -68,7 +69,18 @@ public interface BookingDao {
      * @throws IllegalArgumentException room is null or the id of the room is
      * null
      * @return A {@link List} of all bookings submitted for the
-     * <code>room</code>.
+     * {@code room}.
      */
     public List<Booking> findByRoom(Room room);
+
+    /**
+     * Returns all bookings made by given user.
+     *
+     * @param user user to search bookings with, cannot be null
+     * @throws IllegalArgumentException user is null or the id of the user is
+     * null
+     * @return A {@link List} of all bookings submitted for the
+     * {@code user}.
+     */
+    public List<Booking> findByUser(User user);
 }

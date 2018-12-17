@@ -1,0 +1,14 @@
+<configuration debug="false">
+    <appender name="APP" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%date %-5level %logger - %message%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="APP"/>
+    </root>
+
+    <logger name="org.hibernate.tool.hbm2ddl.SchemaExport" level="OFF" />
+    <logger name="org.hibernate.engine.jdbc.spi.SqlExceptionHelper" level="OFF" />
+</configuration>

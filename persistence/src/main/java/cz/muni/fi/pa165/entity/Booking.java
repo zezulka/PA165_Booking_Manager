@@ -55,19 +55,19 @@ public class Booking {
         this.total = total;
     }
 
-    public LocalDate getFrom() {
+    public LocalDate getFromDate() {
         return fromDate;
     }
 
-    public void setFrom(LocalDate from) {
+    public void setFromDate(LocalDate from) {
         this.fromDate = from;
     }
 
-    public LocalDate getTo() {
+    public LocalDate getToDate() {
         return toDate;
     }
 
-    public void setTo(LocalDate to) {
+    public void setToDate(LocalDate to) {
         this.toDate = to;
     }
 
@@ -109,10 +109,10 @@ public class Booking {
             return false;
         }
         Booking other = (Booking) obj;
-        if (fromDate == null || !fromDate.equals(other.getFrom())) {
+        if (fromDate == null || !fromDate.equals(other.getFromDate())) {
             return false;
         }
-        if (toDate == null || !toDate.equals(other.getTo())) {
+        if (toDate == null || !toDate.equals(other.getToDate())) {
             return false;
         }
         if (usr == null || !usr.equals(other.getUser())) {

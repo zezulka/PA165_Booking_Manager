@@ -1,13 +1,19 @@
 package cz.muni.fi.pa165.service;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
+import cz.muni.fi.pa165.api.DateRange;
 import cz.muni.fi.pa165.dao.RoomDao;
 import cz.muni.fi.pa165.entity.Hotel;
 import cz.muni.fi.pa165.entity.Room;
+import cz.muni.fi.pa165.service.exceptions.BookingManagerDataAccessException;
+import static cz.muni.fi.pa165.api.utils.DateRangeUtils.rangesOverlap;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.persistence.EntityExistsException;
+import javax.persistence.TransactionRequiredException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  *
@@ -20,6 +26,9 @@ public class RoomServiceImpl implements RoomService {
     @Autowired
     private RoomDao roomDao;
 
+    @Autowired
+    private BookingService bookingService;
+
     @Override
     public List<Room> findAll() {
         return roomDao.findAll();
@@ -30,7 +39,11 @@ public class RoomServiceImpl implements RoomService {
         if (id == null) {
             throw new IllegalArgumentException("Id cannot be null.");
         }
-        return roomDao.findById(id);
+        try {
+            return roomDao.findById(id);
+        } catch (IllegalArgumentException e) {
+            throw new BookingManagerDataAccessException("Could not find room by id.", e);
+        }
     }
 
     @Override
@@ -38,7 +51,11 @@ public class RoomServiceImpl implements RoomService {
         if (hotel == null) {
             throw new IllegalArgumentException("Hotel cannot be null.");
         }
-        return roomDao.findByHotel(hotel);
+        try {
+            return roomDao.findByHotel(hotel);
+        } catch (IllegalArgumentException e) {
+            throw new BookingManagerDataAccessException("Could not find room by hotel.", e);
+        }
     }
 
     @Override
@@ -49,25 +66,35 @@ public class RoomServiceImpl implements RoomService {
         if (number == null) {
             throw new IllegalArgumentException("Number cannot be null.");
         }
-        return roomDao.findByNumber(hotel, number);
+        try {
+            return roomDao.findByNumber(hotel, number);
+        } catch (IllegalArgumentException e) {
+            throw new BookingManagerDataAccessException("Could not find room by number.", e);
+        }
     }
 
     @Override
-    public boolean createRoom(Room room) {
+    public void createRoom(Room room) {
         if (room == null) {
             throw new IllegalArgumentException("Room cannot be null.");
         }
-        roomDao.create(room);
-        return roomDao.findById(room.getId()) != null;
+        try {
+            roomDao.create(room);
+        } catch (TransactionRequiredException | EntityExistsException | IllegalArgumentException e) {
+            throw new BookingManagerDataAccessException("Could not create a new room.", e);
+        }
     }
 
     @Override
-    public boolean deleteRoom(Room room) {
+    public void deleteRoom(Room room) {
         if (room == null) {
             throw new IllegalArgumentException("Room cannot be null.");
         }
-        roomDao.remove(room);
-        return roomDao.findById(room.getId()) == null;
+        try {
+            roomDao.remove(room);
+        } catch (TransactionRequiredException | EntityExistsException | IllegalArgumentException e) {
+            throw new BookingManagerDataAccessException("Could not delete room.", e);
+        }
     }
 
     @Override
@@ -75,12 +102,39 @@ public class RoomServiceImpl implements RoomService {
         if (room == null) {
             throw new IllegalArgumentException("Room cannot be null.");
         }
-        return roomDao.update(room);
+        try {
+            return roomDao.update(room);
+        } catch (TransactionRequiredException | EntityExistsException | IllegalArgumentException e) {
+            throw new BookingManagerDataAccessException("Could not update room.", e);
+        }
     }
 
     @Override
     public List<Room> getAvailableRooms(DateRange range, Hotel hotel) {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        if (range == null) {
+            throw new IllegalArgumentException("Range cannot be null.");
+        }
+        if (hotel == null) {
+            throw new IllegalArgumentException("Hotel cannot be null.");
+        }
+        try {
+            return roomDao.findByHotel(hotel).stream()
+                    .filter((room) -> isRoomAvailableInRange(room, range))
+                    .collect(Collectors.toList());
+        } catch (IllegalArgumentException e) {
+            throw new BookingManagerDataAccessException("Could not find "
+                    + "available rooms.", e);
+        }
+    }
+
+    private boolean isRoomAvailableInRange(Room room, DateRange range) {
+        return bookingService.findByRoom(room).stream()
+                .filter((booking) -> {
+                    DateRange bookingRange = new DateRange(booking.getFromDate(),
+                            booking.getToDate());
+                    return rangesOverlap(bookingRange, range);
+                })
+                .collect(Collectors.toList()).isEmpty();
     }
 
 }
