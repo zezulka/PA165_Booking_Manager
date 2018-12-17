@@ -4,6 +4,7 @@ package cz.muni.fi.pa165.web.restapi.controller;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -19,6 +20,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import cz.muni.fi.pa165.api.dto.HotelDTO;
 import cz.muni.fi.pa165.api.dto.RoomCreateDTO;
@@ -120,5 +125,17 @@ public class RoomsRestController {
         return new ResponseEntity<>(resource, HttpStatus.OK);
 	}
 
-
+    @RequestMapping(value = "/{id}/image", method = RequestMethod.GET)
+    public void roomImage(@PathVariable long id, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        RoomDTO roomDTO = roomFacade.findById(id);
+        byte[] image = roomDTO.getImage();
+        if (image == null) {
+            response.sendRedirect(request.getContextPath() + "/no-image.png");
+        } else {
+            response.setContentType(roomDTO.getImageMimeType());
+            ServletOutputStream out = response.getOutputStream();
+            out.write(image);
+            out.flush();
+        }
+    }
 }

@@ -7,6 +7,12 @@ import org.springframework.hateoas.EntityLinks;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 import org.springframework.stereotype.Component;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+
+import java.lang.reflect.Method;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import cz.muni.fi.pa165.api.dto.RoomDTO;
 import cz.muni.fi.pa165.web.restapi.controller.RoomsRestController;
@@ -38,7 +44,11 @@ public class RoomResourceAssembler extends ResourceAssemblerSupport<RoomDTO, Roo
 
             Link productsLink = entityLinks.linkForSingleResource(RoomDTO.class, id).slash("/rooms").withRel("rooms");
             resource.add(productsLink);
-
+            
+            Method productImage = RoomsRestController.class.getMethod("roomImage", long.class, HttpServletRequest.class, HttpServletResponse.class);
+            Link imageLink = linkTo(productImage.getDeclaringClass(), productImage, id).withRel("image");
+            resource.add(imageLink);
+            
         } catch (Exception ex) {
             LOGGER.error("cannot link HATEOAS", ex);
         }

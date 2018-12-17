@@ -115,7 +115,7 @@ controllers.controller('RoomDetailCtrl',
             var roomId = $routeParams.roomId;
             $http.get('/pa165/rest/rooms/' + roomId).then(
                     function (response) {
-                        $scope.product = response.data;
+                        $scope.room = response.data;
                         console.log('[AJAX] room ${scope.room.name} detail load');
                     },
                     function error(response) {
