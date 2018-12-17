@@ -85,6 +85,9 @@ controllers.controller('HotelDetailCtrl',
                     function (response) {
                         $scope.hotel = response.data;
                         console.log('[AJAX] hotel ${scope.hotel.name} detail load');
+
+                        var hotelRoomsLink = $scope.hotel['_links'].rooms.href;
+                        loadHotelRooms($http, $scope.hotel, hotelRoomsLink);
                     },
                     function error(response) {
                         console.log("failed to load product ${productId}");
@@ -100,6 +103,7 @@ controllers.controller('RoomDetailCtrl',
                     function (response) {
                         $scope.room = response.data;
                         console.log('[AJAX] room ${scope.room.name} detail load');
+
                     },
                     function error(response) {
                         console.log("failed to load room ${productId}");
