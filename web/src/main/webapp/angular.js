@@ -54,13 +54,16 @@ bookingManager.run(function ($rootScope, $http) {
     $rootScope.hideErrorAlert = function () {
         $rootScope.errorAlert = undefined;
     };
+    $rootScope.fromDate = null;
+    $rootScope.toDate = null;
     $http.defaults.headers.common.Accept = 'application/hal+json, */*';
 
 });
 
 function loadHotelRooms($http, hotel, roomLink) {
     $http.get(roomLink).then(function (response) {
-        hotel.rooms = response.data['_embedded']['rooms'];
+        hotel.roomCount = response.data['_embedded']['rooms'].length;
+        hotel.rooms = []; //By default, we do not want to show any rooms to the user as no date range is selected at the beginning
         console.log('AJAX loaded ${hotel.rooms.length} rooms to the hotel ${hotel.name}');
     });
 }
@@ -68,20 +71,20 @@ function loadHotelRooms($http, hotel, roomLink) {
 /**
  * Date
  */
-var ctrl = function ($scope, $http, $log) {
-    $scope.save = function (form) {
-        //if (!$scope.contactForm.$valid) return;
-
-        var url = form.attributes["target"];
-        $log.debug(url);
-
-        $http
-                .post(url, {email: $scope.email, name: $scope.name})
-                .success(function (response) {
-                    $log.debug(response);
-                })
+controllers.controller('AvailableRoomsController', function ($scope, $rootScope, $http) {
+    $scope.vacancies = function (hotel) {
+        console.log("foobar");
+        var hotelId = hotel.id;
+        var from = $scope.from.toISOString().substring(0,10);
+        var to = $scope.to.toISOString().substring(0,10);
+        // Remeber these globally as we'll need to use them later
+        $rootScope.fromDate = from;
+        $rootScope.toDate = to; 
+        $http.get('/pa165/rest/hotels/' + hotelId + '/vacancy?from=' + from + '&to=' + to).then(function (response) {
+            hotel.rooms = response.data['_embedded']['rooms'];
+        });
     }
-}
+});
 
 controllers.controller('BrowseHotelsCtrl', function ($scope, $http) {
     console.log('/pa165/rest/hotels/');
