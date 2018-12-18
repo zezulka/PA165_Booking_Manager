@@ -54,8 +54,6 @@ bookingManager.run(function ($rootScope, $http) {
     $rootScope.hideErrorAlert = function () {
         $rootScope.errorAlert = undefined;
     };
-    $rootScope.fromDate = null;
-    $rootScope.toDate = null;
     $http.defaults.headers.common.Accept = 'application/hal+json, */*';
 
 });
@@ -83,6 +81,17 @@ controllers.controller('AvailableRoomsController', function ($scope, $rootScope,
         $http.get('/pa165/rest/hotels/' + hotelId + '/vacancy?from=' + from + '&to=' + to).then(function (response) {
             hotel.rooms = response.data['_embedded']['rooms'];
         });
+    }
+});
+
+controllers.controller('RoomBookingController', function ($scope, $rootScope, $http, PageService) {
+    $scope.book = function (room) {
+        $http.post('/pa165/rest/bookings/create', {room: room, fromDate: $rootScope.fromDate, toDate: $rootScope.toDate, usr: PageService.getUser(), total: room.recommendedPrice})
+                .then(function (response) {
+                    console.log("Booking successfully created.");
+                }, function (reason) {
+                    console.log("Could not create booking, reason:" + reason);
+                });
     }
 });
 

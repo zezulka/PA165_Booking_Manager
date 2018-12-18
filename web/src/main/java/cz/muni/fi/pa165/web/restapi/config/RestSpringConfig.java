@@ -1,5 +1,6 @@
 package cz.muni.fi.pa165.web.restapi.config;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cz.muni.fi.pa165.sampledata.BookingManagerSampleDataConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -57,6 +58,7 @@ public class RestSpringConfig implements WebMvcConfigurer {
     public ObjectMapper objectMapper() {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH));
+        objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         return objectMapper;
     }
     

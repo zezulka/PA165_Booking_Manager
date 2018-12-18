@@ -54,14 +54,8 @@ public class BookingsRestController {
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public void createBooking(@RequestBody BookingCreateDTO booking) throws ResourceNotFoundException {
-
-        LOGGER.debug("rest createBooking()");
-
-        try {
-            bookingFacade.createBooking(booking);
-        } catch (Exception ex) {
-            throw new ResourceNotFoundException("booking already exists");
-        }
+        LOGGER.debug("rest createBooking({})", booking);
+        bookingFacade.createBooking(booking);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
@@ -94,10 +88,10 @@ public class BookingsRestController {
         List<BookingResource> resourceCollection;
         if (room != null) {
             LOGGER.debug("[REST] getBookingsByRange({}, {}, {})", from, to, room);
-            if(from == null) {
+            if (from == null) {
                 from = LocalDate.MIN.toString();
             }
-            if(to == null) {
+            if (to == null) {
                 to = LocalDate.MAX.toString();
             }
             DateRange range = getRange(from, to);
