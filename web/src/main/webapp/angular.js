@@ -54,16 +54,37 @@ bookingManager.run(function ($rootScope, $http) {
     $rootScope.hideErrorAlert = function () {
         $rootScope.errorAlert = undefined;
     };
+    $rootScope.fromDate = null;
+    $rootScope.toDate = null;
     $http.defaults.headers.common.Accept = 'application/hal+json, */*';
-    
+
 });
 
 function loadHotelRooms($http, hotel, roomLink) {
     $http.get(roomLink).then(function (response) {
-        hotel.rooms = response.data['_embedded']['rooms'];
+        hotel.roomCount = response.data['_embedded']['rooms'].length;
+        hotel.rooms = []; //By default, we do not want to show any rooms to the user as no date range is selected at the beginning
         console.log('AJAX loaded ${hotel.rooms.length} rooms to the hotel ${hotel.name}');
     });
 }
+
+/**
+ * Date
+ */
+controllers.controller('AvailableRoomsController', function ($scope, $rootScope, $http) {
+    $scope.vacancies = function (hotel) {
+        console.log("foobar");
+        var hotelId = hotel.id;
+        var from = $scope.from.toISOString().substring(0,10);
+        var to = $scope.to.toISOString().substring(0,10);
+        // Remeber these globally as we'll need to use them later
+        $rootScope.fromDate = from;
+        $rootScope.toDate = to; 
+        $http.get('/pa165/rest/hotels/' + hotelId + '/vacancy?from=' + from + '&to=' + to).then(function (response) {
+            hotel.rooms = response.data['_embedded']['rooms'];
+        });
+    }
+});
 
 controllers.controller('BrowseHotelsCtrl', function ($scope, $http) {
     console.log('/pa165/rest/hotels/');
@@ -112,8 +133,8 @@ controllers.controller('RoomDetailCtrl',
                     }
             );
         });
-        
-        
+
+
 /**
  * Authentication stuff.
  */
@@ -135,15 +156,25 @@ controllers.factory('PageService', function ($rootScope, $http, $location, $cook
             return title;
         },
 
-        setTitle: function (title) { _title = title; },
+        setTitle: function (title) {
+            _title = title;
+        },
 
-        getPageName: function () { return _pageName; },
+        getPageName: function () {
+            return _pageName;
+        },
 
-        setPageName: function (pageName) { _pageName = pageName; },
+        setPageName: function (pageName) {
+            _pageName = pageName;
+        },
 
-        isSchedulerLayoutUsed: function () { return _useSchedulerLayout; },
+        isSchedulerLayoutUsed: function () {
+            return _useSchedulerLayout;
+        },
 
-        useSchedulerLayout: function () { _useSchedulerLayout = true; },
+        useSchedulerLayout: function () {
+            _useSchedulerLayout = true;
+        },
 
         isEditing: function (route) {
             return route.current.$$route.edit === true;
@@ -240,23 +271,22 @@ controllers.factory('PageService', function ($rootScope, $http, $location, $cook
                 method: 'POST',
                 data: userAuthenticate
             })
-            .then(function (response) {
-                    if (response.data === "true") {
-                        console.log("login OK");
-                        _this.getDataAsync('/users/email/' + userAuthenticate.email + '/').then(function (user) {
-                            _this.setUser(user);
-                            $location.path('/');
-                        });
-                    }
-                    else {
+                    .then(function (response) {
+                        if (response.data === "true") {
+                            console.log("login OK");
+                            _this.getDataAsync('/users/email/' + userAuthenticate.email + '/').then(function (user) {
+                                _this.setUser(user);
+                                $location.path('/');
+                            });
+                        } else {
+                            $rootScope.errorAlert = 'User authentication failed. Wrong email or password';
+                            _this.consumeMessages();
+                        }
+                    }, function (reason) {
                         $rootScope.errorAlert = 'User authentication failed. Wrong email or password';
                         _this.consumeMessages();
                     }
-                }, function (reason) {
-                    $rootScope.errorAlert = 'User authentication failed. Wrong email or password';
-                    _this.consumeMessages();
-                }
-            )
+                    )
         },
 
         logout: function () {
@@ -266,13 +296,13 @@ controllers.factory('PageService', function ($rootScope, $http, $location, $cook
             $location.path('/');
         },
 
-        requireLogin: function() {
+        requireLogin: function () {
             if (!this.isLoggedIn()) {
                 $location.path('/');
             }
         },
 
-        requireAdmin: function() {
+        requireAdmin: function () {
             if (!this.isAdministrator()) {
                 $location.path('/');
             }

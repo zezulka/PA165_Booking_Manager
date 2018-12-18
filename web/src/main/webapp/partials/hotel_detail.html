@@ -4,6 +4,36 @@
 </div>
 
 <div class="row">
+    <form name="form" ng-controller="AvailableRoomsController" novalidate>
+        <div class="row">
+            <div class="form-group" ng-class="{ 'has-error': !(form.from.$valid) }">
+                <label for="from" class="control-label col-sm-2">From:</label>
+                <div class="col-sm-5">
+                    <input ng-model="from" id="from" class="date" type="date" name="from" min="today" required/>
+                </div>
+                <div class="col-sm-5">
+                    <p ng-show="form.from.$error.required" class="help-block">From date is required.</p>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="form-group" ng-class="{ 'has-error': !(form.from.$valid) }">
+                <label for="to" class="control-label col-sm-2">To:</label>
+                <div class="col-sm-5">
+                    <input ng-model="to" id="to" class="date" type="date" name="to" min="today" required/>
+                </div>
+                <div class="col-sm-5">
+                    <p ng-show="form.from.$error.required" class="help-block">To date is required.</p>
+                </div>
+            </div>
+
+        </div>
+        <button type="submit" ng-disabled="!form.$valid" ng-click="vacancies(hotel)">Determine vacant rooms</button>
+    </form>
+</div>
+
+<div class="row">
     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4" ng-repeat="room in hotel.rooms">
         <a href="#!/room/{{room.id}}">
             <div class="thumbnail">
