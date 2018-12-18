@@ -74,9 +74,13 @@ public class RoomDTO {
         this.image = image;
     }
 
-    public String getImageMimeType() { return imageMimeType; }
+    public String getImageMimeType() {
+        return imageMimeType;
+    }
 
-    public void setImageMimeType(String imageMimeType) { this.imageMimeType = imageMimeType; }
+    public void setImageMimeType(String imageMimeType) {
+        this.imageMimeType = imageMimeType;
+    }
 
     public RoomType getType() {
         return type;
@@ -111,5 +115,12 @@ public class RoomDTO {
         }
         return number.equals(other.number);
     }
+
+    @Override
+    public String toString() {
+        return "RoomDTO{" + "id=" + id + ", hotel=" + hotel + ", number=" + number + ", description=" + description + ", recommendedPrice=" + recommendedPrice + ", image=" + image + ", imageMimeType=" + imageMimeType + ", type=" + type + '}';
+    }
+    
+    
 
 }

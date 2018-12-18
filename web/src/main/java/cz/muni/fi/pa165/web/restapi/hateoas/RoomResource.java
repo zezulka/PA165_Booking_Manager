@@ -13,16 +13,15 @@ import cz.muni.fi.pa165.api.dto.RoomDTO;
 import cz.muni.fi.pa165.enums.RoomType;
 
 /**
- * 
+ *
  * @author Soňa Barteková
  *
  */
 @Relation(value = "room", collectionRelation = "rooms")
 @JsonPropertyOrder({"id", "number", "type", "description", "recommendedPrice"})
-public class RoomResource extends ResourceSupport{
-	
+public class RoomResource extends ResourceSupport {
 
-	@JsonProperty("id")
+    @JsonProperty("id")
     private long dtoId;
 
     private HotelDTO hotel;
@@ -36,44 +35,43 @@ public class RoomResource extends ResourceSupport{
     private byte[] image;
 
     private RoomType type;
-    
+
     public RoomResource(RoomDTO room) {
-    	dtoId = room.getId();
-    	hotel = room.getHotel();
-    	number = room.getNumber();
-    	description = room.getDescription();
-    	recommendedPrice = room.getRecommendedPrice();
-    	image = room.getImage();
-    	type = room.getType();
+        dtoId = room.getId();
+        hotel = room.getHotel();
+        number = room.getNumber();
+        description = room.getDescription();
+        recommendedPrice = room.getRecommendedPrice();
+        image = room.getImage();
+        type = room.getType();
     }
 
-	public Long getDtoId() {
-		return dtoId;
-	}
+    public Long getDtoId() {
+        return dtoId;
+    }
 
-	public HotelDTO getHotel() {
-		return hotel;
-	}
+    public HotelDTO getHotel() {
+        return hotel;
+    }
 
-	public Integer getNumber() {
-		return number;
-	}
+    public Integer getNumber() {
+        return number;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public BigDecimal getRecommendedPrice() {
-		return recommendedPrice;
-	}
+    public BigDecimal getRecommendedPrice() {
+        return recommendedPrice;
+    }
 
-	public byte[] getImage() {
-		return image;
-	}
+    public byte[] getImage() {
+        return image;
+    }
 
-	public RoomType getType() {
-		return type;
-	}
+    public RoomType getType() {
+        return type;
+    }
 
-    
 }

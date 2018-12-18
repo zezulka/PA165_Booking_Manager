@@ -1,8 +1,9 @@
 package cz.muni.fi.pa165.api.dto;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Objects;
 
 /**
  *
@@ -12,8 +13,10 @@ public class BookingCreateDTO {
 
     private BigDecimal total;
 
+    @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate fromDate;
 
+    @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate toDate;
 
     private UserDTO usr;
@@ -82,15 +85,21 @@ public class BookingCreateDTO {
             return false;
         }
         final BookingCreateDTO other = (BookingCreateDTO) obj;
-        if(fromDate == null || !fromDate.equals(other.getFromDate())) {
+        if (fromDate == null || !fromDate.equals(other.getFromDate())) {
             return false;
         }
-        if(toDate == null || !toDate.equals(other.getToDate())) {
+        if (toDate == null || !toDate.equals(other.getToDate())) {
             return false;
         }
-        if(usr == null || !usr.equals(other.getUsr())) {
+        if (usr == null || !usr.equals(other.getUsr())) {
             return false;
         }
         return room != null && !room.equals(other.getRoom());
     }
+
+    @Override
+    public String toString() {
+        return "BookingCreateDTO{" + "total=" + total + ", fromDate=" + fromDate + ", toDate=" + toDate + ", usr=" + usr + ", room=" + room + '}';
+    }
+
 }

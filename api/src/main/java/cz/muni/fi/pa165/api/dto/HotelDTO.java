@@ -62,4 +62,9 @@ public class HotelDTO {
     public int hashCode() {
         return Objects.hash(this.getName());
     }
+
+    @Override
+    public String toString() {
+        return "HotelDTO{" + "id=" + id + ", address=" + address + ", name=" + name + ", rooms=" + rooms + '}';
+    }
 }
