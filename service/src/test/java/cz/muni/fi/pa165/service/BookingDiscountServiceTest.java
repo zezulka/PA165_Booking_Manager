@@ -78,7 +78,7 @@ public final class BookingDiscountServiceTest {
         user.setFirstName("John");
         user.setSurname("Doe");
         user.setEmail("john.doe@foo.bar");
-        user.setAdmin(false);
+        user.setAdministrator(false);
         user.setPasswordHash(hash);
 
         room.setDescription("Single room, beautiful view.");
@@ -115,7 +115,7 @@ public final class BookingDiscountServiceTest {
         usr.setFirstName("Joe");
         usr.setSurname("Black");
         usr.setEmail("joe.black@foo.bar");
-        usr.setAdmin(false);
+        usr.setAdministrator(false);
         usr.setPasswordHash(hash);
         when(bookingDao.findByUser(user)).thenReturn(Collections.singletonList(booking));
         when(bookingDao.findByUser(usr)).thenReturn(Collections.<Booking>emptyList());

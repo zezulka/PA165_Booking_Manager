@@ -96,13 +96,13 @@ public class BookingDaoTest extends AbstractTestNGSpringContextTests {
         c1.setEmail("teriductyl@jurassic.com");
         c1.setFirstName("Teri");
         c1.setSurname("Ductyl");
-        c1.setAdmin(false);
+        c1.setAdministrator(false);
         c1.setPasswordHash("IAmDead123");
 
         c2.setEmail("paige.turner@book.com");
         c2.setFirstName("Paige");
         c2.setSurname("Turner");
-        c2.setAdmin(true);
+        c2.setAdministrator(true);
         c2.setPasswordHash("TurnToPage394");
 
         b1.setTotal(new BigDecimal("1.5"));

@@ -39,11 +39,8 @@ public class RoomResourceAssembler extends ResourceAssemblerSupport<RoomDTO, Roo
         long id = dto.getId();
         RoomResource resource = new RoomResource(dto);
         try {
-            Link catLink = entityLinks.linkForSingleResource(RoomDTO.class, id).withSelfRel();
-            resource.add(catLink);
-
-            Link productsLink = entityLinks.linkForSingleResource(RoomDTO.class, id).slash("/rooms").withRel("rooms");
-            resource.add(productsLink);
+            resource.add(entityLinks.linkForSingleResource(RoomDTO.class, id).withSelfRel());
+            resource.add(entityLinks.linkForSingleResource(RoomDTO.class, id).slash("/rooms").withRel("rooms"));
             
             Method productImage = RoomsRestController.class.getMethod("roomImage", long.class, HttpServletRequest.class, HttpServletResponse.class);
             Link imageLink = linkTo(productImage.getDeclaringClass(), productImage, id).withRel("image");

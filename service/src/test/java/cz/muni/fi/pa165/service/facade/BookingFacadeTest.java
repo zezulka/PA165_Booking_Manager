@@ -131,7 +131,7 @@ public class BookingFacadeTest {
         bCreateDTO.setFromDate(LocalDate.of(2015, Month.OCTOBER, 22));
         bCreateDTO.setToDate(LocalDate.of(2015, Month.OCTOBER, 30));
         bCreateDTO.setRoom(rDTO);
-        bCreateDTO.setUsr(uDTO);
+        bCreateDTO.setUser(uDTO);
         bCreateDTO.setTotal(new BigDecimal("1000.0"));
     }
 

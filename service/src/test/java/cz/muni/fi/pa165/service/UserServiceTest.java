@@ -58,13 +58,13 @@ public class UserServiceTest {
         user.setFirstName("Martin");
         user.setSurname("IsAwesome");
         user.setEmail("user@gmail.com");
-        user.setAdmin(false);
+        user.setAdministrator(false);
         user.setPasswordHash(hash);
 
         admin.setFirstName("Martin");
         admin.setSurname("IsAwesomeAdmin");
         admin.setEmail("admin@gmail.com");
-        admin.setAdmin(true);
+        admin.setAdministrator(true);
         admin.setPasswordHash(hash);
 
         users = new ArrayList<>();
@@ -151,14 +151,14 @@ public class UserServiceTest {
     public void isAdmin() {
         when(userDao.findByEmail("admin@gmail.com")).thenReturn(admin);
         User a = userService.findByEmail("admin@gmail.com");
-        assertTrue(a.isAdmin());
+        assertTrue(a.isAdministrator());
     }
 
     @Test
     public void isNotAdmin() {
         when(userDao.findByEmail("user@gmail.com")).thenReturn(user);
         User u = userService.findByEmail("user@gmail.com");
-        assertFalse(u.isAdmin());
+        assertFalse(u.isAdministrator());
     }
 
     @Test

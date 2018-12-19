@@ -2,6 +2,7 @@ package cz.muni.fi.pa165.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -30,7 +31,7 @@ public class Booking {
 
     @ManyToOne
     @NotNull
-    private User usr;
+    private User user;
 
     @ManyToOne
     @NotNull
@@ -72,11 +73,11 @@ public class Booking {
     }
 
     public User getUser() {
-        return usr;
+        return user;
     }
 
     public void setUser(User user) {
-        this.usr = user;
+        this.user = user;
     }
 
     public Room getRoom() {
@@ -92,7 +93,7 @@ public class Booking {
         int hash = 7;
         hash = 53 * hash + (fromDate != null ? fromDate.hashCode() : 0);
         hash = 53 * hash + (toDate != null ? toDate.hashCode() : 0);
-        hash = 53 * hash + (usr != null ? usr.hashCode() : 0);
+        hash = 53 * hash + (user != null ? user.hashCode() : 0);
         hash = 53 * hash + (room != null ? room.hashCode() : 0);
         return hash;
     }
@@ -115,7 +116,7 @@ public class Booking {
         if (toDate == null || !toDate.equals(other.getToDate())) {
             return false;
         }
-        if (usr == null || !usr.equals(other.getUser())) {
+        if (user == null || !user.equals(other.getUser())) {
             return false;
         }
         return !(room == null || !room.equals(other.getRoom()));

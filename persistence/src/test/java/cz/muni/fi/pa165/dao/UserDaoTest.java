@@ -39,13 +39,13 @@ public class UserDaoTest extends AbstractTestNGSpringContextTests {
         c1.setEmail("teriductyl@jurassic.com");
         c1.setFirstName("Teri");
         c1.setSurname("Ductyl");
-        c1.setAdmin(false);
+        c1.setAdministrator(false);
         c1.setPasswordHash("IAmDead123");
 
         c2.setEmail("paige.turner@book.com");
         c2.setFirstName("Paige");
         c2.setSurname("Turner");
-        c2.setAdmin(true);
+        c2.setAdministrator(true);
         c2.setPasswordHash("TurnToPage394");
 
         userDao.create(c1);
@@ -100,7 +100,7 @@ public class UserDaoTest extends AbstractTestNGSpringContextTests {
         c.setEmail("Skyeblue@sky.com");
         c.setFirstName("Skye");
         c.setSurname("Blue");
-        c.setAdmin(false);
+        c.setAdministrator(false);
         c.setPasswordHash("SkyIsBlue42");
 
         userDao.create(c);
@@ -127,11 +127,11 @@ public class UserDaoTest extends AbstractTestNGSpringContextTests {
     @Test
     public void correctUpdateTest() {
         User c = userDao.findById(c1.getId());
-        assertThat(c.isAdmin()).isFalse();
-        c1.setAdmin(true);
+        assertThat(c.isAdministrator()).isFalse();
+        c1.setAdministrator(true);
         userDao.update(c1);
         c = userDao.findById(c1.getId());
-        assertThat(c.isAdmin()).isTrue();
+        assertThat(c.isAdministrator()).isTrue();
         assertThat(userDao.findAll()).hasSize(2).containsExactly(c1, c2);
     }
 
