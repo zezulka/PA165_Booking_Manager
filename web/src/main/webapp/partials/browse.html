@@ -1,12 +1,11 @@
-
 <ul class="list-group">
 
-<div ng-repeat="hotel in hotels">
-    <li class="list-group-item">
-    <a href="#!/hotel/{{hotel.id}}"><h2>{{hotel.name}}</h2></a>
-        <span class="badge badge-primary badge-pill">Rooms in total: {{hotel.roomCount}}</span>
-        <h4>{{hotel.address}}</h4>
-    </li>
-</div>
+    <div ng-repeat="hotel in hotels">
+        <li class="list-group-item">
+            <a href="#!/hotel/{{hotel.id}}"><h2>{{hotel.name}}</h2></a>
+            <span class="badge badge-primary badge-pill">Rooms in total: {{hotel.roomCount}}</span>
+            <h4>{{hotel.address}}</h4>
+        </li>
+    </div>
 </ul>
 

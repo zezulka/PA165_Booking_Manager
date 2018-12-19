@@ -123,9 +123,7 @@ public class SampleDataLoadingFacadeImpl implements SampleDataLoadingFacade {
         u.setFirstName(firstName);
         u.setSurname(surname);
         u.setEmail(email);
-        if (password.equals("admin")) {
-            u.setAdmin(true);
-        }
+        u.setAdministrator(password.equals("admin"));
         userService.register(u, password);
         return u;
     }

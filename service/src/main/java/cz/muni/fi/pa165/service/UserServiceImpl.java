@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
         }
         try {
             User u = findById(candidate.getId());
-            return u != null && u.isAdmin();
+            return u != null && u.isAdministrator();
         } catch (TransactionRequiredException | IllegalArgumentException e) {
             throw new BookingManagerDataAccessException("Could not verify "
                     + "whether the user is an administrator.", e);

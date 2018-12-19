@@ -19,7 +19,7 @@ public class BookingCreateDTO {
     @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate toDate;
 
-    private UserDTO usr;
+    private UserDTO user;
 
     private RoomDTO room;
 
@@ -39,12 +39,12 @@ public class BookingCreateDTO {
         this.toDate = toDate;
     }
 
-    public UserDTO getUsr() {
-        return usr;
+    public UserDTO getUser() {
+        return user;
     }
 
-    public void setUsr(UserDTO usr) {
-        this.usr = usr;
+    public void setUser(UserDTO user) {
+        this.user = user;
     }
 
     public RoomDTO getRoom() {
@@ -68,7 +68,7 @@ public class BookingCreateDTO {
         int hash = 5;
         hash = 53 * hash + fromDate.hashCode();
         hash = 53 * hash + toDate.hashCode();
-        hash = 53 * hash + usr.hashCode();
+        hash = 53 * hash + user.hashCode();
         hash = 53 * hash + room.hashCode();
         return hash;
     }
@@ -91,7 +91,7 @@ public class BookingCreateDTO {
         if (toDate == null || !toDate.equals(other.getToDate())) {
             return false;
         }
-        if (usr == null || !usr.equals(other.getUsr())) {
+        if (user == null || !user.equals(other.getUser())) {
             return false;
         }
         return room != null && !room.equals(other.getRoom());
@@ -99,7 +99,7 @@ public class BookingCreateDTO {
 
     @Override
     public String toString() {
-        return "BookingCreateDTO{" + "total=" + total + ", fromDate=" + fromDate + ", toDate=" + toDate + ", usr=" + usr + ", room=" + room + '}';
+        return "BookingCreateDTO{" + "total=" + total + ", fromDate=" + fromDate + ", toDate=" + toDate + ", usr=" + user + ", room=" + room + '}';
     }
 
 }

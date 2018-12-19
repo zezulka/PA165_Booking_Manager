@@ -1,15 +1,15 @@
 package cz.muni.fi.pa165.entity;
 
+import java.util.Objects;
+
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Email;
-
-import java.util.Objects;
-import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 
 /**
  * User entity
@@ -76,11 +76,11 @@ public class User {
         this.surname = surname;
     }
 
-    public boolean isAdmin() {
+    public boolean isAdministrator() {
         return administrator;
     }
 
-    public void setAdmin(boolean admin) {
+    public void setAdministrator(boolean admin) {
         this.administrator = admin;
     }
 
