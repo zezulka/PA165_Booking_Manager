@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>TODO supply a title</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body>
-        <div>TODO write content</div>
-    </body>
-</html>
+
+<div ng-repeat="hotel in hotels">
+    <div class="row">
+        <a href="#!/hotel/{{hotel.id}}"><span>{{hotel.name}}</span></a>
+        <a href="#!/admin/edithotel/{{hotel.id}}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Edit</a>
+        <a href="#!/admin/deletehotel/{{hotel.id}}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Delete</a>
+    </div>
+</div>

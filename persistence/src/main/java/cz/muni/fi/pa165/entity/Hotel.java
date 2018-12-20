@@ -3,14 +3,18 @@ package cz.muni.fi.pa165.entity;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import javax.persistence.CascadeType;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 /**
  * Class representing one hotel in database.
@@ -31,9 +35,10 @@ public class Hotel {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "hotel")
+    @OneToMany(mappedBy = "hotel", orphanRemoval = true)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Room> rooms = new ArrayList<Room>();
-
+    
     public Hotel() {
     }
 
@@ -52,11 +57,16 @@ public class Hotel {
     public void setName(String name) {
         this.name = name;
     }
-    
+
     public List<Room> getRooms() {
         return Collections.unmodifiableList(rooms);
     }
-
+    
+    public void removeRoom(Room room) {
+        rooms.remove(room);
+        room.setHotel(null);
+    }
+    
     public void setRooms(List<Room> rooms) {
         this.rooms = rooms;
     }

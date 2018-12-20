@@ -124,6 +124,7 @@ public class BookingDaoTest extends AbstractTestNGSpringContextTests {
         List<Room> list = new ArrayList<>();
         list.add(r1);
         list.add(r2);
+        list.add(r3);
         h1.setRooms(list);
 
         hotelDao.create(h1);

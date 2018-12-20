@@ -6,6 +6,7 @@ import cz.muni.fi.pa165.entity.Room;
 import cz.muni.fi.pa165.enums.RoomType;
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.List;
 import org.testng.annotations.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -242,7 +243,13 @@ public class RoomDaoTest extends AbstractTestNGSpringContextTests {
                 .isInstanceOf(DataAccessException.class)
                 .hasCauseInstanceOf(IllegalArgumentException.class);
     }
-
+    
+    @Test
+    public void removeTwice() {
+        roomDao.remove(r1);
+        assertThatThrownBy(() -> roomDao.remove(r1)).isInstanceOf(DataAccessException.class);
+    }
+    
     @Test
     public void removeHappyScenario() {
         assertThat(roomDao.findAll()).hasSize(3);
