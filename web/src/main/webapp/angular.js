@@ -34,14 +34,16 @@ controllers.directive('convertToInt', function () {
 bookingManager.config(['$routeProvider',
     function ($routeProvider) {
         $routeProvider.
-                when('/browse', {templateUrl: 'partials/browse.html', controller: 'BrowseHotelsCtrl'}).
+                when('/browse', {templateUrl: 'partials/browse.html', controller: 'LoadHotelsCtrl'}).
                 when('/about', {templateUrl: 'partials/about.html'}).
                 when('/hotel/:hotelId', {templateUrl: 'partials/hotel_detail.html', controller: 'HotelDetailCtrl'}).
                 when('/room/:roomId', {templateUrl: 'partials/room_detail.html', controller: 'RoomDetailCtrl'}).
                 // this route should handle the use case "System admin should be also able to find customers who have some room reserved in a certain time range"
                 when('/admin/browse_users', {templateUrl: 'partials/admin/browse_customers.html', controller: 'AdminBrowseCustomersCtrl'}).
                 when('/admin/newroom', {templateUrl: 'partials/admin/new_room.html', controller: 'AdminNewRoomCtrl'}).
-                when('/admin/hotels', {templateUrl: 'partials/admin/hotels.html', controller: 'AllHotelsCtrl'}).
+                when('/admin/hotels', {templateUrl: 'partials/admin/hotels.html', controller: 'LoadHotelsCtrl'}).
+                when('/admin/deletehotel/:hotelId', {templateUrl: 'partials/admin/hotels.html', controller: 'DeleteHotelCtrl'}).
+                when('/admin/edithotel/:hotelId', {controller: 'EditHotelCtrl'}).
                 when('/login', {templateUrl: 'login.html', controller: 'LoginController'}).
                 when('/logout', {templateUrl: 'login.html', controller: 'LogoutController'}).
                 otherwise({redirectTo: '/browse'});
@@ -64,7 +66,7 @@ function loadHotelRooms($http, hotel, roomLink) {
     $http.get(roomLink).then(function (response) {
         hotel.roomCount = response.data['_embedded']['rooms'].length;
         hotel.rooms = []; //By default, we do not want to show any rooms to the user as no date range is selected at the beginning
-        console.log('AJAX loaded ' + hotel.rooms.length + 'rooms to the hotel' +  hotel.name);
+        console.log('AJAX loaded ' + hotel.rooms.length + 'rooms to the hotel' + hotel.name);
     });
 }
 
@@ -98,7 +100,19 @@ controllers.controller('RoomBookingController', function ($scope, $rootScope, $h
     }
 });
 
-controllers.controller('BrowseHotelsCtrl', function ($scope, $http, PageService) {
+controllers.controller('DeleteHotelCtrl', function ($scope, $http, $routeParams, $location) {
+    $http.delete('/pa165/rest/hotels/' + $routeParams.hotelId).then(
+            function (response) {
+                console.log('Hotel successfully deleted.');
+                $location.path('/admin/hotels');
+            }, function (error) {
+                console.log('Could not delete hotel.');
+                $location.path('/admin/hotels');
+    }
+    );
+});
+
+controllers.controller('LoadHotelsCtrl', function ($scope, $http, PageService) {
     console.log('/pa165/rest/hotels/');
     $scope.loggedIn = PageService.isLoggedIn;
     $http.get('/pa165/rest/hotels/').then(function (response) {
@@ -148,10 +162,10 @@ controllers.controller('RoomDetailCtrl',
         });
 
 /**
-*
-* Admin stuff
-*
-*/
+ *
+ * Admin stuff
+ *
+ */
 
 function loadUsersBookings($http, user, from, to) {
     $http.get('/pa165/rest/bookings/byUser?from=' + from + '&to=' + to + '&user=' + user.id).then(function (response) {
@@ -161,19 +175,19 @@ function loadUsersBookings($http, user, from, to) {
 }
 
 controllers.controller('AdminBrowseCustomersCtrl', function ($scope, $rootScope, $http) {
-   $scope.browseCostumers = function () {
-       var from = $scope.from.toISOString().substring(0, 10);
-       var to = $scope.to.toISOString().substring(0, 10);
-       $http.get('/pa165/rest/users/reserved?from=' + from + '&to=' + to).then(function (response) {
-           console.log("users reserved");
-           var users = response.data['_embedded']['users'];
-           $scope.users = users;
-           for (var i = 0; i < users.length; i++) {
-               var user = users[i];
-               loadUsersBookings($http, user, from, to);
-           }
-       });
-   }
+    $scope.browseCostumers = function () {
+        var from = $scope.from.toISOString().substring(0, 10);
+        var to = $scope.to.toISOString().substring(0, 10);
+        $http.get('/pa165/rest/users/reserved?from=' + from + '&to=' + to).then(function (response) {
+            console.log("users reserved");
+            var users = response.data['_embedded']['users'];
+            $scope.users = users;
+            for (var i = 0; i < users.length; i++) {
+                var user = users[i];
+                loadUsersBookings($http, user, from, to);
+            }
+        });
+    }
 });
 
 

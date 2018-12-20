@@ -2,7 +2,10 @@ package cz.muni.fi.pa165.entity;
 
 import cz.muni.fi.pa165.enums.RoomType;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
@@ -10,8 +13,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 /**
  * @author Martin Páleník
@@ -23,8 +29,11 @@ public class Room {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @ManyToOne(optional = false)
-    @NotNull
+    @OneToMany(mappedBy = "room", orphanRemoval = true)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private List<Booking> bookings = new ArrayList<Booking>();
+
+    @ManyToOne
     private Hotel hotel;
 
     @NotNull
@@ -41,7 +50,7 @@ public class Room {
     private byte[] image;
 
     private String imageMimeType;
-    
+
     @Enumerated
     private RoomType type;
 
@@ -96,9 +105,21 @@ public class Room {
         this.image = image;
     }
 
-    public String getImageMimeType() { return imageMimeType; }
+    public String getImageMimeType() {
+        return imageMimeType;
+    }
 
-    public void setImageMimeType(String imageMimeType) { this.imageMimeType = imageMimeType; }
+    public void setImageMimeType(String imageMimeType) {
+        this.imageMimeType = imageMimeType;
+    }
+
+    public List<Booking> getBookings() {
+        return bookings;
+    }
+
+    public void setBookings(List<Booking> bookings) {
+        this.bookings = bookings;
+    }
 
     public RoomType getType() {
         return type;
@@ -117,12 +138,11 @@ public class Room {
             return false;
         }
         Room room = (Room) o;
-        return Objects.equals(getHotel(), room.getHotel())
-                && Objects.equals(getNumber(), room.getNumber());
+        return Objects.equals(getNumber(), room.getNumber());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getHotel(), getNumber());
+        return getNumber().hashCode();
     }
 }

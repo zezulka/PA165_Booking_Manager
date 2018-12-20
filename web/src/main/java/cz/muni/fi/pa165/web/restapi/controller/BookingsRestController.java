@@ -29,8 +29,6 @@ import cz.muni.fi.pa165.web.restapi.exception.RestApiException;
 import cz.muni.fi.pa165.web.restapi.exception.ServerProblemException;
 import cz.muni.fi.pa165.web.restapi.hateoas.BookingResource;
 import cz.muni.fi.pa165.web.restapi.hateoas.BookingResourceAssembler;
-import cz.muni.fi.pa165.web.restapi.hateoas.UserResource;
-
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
