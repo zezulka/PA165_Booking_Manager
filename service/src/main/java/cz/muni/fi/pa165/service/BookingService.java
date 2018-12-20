@@ -2,6 +2,7 @@ package cz.muni.fi.pa165.service;
 
 import cz.muni.fi.pa165.entity.Booking;
 import cz.muni.fi.pa165.entity.Room;
+import cz.muni.fi.pa165.entity.User;
 import cz.muni.fi.pa165.service.exceptions.BookingManagerDataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -76,4 +77,14 @@ public interface BookingService {
      * @return bookings for the given room, empty List if there are none
      */
     List<Booking> findByRoom(Room room);
+    
+    /**
+     *  Finds bookings by user.
+     * 
+     * @param user must not be null
+     * @throws IllegalArgumentException {@code user} is null
+     * @throw BookingManagerDataAccessException any exception on the DAO layer occurs
+     * @return bookings for the given user, empty List if there are none
+     */
+    List<Booking> findByUser(User user);
 }

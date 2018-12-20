@@ -28,6 +28,16 @@ public interface AdminService {
      * {@code room}, empty List if there are none.
      */
     List<Booking> getBookingsInRange(DateRange range, Room room);
+    
+
+    /**
+     * @param range range to search for bookings, must not be null
+     * @param user must not be null
+     * @throws IllegalArgumentException {@code range} or {@code user} is null
+     * @return List of {@link Booking}s for the given {@code range} and 
+     * {@code user}, empty List if there are none.
+     */
+    List<Booking> getBookingsInRangeByUser(DateRange range, User user);
 
     /**
      * Find users who have some room reserved in a certain time range.

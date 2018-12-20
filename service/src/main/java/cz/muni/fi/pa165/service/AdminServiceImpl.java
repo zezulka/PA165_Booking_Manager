@@ -62,4 +62,21 @@ public class AdminServiceImpl implements AdminService {
         });
         return new ArrayList<>(result);
     }
+
+	@Override
+	public List<Booking> getBookingsInRangeByUser(DateRange range, User user) {
+        if (range == null) {
+            throw new IllegalArgumentException("Range cannot be null.");
+        }
+        if (user == null) {
+            throw new IllegalArgumentException("User cannot be null.");
+        }
+        try {
+            return bookingDao.findByUser(user).stream()
+                    .filter(booking -> rangesOverlap(rangeFromBooking(booking), range))
+                    .collect(Collectors.toList());
+        } catch (IllegalArgumentException | ConstraintViolationException e) {
+            throw new BookingManagerDataAccessException("DAO exception was thrown:", e);
+        }
+	}
 }

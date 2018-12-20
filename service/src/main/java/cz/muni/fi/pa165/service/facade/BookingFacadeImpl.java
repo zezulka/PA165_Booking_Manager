@@ -12,10 +12,12 @@ import cz.muni.fi.pa165.api.dto.BookingDTO;
 import cz.muni.fi.pa165.api.facade.BookingFacade;
 import cz.muni.fi.pa165.entity.Booking;
 import cz.muni.fi.pa165.entity.Room;
+import cz.muni.fi.pa165.entity.User;
 import cz.muni.fi.pa165.service.AdminService;
 import cz.muni.fi.pa165.service.BookingDiscountService;
 import cz.muni.fi.pa165.service.BookingService;
 import cz.muni.fi.pa165.service.RoomService;
+import cz.muni.fi.pa165.service.UserService;
 import cz.muni.fi.pa165.service.auxiliary.BeanMappingService;
 import javax.inject.Inject;
 
@@ -34,6 +36,9 @@ public class BookingFacadeImpl implements BookingFacade {
 
     @Inject
     private RoomService roomService;
+    
+    @Inject
+    private UserService userService;
 
     @Inject
     private BookingDiscountService bookingDiscountService;
@@ -84,6 +89,12 @@ public class BookingFacadeImpl implements BookingFacade {
 	public BookingDTO getBooking(Long id) {
         Booking booking = bookingService.findById(id);
         return (booking == null) ? null : beanMappingService.mapTo(booking, BookingDTO.class);
+	}
+
+	@Override
+	public List<BookingDTO> findBookingsByRangeByUser(DateRange range, Long userId) {
+        User user = userService.findById(userId);
+        return beanMappingService.mapTo(adminService.getBookingsInRangeByUser(range, user), BookingDTO.class);
 	}
     
 }

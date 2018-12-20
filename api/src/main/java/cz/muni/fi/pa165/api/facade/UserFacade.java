@@ -1,5 +1,6 @@
 package cz.muni.fi.pa165.api.facade;
 
+import cz.muni.fi.pa165.api.DateRange;
 import cz.muni.fi.pa165.api.dto.UserAuthenticateDTO;
 import cz.muni.fi.pa165.api.dto.UserDTO;
 
@@ -23,6 +24,13 @@ public interface UserFacade {
      * @return list of users, empty list otherwise
      */
     List<UserDTO> getAll();
+    
+    /**
+     * Returns users who have some room reserved in a certain time range. 
+     * @param range time range
+     * @return list of users
+     */
+    List<UserDTO> listReserved(DateRange range);
 
     /**
      * Authenticates the user with the supplied credentials.

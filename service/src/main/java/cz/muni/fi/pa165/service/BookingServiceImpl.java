@@ -4,6 +4,7 @@ import cz.muni.fi.pa165.api.DateRange;
 import cz.muni.fi.pa165.dao.BookingDao;
 import cz.muni.fi.pa165.entity.Booking;
 import cz.muni.fi.pa165.entity.Room;
+import cz.muni.fi.pa165.entity.User;
 import cz.muni.fi.pa165.service.auxiliary.DateService;
 import cz.muni.fi.pa165.service.exceptions.BookingManagerDataAccessException;
 import java.math.BigDecimal;
@@ -142,5 +143,13 @@ public class BookingServiceImpl implements BookingService {
             throw new BookingManagerDataAccessException("Error during service.", e);
         }
 		
+	}
+
+	@Override
+	public List<Booking> findByUser(User user) {
+        if (user == null) {
+            throw new IllegalArgumentException("User must not be null.");
+        }
+        return bookingDao.findByUser(user);
 	}
 }

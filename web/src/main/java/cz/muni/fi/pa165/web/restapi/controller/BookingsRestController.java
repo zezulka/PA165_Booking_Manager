@@ -29,6 +29,8 @@ import cz.muni.fi.pa165.web.restapi.exception.RestApiException;
 import cz.muni.fi.pa165.web.restapi.exception.ServerProblemException;
 import cz.muni.fi.pa165.web.restapi.hateoas.BookingResource;
 import cz.muni.fi.pa165.web.restapi.hateoas.BookingResourceAssembler;
+import cz.muni.fi.pa165.web.restapi.hateoas.UserResource;
+
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
@@ -104,6 +106,27 @@ public class BookingsRestController {
                 linkTo(BookingsRestController.class).withSelfRel(),
                 linkTo(BookingsRestController.class).slash("/create").withRel("create"));
         return new ResponseEntity<>(rooms, HttpStatus.OK);
+    }
+    
+    @RequestMapping(value = "/byUser", method = RequestMethod.GET)
+    public final HttpEntity<Resources<BookingResource>> getUsersBookings(
+            @RequestParam(name = "from", required = false) String from,
+            @RequestParam(name = "to", required = false) String to,
+            @RequestParam(name = "user", required = false) Long user) {
+
+        LOGGER.debug("[REST] getUsersBookings({}, {}, {})", from, to, user);
+        if (from == null) {
+            from = LocalDate.MIN.toString();
+        }
+        if (to == null) {
+            to = LocalDate.MAX.toString();
+        }
+        DateRange range = getRange(from, to);
+        List<BookingResource> resourceCollection = resourceAssembler.toResources(bookingFacade.findBookingsByRangeByUser(range, user));
+        Resources<BookingResource> bookings = new Resources<>(resourceCollection,
+                linkTo(UsersRestController.class).withSelfRel(),
+                linkTo(UsersRestController.class).slash("/authenticate").withRel("authenticate"));
+        return new ResponseEntity<>(bookings, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
