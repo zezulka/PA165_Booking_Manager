@@ -43,7 +43,7 @@ bookingManager.config(['$routeProvider',
                 when('/admin/newroom', {templateUrl: 'partials/admin/new_room.html', controller: 'AdminNewRoomCtrl'}).
                 when('/admin/hotels', {templateUrl: 'partials/admin/hotels.html', controller: 'LoadHotelsCtrl'}).
                 when('/admin/deletehotel/:hotelId', {templateUrl: 'partials/admin/hotels.html', controller: 'DeleteHotelCtrl'}).
-                when('/admin/edithotel/:hotelId', {controller: 'EditHotelCtrl'}).
+                when('/admin/edithotel/:hotelId', {templateUrl: 'partials/admin/edit_hotel.html', controller: 'EditHotelCtrl'}).
                 when('/login', {templateUrl: 'login.html', controller: 'LoginController'}).
                 when('/logout', {templateUrl: 'login.html', controller: 'LogoutController'}).
                 otherwise({redirectTo: '/browse'});
@@ -106,8 +106,8 @@ controllers.controller('DeleteHotelCtrl', function ($scope, $http, $routeParams,
                 console.log('Hotel successfully deleted.');
                 $location.path('/admin/hotels');
             }, function (error) {
-                console.log('Could not delete hotel.');
-                $location.path('/admin/hotels');
+        console.log('Could not delete hotel.');
+        $location.path('/admin/hotels');
     }
     );
 });
@@ -126,6 +126,18 @@ controllers.controller('LoadHotelsCtrl', function ($scope, $http, PageService) {
         }
     });
 });
+
+controllers.controller('EditHotelCtrl', function ($scope, $http, $routeParams) {
+    $http.get('/pa165/rest/hotels/' + $routeParams.hotelId).then(function (response) {
+        $scope.hotel = response.data;
+        $scope.updateHotel = function() {
+           $http.put('/pa165/rest/hotels/' + $routeParams.hotelId, $scope.hotel).then(function (result) {
+               console.log("Successfully updated.");
+           });
+        };
+    });
+});
+
 controllers.controller('HotelDetailCtrl',
         function ($scope, $rootScope, $routeParams, $http) {
             var hotelId = $routeParams.hotelId;

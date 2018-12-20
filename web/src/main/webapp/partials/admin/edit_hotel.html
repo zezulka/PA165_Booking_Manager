@@ -1,0 +1,11 @@
+<form ng-controller="EditHotelCtrl">
+  <div class="form-group">
+    <label for="name">Name</label>
+    <input ng-model="hotel.name" type="text" class="form-control" id="name"/>
+  </div>
+  <div class="form-group">
+    <label for="address">Address</label>
+    <input ng-model="hotel.address" type="text" class="form-control" id="address" />
+  </div>
+  <button type="submit" ng-click="updateHotel()" class="btn btn-primary">Submit</button>
+</form>

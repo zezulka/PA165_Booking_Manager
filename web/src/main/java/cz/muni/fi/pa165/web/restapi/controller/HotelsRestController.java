@@ -15,6 +15,8 @@ import cz.muni.fi.pa165.web.restapi.hateoas.RoomResourceAssembler;
 
 import java.time.LocalDate;
 import java.util.List;
+import javax.validation.Valid;
+import javax.validation.ValidationException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,8 +28,11 @@ import org.springframework.hateoas.Resources;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -72,6 +77,16 @@ public class HotelsRestController {
         return new ResponseEntity<>(hotels, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public final void updateHotel(@PathVariable("id") long id, @RequestBody @Valid HotelDTO hotelDTO,
+            BindingResult bindingResult) {
+        LOGGER.debug("[REST] updateHotel()");
+        if (bindingResult.hasErrors()) {
+            throw new ValidationException("Invalid hotel.");
+        }
+        hotelFacade.update(hotelDTO);
+    }
+
     @RequestMapping(value = "/{id}/rooms", method = RequestMethod.GET)
     public final HttpEntity<Resources<RoomResource>> getRoomsByHotel(@PathVariable("id") long id) throws ResourceNotFoundException {
         LOGGER.debug("[REST] getRoomsByHotel({})", id);
@@ -86,14 +101,14 @@ public class HotelsRestController {
 
     @RequestMapping(value = "/{id}/vacancy", method = RequestMethod.GET)
     public final HttpEntity<Resources<RoomResource>> getFreeRoomsByHotel(
-        @PathVariable("id") long id,
-        @RequestParam(name = "from", required = true) String from,
-        @RequestParam(name = "to", required = true) String to) throws ResourceNotFoundException {
+            @PathVariable("id") long id,
+            @RequestParam(name = "from", required = true) String from,
+            @RequestParam(name = "to", required = true) String to) throws ResourceNotFoundException {
         LOGGER.debug("[REST] getFreeRoomsByHotelAndRange({})", id);
-        if(from == null) {
+        if (from == null) {
             from = LocalDate.MIN.toString();
         }
-        if(to == null) {
+        if (to == null) {
             to = LocalDate.MAX.toString();
         }
         DateRange range = getRange(from, to);
@@ -106,11 +121,10 @@ public class HotelsRestController {
         List<RoomResource> resourceCollection = roomResourceAssembler.toResources(roomFacade.getAvailableRooms(range, hotelDTO));
 
         Resources<RoomResource> rooms = new Resources<>(resourceCollection,
-            linkTo(RoomsRestController.class).withSelfRel(),
-            linkTo(RoomsRestController.class).slash("/create").withRel("create"));
+                linkTo(RoomsRestController.class).withSelfRel(),
+                linkTo(RoomsRestController.class).slash("/create").withRel("create"));
         return new ResponseEntity<>(rooms, HttpStatus.OK);
     }
-
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public final HttpEntity<HotelResource> getProduct(@PathVariable("id") long id)
