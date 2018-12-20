@@ -1,6 +1,7 @@
 package cz.muni.fi.pa165.api.facade;
 
 import cz.muni.fi.pa165.api.dto.BookingDTO;
+import cz.muni.fi.pa165.api.dto.UserDTO;
 import cz.muni.fi.pa165.api.DateRange;
 import cz.muni.fi.pa165.api.dto.BookingCreateDTO;
 
@@ -34,6 +35,14 @@ public interface BookingFacade {
      * @return list of bookings
      */
     List<BookingDTO> findBookingsByRange(DateRange range, Long roomId);
+    
+    /**
+     * Returns a List of all bookings in a given range for a given user.
+     * @param range
+     * @param roomId
+     * @return list of bookings
+     */
+    List<BookingDTO> findBookingsByRangeByUser(DateRange range, Long userId);
 
     /**
      * 

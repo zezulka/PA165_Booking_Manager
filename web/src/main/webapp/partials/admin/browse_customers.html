@@ -1,11 +1,43 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>TODO supply a title</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body>
-        <div>TODO write content</div>
-    </body>
-</html>
+<h1>Users that have reservations</h1>
+
+<div class="row">
+    <form name="form" novalidate>
+        <div class="row">
+            <div class="form-group" ng-class="{ 'has-error': !(form.from.$valid) }">
+                <label for="from" class="control-label col-sm-2">From:</label>
+                <div class="col-sm-5">
+                    <input ng-model="from" id="from" class="date" type="date" name="from" min="today" required/>
+                </div>
+                <div class="col-sm-5">
+                    <p ng-show="form.from.$error.required" class="help-block">From date is required.</p>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="form-group" ng-class="{ 'has-error': !(form.from.$valid) }">
+                <label for="to" class="control-label col-sm-2">To:</label>
+                <div class="col-sm-5">
+                    <input ng-model="to" id="to" class="date" type="date" name="to" min="today" required/>
+                </div>
+                <div class="col-sm-5">
+                    <p ng-show="to.to.$error.required" class="help-block">To date is required.</p>
+                </div>
+            </div>
+
+        </div>
+        <button type="submit" ng-disabled="!form.$valid" ng-click="browseCostumers()">List users</button>
+    </form>
+</div>
+
+<br>
+
+<ul class="list-group">
+    <div ng-repeat="user in users">
+        <li class="list-group-item">
+            <span class="badge badge-primary badge-pill">Rooms reserved: {{user.bookingCount}}</span>
+	        <h2>{{user.firstName}} {{user.surname}}</h2>
+	        <h4>{{user.email}}</h4>
+        </li>
+    </div>
+</ul>

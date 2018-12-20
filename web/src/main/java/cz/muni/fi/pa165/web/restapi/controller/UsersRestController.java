@@ -12,6 +12,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import cz.muni.fi.pa165.api.DateRange;
 import cz.muni.fi.pa165.api.dto.UserAuthenticateDTO;
 import cz.muni.fi.pa165.api.dto.UserDTO;
 import cz.muni.fi.pa165.api.facade.UserFacade;
@@ -20,6 +21,8 @@ import cz.muni.fi.pa165.web.restapi.exception.ResourceNotFoundException;
 import cz.muni.fi.pa165.web.restapi.exception.ServerProblemException;
 import cz.muni.fi.pa165.web.restapi.hateoas.UserResource;
 import cz.muni.fi.pa165.web.restapi.hateoas.UserResourceAssembler;
+
+import java.time.LocalDate;
 import java.util.Collections;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
@@ -51,6 +54,26 @@ public class UsersRestController {
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/reserved", method = RequestMethod.GET)
+    public final HttpEntity<Resources<UserResource>> getUsersReserved(
+            @RequestParam(name = "from", required = false) String from,
+            @RequestParam(name = "to", required = false) String to) {
+
+        LOGGER.debug("[REST] getUsersReserved({}, {})", from, to);
+        if (from == null) {
+            from = LocalDate.MIN.toString();
+        }
+        if (to == null) {
+            to = LocalDate.MAX.toString();
+        }
+        DateRange range = getRange(from, to);
+        List<UserResource> resourceCollection = resourceAssembler.toResources(facade.listReserved(range));
+        Resources<UserResource> users = new Resources<>(resourceCollection,
+                linkTo(UsersRestController.class).withSelfRel(),
+                linkTo(UsersRestController.class).slash("/authenticate").withRel("authenticate"));
+        return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+    
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public final HttpEntity<UserResource> getUserById(@PathVariable("id") long id)
             throws ResourceNotFoundException {
@@ -86,5 +109,11 @@ public class UsersRestController {
         } catch (IllegalArgumentException ex) {
             throw new IllegalRequestException("authentication error");
         }
+    }
+    
+    private DateRange getRange(String from, String to) {
+        LocalDate fromDate = LocalDate.parse(from);
+        LocalDate toDate = LocalDate.parse(to);
+        return new DateRange(fromDate, toDate);
     }
 }

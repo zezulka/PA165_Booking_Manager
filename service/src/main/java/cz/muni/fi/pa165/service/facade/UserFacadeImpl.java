@@ -1,8 +1,10 @@
 package cz.muni.fi.pa165.service.facade;
 
+import cz.muni.fi.pa165.api.DateRange;
 import cz.muni.fi.pa165.api.dto.UserAuthenticateDTO;
 import cz.muni.fi.pa165.api.dto.UserDTO;
 import cz.muni.fi.pa165.api.facade.UserFacade;
+import cz.muni.fi.pa165.service.AdminService;
 import cz.muni.fi.pa165.service.UserService;
 import cz.muni.fi.pa165.service.auxiliary.BeanMappingService;
 import cz.muni.fi.pa165.entity.User;
@@ -17,6 +19,9 @@ public class UserFacadeImpl implements UserFacade {
 
     @Autowired
     private UserService userService;
+    
+    @Autowired
+    private AdminService adminService;
 
     @Autowired
     private BeanMappingService beanMappingService;
@@ -66,6 +71,11 @@ public class UserFacadeImpl implements UserFacade {
 	public void update(UserDTO user) {
         User userEntity = beanMappingService.mapTo(user, User.class);
         userService.update(userEntity);
+	}
+
+	@Override
+	public List<UserDTO> listReserved(DateRange range) {
+        return beanMappingService.mapTo(adminService.listReserved(range), UserDTO.class);
 	}
 
 }
