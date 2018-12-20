@@ -147,36 +147,6 @@ controllers.controller('RoomDetailCtrl',
             );
         });
 
-/**
-*
-* Admin stuff
-*
-*/
-
-function loadUsersBookings($http, user, from, to) {
-    $http.get('/pa165/rest/bookings/byUser?from=' + from + '&to=' + to + '&user=' + user.id).then(function (response) {
-        user.bookingCount = response.data['_embedded']['bookings'].length;
-        console.log('bookings loaded ' + user.bookingCount);
-    });
-}
-
-controllers.controller('AdminBrowseCustomersCtrl', function ($scope, $rootScope, $http) {
-   $scope.browseCostumers = function () {
-       var from = $scope.from.toISOString().substring(0, 10);
-       var to = $scope.to.toISOString().substring(0, 10);
-       $http.get('/pa165/rest/users/reserved?from=' + from + '&to=' + to).then(function (response) {
-           console.log("users reserved");
-           var users = response.data['_embedded']['users'];
-           $scope.users = users;
-           for (var i = 0; i < users.length; i++) {
-               var user = users[i];
-               loadUsersBookings($http, user, from, to);
-           }
-       });
-   }
-});
-
-
 
 /**
  * Authentication stuff.
@@ -288,7 +258,7 @@ controllers.factory('PageService', function ($rootScope, $http, $location, $cook
         getUser: function () {
             var cookieUser = $cookies.getObject('user');
             if (cookieUser != null) {
-                $rootScope.user = cookieUser;
+                $rootScope.user = user;
             }
             return $rootScope.user;
         },

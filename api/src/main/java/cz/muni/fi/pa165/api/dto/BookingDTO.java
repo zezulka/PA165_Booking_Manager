@@ -17,7 +17,7 @@ public class BookingDTO {
 
     private LocalDate toDate;
 
-    private UserDTO usr;
+    private UserDTO user;
 
     private RoomDTO room;
 
@@ -54,11 +54,11 @@ public class BookingDTO {
     }
 
     public UserDTO getUser() {
-        return usr;
+        return user;
     }
 
-    public void setUser(UserDTO usr) {
-        this.usr = usr;
+    public void setUser(UserDTO user) {
+        this.user = user;
     }
 
     public RoomDTO getRoom() {
@@ -74,7 +74,7 @@ public class BookingDTO {
         int hash = 3;
         hash = 97 * hash + fromDate.hashCode();
         hash = 97 * hash + toDate.hashCode();
-        hash = 97 * hash + usr.hashCode();
+        hash = 97 * hash + user.hashCode();
         hash = 97 * hash + room.hashCode();
         return hash;
     }
@@ -97,7 +97,7 @@ public class BookingDTO {
         if (!toDate.equals(other.toDate)) {
             return false;
         }
-        if (!usr.equals(other.usr)) {
+        if (!user.equals(other.user)) {
             return false;
         }
         return room.equals(other.room);

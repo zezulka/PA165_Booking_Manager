@@ -22,7 +22,7 @@
         <title>Booking manager</title>
     </head>
 
-    <body>
+    <body ng-app="bookingManager">
         <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
@@ -37,7 +37,7 @@
                 <div id="navbar" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-left">
                         <li><a href="#!/about">About</a></li>
-                        <li class="dropdown">
+                        <li ng-if="admin" class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li><a href="#!/admin/browse_users">Users</a></li>
@@ -45,19 +45,18 @@
                             </ul>
                         </li>
                     </ul>
-                    <ul class="nav navbar-nav navbar-right">
+                    <ul ng-hide="user || undefined" class="nav navbar-nav navbar-right">
                         <li><a href="#!/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                    </ul>
+                    <ul ng-show="user" class="nav navbar-nav navbar-right">
+                        <li><a href="#!/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
                     </ul>
                 </div>
             </div>
         </nav>
 
         <div class="container">
-
-            <div ng-app="bookingManager">
-                <div ng-view></div>
-            </div>
-
-        </main>
-</body>
+            <div ng-view></div>
+        </div>
+    </body>
 </html>

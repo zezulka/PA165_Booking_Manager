@@ -3,7 +3,6 @@ package cz.muni.fi.pa165.web.restapi.hateoas;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import java.util.List;
 import org.springframework.hateoas.ResourceSupport;
 import org.springframework.hateoas.core.Relation;
 
@@ -21,12 +20,14 @@ public class UserResource extends ResourceSupport {
     private String firstName;
     private String surname;
     private String email;
+    private boolean administrator;
 
     public UserResource(UserDTO user) {
         email = user.getEmail();
         firstName = user.getFirstName();
         surname = user.getSurname();
         dtoId = user.getId();
+        administrator = user.isAdministrator();
     }
 
     public String getEmail() {
@@ -45,4 +46,7 @@ public class UserResource extends ResourceSupport {
         return surname;
     }
 
+    public boolean isAdministrator() {
+        return administrator;
+    }
 }

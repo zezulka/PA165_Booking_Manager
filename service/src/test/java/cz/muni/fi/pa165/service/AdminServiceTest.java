@@ -83,13 +83,13 @@ public final class AdminServiceTest {
         user.setFirstName("Jozef");
         user.setSurname("Neznamy");
         user.setEmail("user@gmail.com");
-        user.setAdmin(false);
+        user.setAdministrator(false);
         user.setPasswordHash(hash);
 
         admin.setFirstName("Jozef");
         admin.setSurname("NeznamyAdmin");
         admin.setEmail("admin@gmail.com");
-        admin.setAdmin(true);
+        admin.setAdministrator(true);
         admin.setPasswordHash(hash);
 
         room = new Room();
