@@ -6,7 +6,6 @@ import cz.muni.fi.pa165.entity.Room;
 import cz.muni.fi.pa165.enums.RoomType;
 import java.math.BigDecimal;
 import java.util.Arrays;
-import java.util.List;
 import org.testng.annotations.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;

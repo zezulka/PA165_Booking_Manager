@@ -1,8 +1,16 @@
-
-<div ng-repeat="hotel in hotels">
-    <div class="row">
-        <a href="#!/hotel/{{hotel.id}}"><span>{{hotel.name}}</span></a>
-        <a href="#!/admin/edithotel/{{hotel.id}}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Edit</a>
-        <a href="#!/admin/deletehotel/{{hotel.id}}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Delete</a>
-    </div>
-</div>
+<div class="table-responsive">
+    <table class="table table-striped table-sm">
+        <tbody>
+            <tr ng-repeat="hotel in hotels">
+                <td class="col-md-6">
+                    <a href="#!/hotel/{{hotel.id}}"><span>{{hotel.name}}</span></a>    
+                </td>
+                <td class="btn-group">
+                    <a href="#!/admin/edithotel/{{hotel.id}}" class="btn btn-outline-secondary" role="button" aria-pressed="true">Edit</a>
+                    <a href="#!/admin/deletehotel/{{hotel.id}}" class="btn btn-outline-secondary" role="button" aria-pressed="true">Delete</a>
+                    <a href="#!/admin/newroom/{{hotel.id}}" class="btn btn-outline-secondary" role="button" aria-pressed="true">New room</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>    
