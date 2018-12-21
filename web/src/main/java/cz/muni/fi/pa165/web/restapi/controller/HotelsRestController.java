@@ -2,7 +2,6 @@ package cz.muni.fi.pa165.web.restapi.controller;
 
 import cz.muni.fi.pa165.api.DateRange;
 import cz.muni.fi.pa165.api.dto.HotelDTO;
-import cz.muni.fi.pa165.api.dto.RoomDTO;
 import cz.muni.fi.pa165.api.facade.HotelFacade;
 import cz.muni.fi.pa165.api.facade.RoomFacade;
 import cz.muni.fi.pa165.web.restapi.exception.ResourceNotFoundException;
@@ -102,8 +101,8 @@ public class HotelsRestController {
     @RequestMapping(value = "/{id}/vacancy", method = RequestMethod.GET)
     public final HttpEntity<Resources<RoomResource>> getFreeRoomsByHotel(
             @PathVariable("id") long id,
-            @RequestParam(name = "from", required = true) String from,
-            @RequestParam(name = "to", required = true) String to) throws ResourceNotFoundException {
+            @RequestParam(name = "from", required = false) String from,
+            @RequestParam(name = "to", required = false) String to) throws ResourceNotFoundException {
         LOGGER.debug("[REST] getFreeRoomsByHotelAndRange({})", id);
         if (from == null) {
             from = LocalDate.MIN.toString();

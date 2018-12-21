@@ -35,8 +35,10 @@
 <ul class="list-group">
     <div ng-repeat="user in users">
         <li class="list-group-item">
-            <span class="badge badge-primary badge-pill">Rooms reserved: {{user.bookingCount}}</span>
 	        <h2>{{user.firstName}} {{user.surname}}</h2>
+        	<a href="#!/admin/browse_users/bookings/{{user.id}}/{{from}}/{{to}}" style="float: right">
+            	<span class="badge badge-primary badge-pill">Rooms reserved: {{user.bookingCount}}</span>
+            </a>
 	        <h4>{{user.email}}</h4>
         </li>
     </div>

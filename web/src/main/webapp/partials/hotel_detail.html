@@ -1,3 +1,15 @@
+<div ng-app="bookingManager">
+	<div ng-show="errorAlert" class="alert alert-danger alert-dismissible" role="alert" ng-click="hideErrorAlert()">
+		<alert type="danger">{{errorAlert}}</alert>
+	</div>
+</div>
+
+<div ng-app="bookingManager">
+	<div ng-show="successAlert" class="alert alert-success alert-dismissible" role="alert" ng-click="hideSuccessAlert()">
+		<alert type="danger">{{successAlert}}</alert>
+	</div>
+</div>
+
 <div class="row">
     <h2>{{hotel.name}}</h2>
     <h4>{{hotel.address}}</h4>
