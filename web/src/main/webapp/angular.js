@@ -85,6 +85,12 @@ controllers.controller('AvailableRoomsController', function ($scope, $rootScope,
     }
 });
 
+controllers.controller('PopoverController' , function () {
+    $(function () {
+        $("button").popover();
+    });
+})
+
 controllers.controller('RoomBookingController', function ($scope, $rootScope, $http, $location, PageService) {
     $scope.book = function (room) {
         var body = {room: room, fromDate: $rootScope.fromDate, toDate: $rootScope.toDate, user: PageService.getUser(), total: room.recommendedPrice};
