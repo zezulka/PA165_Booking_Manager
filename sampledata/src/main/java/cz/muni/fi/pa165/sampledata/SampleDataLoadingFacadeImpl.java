@@ -48,7 +48,7 @@ public class SampleDataLoadingFacadeImpl implements SampleDataLoadingFacade {
         User john = user("john", "John", "Doe", "john.doe@gmail.com");
         User alice = user("alice", "Alice", "Foobar", "alice.foobar@gmail.com");
         User peter = user("peter", "Peter", "Gabriel", "peter.gabriel@gene.sis");
-        user("admin", "Admin", "Istrator", "booking.manager.admin@gmail.com");
+        user("admin", "Admin", "Istrator", "admin@gmail.com");
 
         DateRange past = pastRange();
         DateRange ongoing = ongoingRange();

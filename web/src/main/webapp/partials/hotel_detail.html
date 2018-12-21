@@ -1,13 +1,13 @@
 <div ng-app="bookingManager">
-	<div ng-show="errorAlert" class="alert alert-danger alert-dismissible" role="alert" ng-click="hideErrorAlert()">
-		<alert type="danger">{{errorAlert}}</alert>
-	</div>
+    <div ng-show="errorAlert" class="alert alert-danger alert-dismissible" role="alert" ng-click="hideErrorAlert()">
+        <alert type="danger">{{errorAlert}}</alert>
+    </div>
 </div>
 
 <div ng-app="bookingManager">
-	<div ng-show="successAlert" class="alert alert-success alert-dismissible" role="alert" ng-click="hideSuccessAlert()">
-		<alert type="danger">{{successAlert}}</alert>
-	</div>
+    <div ng-show="successAlert" class="alert alert-success alert-dismissible" role="alert" ng-click="hideSuccessAlert()">
+        <alert type="danger">{{successAlert}}</alert>
+    </div>
 </div>
 
 <div class="row">
@@ -51,7 +51,7 @@
             <img ng-src="{{room._links.image.href}}">
             <div class="caption">
                 <div class="btn-group btn-group-justified" role="group" aria-label="...">
-                    <div class="btn-group" role="group">
+                    <div class="btn-group" ng-show="user" role="group">
                         <button ng-controller="RoomBookingController" type="button" ng-click="book(room)" class="btn btn-primary">Book room</button>
                     </div>
                     <div class="btn-group" role="group">
