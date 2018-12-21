@@ -11,21 +11,117 @@ uses:
   description: Bookings for hotel rooms. There can be only one room for a given booking.
   get:
     description: Returns all bookings present in the database, including those done in the past.
+
   /create:
     post:
       description: Creates a new booking if such operation is possible, i.e. no other bookings overlap with the new one.
   /{id}:
     delete:
-      description: Delete the booking. This can be only done if the booking is to happen in the future.
+      description: Delete the booking. This can be only done if the booking is to happen in the future, bookings in the past are only deleted when the given room reserved is deleted.
     get:
       description: Retrieve booking with the given database identifier.
-  /bookings/{id}/discount:
+      responses:
+        200:
+          body:
+            application/json:
+              example: {
+    "id": 9,
+    "fromDate": {
+        "year": 2018,
+        "month": "DECEMBER",
+        "chronology": {
+            "calendarType": "iso8601",
+            "id": "ISO"
+        },
+        "dayOfMonth": 14,
+        "dayOfWeek": "FRIDAY",
+        "era": "CE",
+        "dayOfYear": 348,
+        "leapYear": false,
+        "monthValue": 12
+    },
+    "toDate": {
+        "year": 2018,
+        "month": "DECEMBER",
+        "chronology": {
+            "calendarType": "iso8601",
+            "id": "ISO"
+        },
+        "dayOfMonth": 20,
+        "dayOfWeek": "THURSDAY",
+        "era": "CE",
+        "dayOfYear": 354,
+        "leapYear": false,
+        "monthValue": 12
+    },
+    "total": 1000,
+    "usr": {
+        "id": 2,
+        "email": "alice.foobar@gmail.com",
+        "firstName": "Alice",
+        "surname": "Foobar",
+        "passwordHash": "1000:7bcb0827b38e7491a533c7c3aa367f38f74a42bced95896f:cc52ab7b61050d1512352ef999d4e3a1dd52543480b01675",
+        "administrator": false
+    },
+    "room": {
+        "id": 6,
+        "hotel": {
+            "id": 5,
+            "address": "Malaysia, Genting Islands",
+            "name": "First World Hotel",
+            "rooms": null
+        },
+        "number": 101,
+        "description": "One large bed. Free Wi-Fi included.",
+        "recommendedPrice": 1000,
+        "image": "cafebabe",
+        "imageMimeType": "image/jpeg",
+        "type": "SINGLE_ROOM"
+    },
+    "_links": {
+        "self": {
+            "href": "http://localhost:8080/pa165/rest/bookings/9"
+        },
+        "bookings": {
+            "href": "http://localhost:8080/pa165/rest/bookings/9/bookings"
+        }
+    }
+}    
+        404:
+          body:
+            application/json:
+              example: {
+    "code": "ResourceNotFoundException",
+    "message": "booking 90 not found"
+}
+    /discount:
+      get:
+        description: Calculate discount for the given booking.
+  /byUser:
     get:
-      description: Calculate discount for the given booking.
+      description: Return all bookings for the given user. It is also possible to specify a date range to which the bookings should be reserved.
+      queryParameters:
+        from:
+          displayName: From date
+          type: date
+          description: Date from which the query should start searching from.
+          example: '2018-12-30'
+          required: false
+        to:
+          displayName: To date
+          type: date
+          description: Date to which the query should stop searching to.
+          example: '2019-02-10'
+          required: false
+        user:
+          displayName: User
+          type: integer
+          description: Database identifier of the user we are interested in.
+          required: true
 
 /users:
   displayName: Users
-  description: Users
+  description: All users of the system, including administrators.
   get:
     description: Return all users registered in this system, including administrators.
     responses:
@@ -124,13 +220,33 @@ uses:
     "surname": "Doe"
 }
 
+  /email/{email}:
+    get:
+      description: Return user with the given email if such one exists. It is guaranteed that one email address can belong to at most one user.
+      
   /authenticate:
     post:
       description: Authenticate user using his email address and password. Returned value is either "true" or "false".
 
+  /reserved:
+    get:
+      description: List all the users which have at least one room reserved. It is also possible to specify date range in by which we wish to reduce the search.
+      queryParameters:
+        from:
+          displayName: From date
+          type: date
+          description: Date from which the query should start searching from.
+          example: '2018-12-30'
+          required: false
+        to:
+          displayName: To date
+          type: date
+          description: Date to which the query should stop searching to.
+          example: '2019-02-10'
+          required: false     
+
 /hotels:
   displayName: Hotels
-  description: Hotels
   get:
     description: Return all hotels present in the database.
     responses:
@@ -252,13 +368,33 @@ uses:
 }
     delete:
       description: Delete hotel with the given id if such one exists.
-  /{id}/rooms:
-    get:
-      description: Return all rooms for the given hotel.
-      responses:
-        200:
-          body:
-            application/json: {
+    put:
+      description: Create a new hotel if the input data represent a valid hotel.
+
+    /vacancy:
+      get:
+        description: Returns a collection of Room for a given hotel (specified by the route parameter {id}).
+        queryParameters:
+          from:
+            displayName: From date
+            type: date
+            description: Date from which the query should start searching from.
+            example: '2018-12-30'
+            required: false
+          to:
+            displayName: To date
+            type: date
+            description: Date to which the query should stop searching to.
+            example: '2019-02-10'
+            required: false          
+
+    /rooms:
+      get:
+        description: Return all rooms for the given hotel.
+        responses:
+          200:
+            body:
+              application/json: {
     "_embedded": {
         "rooms": [
             {
@@ -337,7 +473,6 @@ uses:
 }
 
 
-
 /rooms:
   displayName: Rooms
   description: All the rooms in the system. Room belongs exactly to one hotel.
@@ -373,3 +508,12 @@ uses:
 }
     delete:
       description: Delete room with the given id if such one exists.
+    /image:
+      get:
+        description: Loads an image resource using ServletOutputStream. If there is no image path bound to the room, load a static image representing missing resource instead.
+  /create:
+    post:
+      description: Creates a new Room if the input data are valid.
+  /number/{number}:
+    get:
+      description: Returns a single Hotel by its number. Since the room number itself would be ambiguous, Hotel instance is also required.
