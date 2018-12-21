@@ -11,11 +11,3 @@
         <img class="img-responsive img-rounded" ng-src="{{room._links.image.href}}" >
     </div>
 </div>
-
-<div class="row">
-    <form name="bookingForm" ng-controller="RoomBookingController" novalidate>
-        <input type="date" id="from" ng-model="from" value="{{$rootScope.fromDate}}" required/>
-        <input type="date" id="from" ng-model="to" value="{{$rootScope.toDate}}" required/>
-        <button  ng-disabled="!bookingForm.$valid" type="submit" ng-click="book(room)">Book this room!</button>
-    </form>
-</div>
