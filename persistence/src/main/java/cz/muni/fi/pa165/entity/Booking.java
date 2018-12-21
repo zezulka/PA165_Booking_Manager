@@ -2,8 +2,6 @@ package cz.muni.fi.pa165.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -34,7 +32,7 @@ public class Booking {
     @NotNull
     private User user;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @NotNull
     private Room room;
 
