@@ -68,6 +68,10 @@ function loadHotelRooms($http, hotel, roomLink) {
         hotel.roomCount = response.data['_embedded']['rooms'].length;
         hotel.rooms = []; //By default, we do not want to show any rooms to the user as no date range is selected at the beginning
         console.log('AJAX loaded ' + hotel.rooms.length + 'rooms to the hotel' + hotel.name);
+    },
+        function error(response) {
+            console.log('failed to load rooms');
+            console.log(response);
     });
 }
 
@@ -82,9 +86,19 @@ controllers.controller('AvailableRoomsController', function ($scope, $rootScope,
         $rootScope.toDate = to;
         $http.get('/pa165/rest/hotels/' + hotelId + '/vacancy?from=' + from + '&to=' + to).then(function (response) {
             hotel.rooms = response.data['_embedded']['rooms'];
+        }, function error(response) {
+            console.log('failed to load rooms');
+            console.log(response);
+            $rootScope.errorAlert = 'Cannot load rooms: ' + response.data.message;
         });
     }
 });
+
+controllers.controller('PopoverController' , function () {
+    $(function () {
+        $("button").popover();
+    });
+})
 
 controllers.controller('RoomBookingController', function ($scope, $rootScope, $http, $location, PageService) {
     $scope.book = function (room) {
@@ -151,9 +165,9 @@ controllers.controller('HotelDetailCtrl',
                         loadHotelRooms($http, $scope.hotel, hotelRoomsLink);
                     },
                     function error(response) {
-                        console.log('failed to load product');
+                        console.log('failed to load hotel');
                         console.log(response);
-                        $rootScope.warningAlert = 'Cannot load product: ' + response.data.message;
+                        $rootScope.errorAlert = 'Cannot load hotel: ' + response.data.message;
                     }
             );
         });
@@ -167,9 +181,9 @@ controllers.controller('RoomDetailCtrl',
 
                     },
                     function error(response) {
-                        console.log("failed to load room ${productId}");
+                        console.log("failed to load room ${toomId}");
                         console.log(response);
-                        $rootScope.warningAlert = 'Cannot load product: ${response.data.message}';
+                        $rootScope.errorAlert = 'Cannot load room: ${response.data.message}';
                     }
             );
         });
@@ -249,9 +263,9 @@ controllers.controller('UserBookingCtrl',
                         loadUsersBookings($http, user, from, to);
                     },
                     function error(response) {
-                        console.log('failed to load product');
+                        console.log('failed to load users');
                         console.log(response);
-                        $rootScope.warningAlert = 'Cannot load product: ' + response.data.message;
+                        $rootScope.errorAlert = 'Cannot load users: ' + response.data.message;
                     }
             );
         });
