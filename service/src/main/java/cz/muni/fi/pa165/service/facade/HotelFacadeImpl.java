@@ -62,9 +62,9 @@ public class HotelFacadeImpl implements HotelFacade {
         hotelService.delete(hotelService.findById(id));
     }
 
-	@Override
-	public void update(Long id) {
-        hotelService.update(hotelService.findById(id));
-	}
+    @Override
+    public void update(HotelDTO hotel) {
+        hotelService.update(beanMappingService.mapTo(hotel, Hotel.class));
+    }
 
 }

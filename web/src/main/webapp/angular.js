@@ -40,11 +40,10 @@ bookingManager.config(['$routeProvider',
                 when('/room/:roomId', {templateUrl: 'partials/room_detail.html', controller: 'RoomDetailCtrl'}).
                 // this route should handle the use case "System admin should be also able to find customers who have some room reserved in a certain time range"
                 when('/admin/browse_users', {templateUrl: 'partials/admin/browse_customers.html', controller: 'AdminBrowseCustomersCtrl'}).
-                when('/admin/browse_users/bookings/:userId/:from/:to', {templateUrl: 'partials/admin/booking_detail.html', controller: 'UserBookingCtrl'}).
-                when('/admin/newroom', {templateUrl: 'partials/admin/new_room.html', controller: 'AdminNewRoomCtrl'}).
+                when('/admin/newroom/:hotelId', {templateUrl: 'partials/admin/new_room.html', controller: 'AdminNewRoomCtrl'}).
                 when('/admin/hotels', {templateUrl: 'partials/admin/hotels.html', controller: 'LoadHotelsCtrl'}).
                 when('/admin/deletehotel/:hotelId', {templateUrl: 'partials/admin/hotels.html', controller: 'DeleteHotelCtrl'}).
-                when('/admin/edithotel/:hotelId', {controller: 'EditHotelCtrl'}).
+                when('/admin/edithotel/:hotelId', {templateUrl: 'partials/admin/edit_hotel.html', controller: 'EditHotelCtrl'}).
                 when('/login', {templateUrl: 'login.html', controller: 'LoginController'}).
                 when('/logout', {templateUrl: 'login.html', controller: 'LogoutController'}).
                 otherwise({redirectTo: '/browse'});
@@ -95,26 +94,20 @@ controllers.controller('RoomBookingController', function ($scope, $rootScope, $h
                     console.log("Booking successfully created.");
                     $location.path('/hotel/' + room.hotel.id);
                     $rootScope.successAlert = 'Booking successfully created';
-                }, function error(response) {
-                	console.log("user " + PageService.getUser());
-                	if (PageService.getUser() === undefined){
-                		console.log("vypis chybu");
-                		$rootScope.errorAlert = "Could not book room without logging in! Please, log in!"
-                	}
-                    console.log("Could not create booking." + response.data.message);
+                }, function (reason) {
+                    console.log("Could not create booking.");
                 });
     }
 });
 
-controllers.controller('DeleteHotelCtrl', function ($scope, $http, $routeParams, $location, $rootScope) {
+controllers.controller('DeleteHotelCtrl', function ($scope, $http, $routeParams, $location) {
     $http.delete('/pa165/rest/hotels/' + $routeParams.hotelId).then(
             function (response) {
                 console.log('Hotel successfully deleted.');
                 $location.path('/admin/hotels');
-                $rootScope.successAlert = 'Hotel successfully deleted.';
             }, function (error) {
-                console.log('Could not delete hotel.');
-                $location.path('/admin/hotels');
+        console.log('Could not delete hotel.');
+        $location.path('/admin/hotels');
     }
     );
 });
@@ -133,6 +126,18 @@ controllers.controller('LoadHotelsCtrl', function ($scope, $http, PageService) {
         }
     });
 });
+
+controllers.controller('EditHotelCtrl', function ($scope, $http, $routeParams) {
+    $http.get('/pa165/rest/hotels/' + $routeParams.hotelId).then(function (response) {
+        $scope.hotel = response.data;
+        $scope.updateHotel = function () {
+            $http.put('/pa165/rest/hotels/' + $routeParams.hotelId, $scope.hotel).then(function (result) {
+                console.log("Successfully updated.");
+            });
+        };
+    });
+});
+
 controllers.controller('HotelDetailCtrl',
         function ($scope, $rootScope, $routeParams, $http) {
             var hotelId = $routeParams.hotelId;
@@ -174,24 +179,30 @@ controllers.controller('RoomDetailCtrl',
  *
  */
 
-function loadBookingRoom($http, booking, roomId) {
-    $http.get('/pa165/rest/rooms/' + roomId).then(function (response) {
-        booking.roomData = response.data;
-    });
-}
-
 function loadUsersBookings($http, user, from, to) {
     $http.get('/pa165/rest/bookings/byUser?from=' + from + '&to=' + to + '&user=' + user.id).then(function (response) {
         user.bookingCount = response.data['_embedded']['bookings'].length;
-        user.bookings = response.data['_embedded']['bookings'];
         console.log('bookings loaded ' + user.bookingCount);
-        for (var i = 0; i < user.bookings.length; i++) { 
-        	var booking = user.bookings[i];
-        	var roomId = booking.room.id
-        	loadBookingRoom($http, booking, roomId)
-        }
     });
 }
+
+controllers.controller('AdminNewRoomCtrl', function ($scope, $rootScope, $routeParams, $location, $http) {
+    $scope.room = {};
+    $scope.createRoom = function () {
+        $http.get('/pa165/rest/hotels/' + $routeParams.hotelId).then(function (response) {
+            $scope.room.hotel = response.data;
+            $http.post('/pa165/rest/rooms/create', $scope.room).then(
+                    function (response) {
+                        console.log("Room created successfully.");
+                        $location.path('/admin/hotels');
+                    }, function (error) {
+                console.log("Could not create room.");
+                $location.path('/admin/hotels');
+            }
+            );
+        });
+    };
+});
 
 controllers.controller('AdminBrowseCustomersCtrl', function ($scope, $rootScope, $http) {
     $scope.browseCostumers = function () {
@@ -208,30 +219,6 @@ controllers.controller('AdminBrowseCustomersCtrl', function ($scope, $rootScope,
         });
     }
 });
-
-controllers.controller('UserBookingCtrl',
-        function ($scope, $rootScope, $routeParams, $http) {
-            var userId = $routeParams.userId;
-            var from = $routeParams.from;
-            var to = $routeParams.to;
-            $http.get('/pa165/rest/users/' + userId).then(
-                    function (response) {
-                        $scope.user = response.data;
-                        var user = $scope.user;
-                        from = from.substring(1, 11);
-                        to = to.substring(1, 11);
-                        console.log('from ' + from);
-                        console.log('to ' + to);
-                        loadUsersBookings($http, user, from, to);
-                    },
-                    function error(response) {
-                        console.log('failed to load product');
-                        console.log(response);
-                        $rootScope.warningAlert = 'Cannot load product: ' + response.data.message;
-                    }
-            );
-        });
-
 /**
  * Authentication stuff.
  */
@@ -240,10 +227,8 @@ controllers.factory('PageService', function ($rootScope, $http, $location, $cook
     var _pageName = '';
     var _useSchedulerLayout = false;
     var _restPrefix = '/pa165/rest/';
-
     $rootScope.user = undefined;
     $rootScope.admin = false;
-
     return {
         getTitle: function () {
             var title = 'Booking Manager';
@@ -253,31 +238,24 @@ controllers.factory('PageService', function ($rootScope, $http, $location, $cook
 
             return title;
         },
-
         setTitle: function (title) {
             _title = title;
         },
-
         getPageName: function () {
             return _pageName;
         },
-
         setPageName: function (pageName) {
             _pageName = pageName;
         },
-
         isSchedulerLayoutUsed: function () {
             return _useSchedulerLayout;
         },
-
         useSchedulerLayout: function () {
             _useSchedulerLayout = true;
         },
-
         isEditing: function (route) {
             return route.current.$$route.edit === true;
         },
-
         getDataAsync: function (url) {
             return $http.get(_restPrefix + url).then(function (response) {
                 return response.data;
@@ -285,7 +263,6 @@ controllers.factory('PageService', function ($rootScope, $http, $location, $cook
                 return null;
             });
         },
-
         sendDataAsync: function (url, method, data, successMessage, successUrl, errorMessages, qsa) {
             var _this = this;
             return $http({
@@ -302,7 +279,6 @@ controllers.factory('PageService', function ($rootScope, $http, $location, $cook
             }, function (reason) {
                 var type = reason.data.type;
                 console.log("Failure code: " + type);
-
                 var message = 'Unknown error.';
                 if (type in errorMessages) {
                     message = errorMessages[type];
@@ -315,30 +291,23 @@ controllers.factory('PageService', function ($rootScope, $http, $location, $cook
                 _this.consumeMessages();
             });
         },
-
         pushSuccessMessage: function (msg) {
             $rootScope.successQueue = msg;
         },
-
         pushWarningMessage: function (msg) {
             $rootScope.warningQueue = msg;
         },
-
         pushErrorMessage: function (msg) {
             $rootScope.errorQueue = msg;
         },
-
         consumeMessages: function () {
             $rootScope.success = $rootScope.successQueue;
             $rootScope.successQueue = null;
-
             $rootScope.warning = $rootScope.warningQueue;
             $rootScope.warningQueue = null;
-
             $rootScope.error = $rootScope.errorQueue;
             $rootScope.errorQueue = null;
         },
-
         getUser: function () {
             var cookieUser = $cookies.getObject('user');
             if (cookieUser != null) {
@@ -346,20 +315,16 @@ controllers.factory('PageService', function ($rootScope, $http, $location, $cook
             }
             return $rootScope.user;
         },
-
         setUser: function (user) {
             $rootScope.user = user;
             $cookies.putObject('user', user);
         },
-
         isLoggedIn: function () {
             return typeof this.getUser() !== typeof undefined && this.getUser() !== null;
         },
-
         isAdministrator: function () {
             return this.isLoggedIn() && this.getUser().isAdmin;
         },
-
         login: function (userAuthenticate) {
             var _this = this;
             console.log("login()");
@@ -386,7 +351,6 @@ controllers.factory('PageService', function ($rootScope, $http, $location, $cook
                     }
                     )
         },
-
         logout: function () {
             this.setUser(undefined);
             $cookies.remove('user');
@@ -395,13 +359,11 @@ controllers.factory('PageService', function ($rootScope, $http, $location, $cook
             $rootScope.admin = false;
             $location.path('/');
         },
-
         requireLogin: function () {
             if (!this.isLoggedIn()) {
                 $location.path('/');
             }
         },
-
         requireAdmin: function () {
             if (!this.isAdministrator()) {
                 $location.path('/');
@@ -409,17 +371,13 @@ controllers.factory('PageService', function ($rootScope, $http, $location, $cook
         }
     };
 });
-
-
 controllers.controller('LoginController', [
     '$scope',
     '$rootScope',
     'PageService',
-
     function ($scope, $rootScope, PageService) {
         PageService.consumeMessages();
         PageService.setPageName('Log In');
-
         $scope.userAuthenticate = {
             email: '',
             password: ''
@@ -430,11 +388,9 @@ controllers.controller('LoginController', [
     }
 
 ]);
-
 controllers.controller('LogoutController', [
     '$location',
     'PageService',
-
     function ($location, PageService) {
         PageService.consumeMessages();
         PageService.logout();

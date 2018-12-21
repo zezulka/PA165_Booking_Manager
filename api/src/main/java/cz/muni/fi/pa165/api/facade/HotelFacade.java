@@ -29,7 +29,7 @@ public interface HotelFacade {
      * 
      * @param id identifier to search by
      */
-    void update(Long id);
+    void update(HotelDTO id);
 
     /**
      * List all hotels.

@@ -1,19 +1,17 @@
-<div ng-app="bookingManager">
-	<div ng-show="successAlert" class="alert alert-success alert-dismissible" role="alert" ng-click="hideSuccessAlert()">
-		<alert type="danger">{{successAlert}}</alert>
-	</div>
-</div>
 
-<div ng-app="bookingManager">
-	<div ng-show="errorAlert" class="alert alert-danger alert-dismissible" role="alert" ng-click="hideErrorAlert()">
-		<alert type="danger">{{errorAlert}}</alert>
-	</div>
-</div>
-
-<div ng-repeat="hotel in hotels">
-    <div class="row">
-        <a href="#!/hotel/{{hotel.id}}"><span>{{hotel.name}}</span></a>
-        <a href="#!/admin/edithotel/{{hotel.id}}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Edit</a>
-        <a href="#!/admin/deletehotel/{{hotel.id}}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Delete</a>
-    </div>
-</div>
+<div class="table-responsive">
+    <table class="table table-striped table-sm">
+        <tbody>
+            <tr ng-repeat="hotel in hotels">
+                <td class="col-md-6">
+                    <a href="#!/hotel/{{hotel.id}}"><span>{{hotel.name}}</span></a>    
+                </td>
+                <td class="btn-group">
+                    <a href="#!/admin/edithotel/{{hotel.id}}" class="btn btn-outline-secondary" role="button" aria-pressed="true">Edit</a>
+                    <a href="#!/admin/deletehotel/{{hotel.id}}" class="btn btn-outline-secondary" role="button" aria-pressed="true">Delete</a>
+                    <a href="#!/admin/newroom/{{hotel.id}}" class="btn btn-outline-secondary" role="button" aria-pressed="true">New room</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>   

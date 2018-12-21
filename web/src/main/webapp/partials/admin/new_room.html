@@ -1,11 +1,18 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>TODO supply a title</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body>
-        <div>TODO write content</div>
-    </body>
-</html>
+<form ng-controller="EditHotelCtrl">
+    <div class="row">
+        <span>Create new room for the hotel {{hotel.name}}</span>
+    </div>
+    <div class="form-group">
+        <label for="description">Description</label>
+        <input ng-model="room.description" type="text" class="form-control" id="description"/>
+    </div>
+    <div class="form-group">
+        <label for="recommendedPrice">Price for night</label>
+        <input ng-model="room.recommendedPrice" type="text" class="form-control" id="recommendedPrice"/>
+    </div>
+    <div class="form-group">
+        <label for="number">Number</label>
+        <input ng-model="room.number" type="text" class="form-control" id="number" />
+    </div>
+    <button type="submit" ng-click="createRoom()" class="btn btn-primary">Submit</button>
+</form>
