@@ -34,7 +34,7 @@ public class Booking {
     @NotNull
     private User user;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @NotNull
     private Room room;
 
