@@ -105,12 +105,12 @@ public class BookingsRestController {
                 linkTo(BookingsRestController.class).slash("/create").withRel("create"));
         return new ResponseEntity<>(rooms, HttpStatus.OK);
     }
-    
+
     @RequestMapping(value = "/byUser", method = RequestMethod.GET)
     public final HttpEntity<Resources<BookingResource>> getUsersBookings(
             @RequestParam(name = "from", required = false) String from,
             @RequestParam(name = "to", required = false) String to,
-            @RequestParam(name = "user", required = false) Long user) {
+            @RequestParam(name = "user", required = true) Long user) {
 
         LOGGER.debug("[REST] getUsersBookings({}, {}, {})", from, to, user);
         if (from == null) {
