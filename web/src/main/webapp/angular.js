@@ -39,7 +39,8 @@ bookingManager.config(['$routeProvider',
                 when('/hotel/:hotelId', {templateUrl: 'partials/hotel_detail.html', controller: 'HotelDetailCtrl'}).
                 when('/room/:roomId', {templateUrl: 'partials/room_detail.html', controller: 'RoomDetailCtrl'}).
                 // this route should handle the use case "System admin should be also able to find customers who have some room reserved in a certain time range"
-                when('/admin/browse_users', {templateUrl: 'partials/admin/browse_customers.html', controller: 'AdminBrowseCustomersCtrl'}).
+                when('/admin/browse_users', {templateUrl: 'partials/admin/browse_customers.html', controller: 'AdminBrowseCustomersCtrl'}).                
+                when('/admin/browse_users/bookings/:userId/:from/:to', {templateUrl: 'partials/admin/booking_detail.html', controller: 'UserBookingCtrl'}).
                 when('/admin/newroom/:hotelId', {templateUrl: 'partials/admin/new_room.html', controller: 'AdminNewRoomCtrl'}).
                 when('/admin/hotels', {templateUrl: 'partials/admin/hotels.html', controller: 'LoadHotelsCtrl'}).
                 when('/admin/deletehotel/:hotelId', {templateUrl: 'partials/admin/hotels.html', controller: 'DeleteHotelCtrl'}).
@@ -179,10 +180,22 @@ controllers.controller('RoomDetailCtrl',
  *
  */
 
+function loadBookingRoom($http, booking, roomId) {
+    $http.get('/pa165/rest/rooms/' + roomId).then(function (response) {
+        booking.roomData = response.data;
+    });
+}
+
 function loadUsersBookings($http, user, from, to) {
     $http.get('/pa165/rest/bookings/byUser?from=' + from + '&to=' + to + '&user=' + user.id).then(function (response) {
         user.bookingCount = response.data['_embedded']['bookings'].length;
+        user.bookings = response.data['_embedded']['bookings'];
         console.log('bookings loaded ' + user.bookingCount);
+        for (var i = 0; i < user.bookings.length; i++) { 
+        	var booking = user.bookings[i];
+        	var roomId = booking.room.id
+        	loadBookingRoom($http, booking, roomId)
+        }
     });
 }
 
@@ -219,6 +232,29 @@ controllers.controller('AdminBrowseCustomersCtrl', function ($scope, $rootScope,
         });
     }
 });
+
+controllers.controller('UserBookingCtrl',
+        function ($scope, $rootScope, $routeParams, $http) {
+            var userId = $routeParams.userId;
+            var from = $routeParams.from;
+            var to = $routeParams.to;
+            $http.get('/pa165/rest/users/' + userId).then(
+                    function (response) {
+                        $scope.user = response.data;
+                        var user = $scope.user;
+                        from = from.substring(1, 11);
+                        to = to.substring(1, 11);
+                        console.log('from ' + from);
+                        console.log('to ' + to);
+                        loadUsersBookings($http, user, from, to);
+                    },
+                    function error(response) {
+                        console.log('failed to load product');
+                        console.log(response);
+                        $rootScope.warningAlert = 'Cannot load product: ' + response.data.message;
+                    }
+            );
+        });
 /**
  * Authentication stuff.
  */
