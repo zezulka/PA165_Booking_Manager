@@ -1,5 +1,6 @@
 package cz.muni.fi.pa165.api.dto;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
 /**
@@ -9,6 +10,8 @@ import java.util.Objects;
 public class RoomCreateDTO {
     private HotelDTO hotel;
     private Integer number;
+    private String description;
+    private BigDecimal recommendedPrice;
 
     public HotelDTO getHotel() {
         return hotel;
@@ -26,6 +29,22 @@ public class RoomCreateDTO {
         this.number = number;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public BigDecimal getRecommendedPrice() {
+        return recommendedPrice;
+    }
+
+    public void setRecommendedPrice(BigDecimal recommendedPrice) {
+        this.recommendedPrice = recommendedPrice;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 7;
