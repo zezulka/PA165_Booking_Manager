@@ -6,7 +6,5 @@ For more information, please visit [Github Pages of this project](https://zezulk
 
 Credentials for the prepared User entities:
 
-admin
-======
 admin@gmail.com:admin
 john.doe@gmail.com:john
