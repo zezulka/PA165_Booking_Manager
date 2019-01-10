@@ -42,6 +42,7 @@
                             <ul class="dropdown-menu">
                                 <li><a href="#!/admin/browse_users">Users</a></li>
                                 <li><a href="#!/admin/hotels">Hotels</a></li>
+                                <li><a href="#!/admin/bookings">Bookings</a></li>
                             </ul>
                         </li>
                     </ul>
