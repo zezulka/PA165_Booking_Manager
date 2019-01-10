@@ -1,0 +1,8 @@
+<form ng-controller="EditRoomCtrl">
+  <div class="form-group">
+    <label for="description">Description</label>
+    <input ng-model="room.description" type="text" class="form-control" id="description"/>
+  </div>
+
+  <button type="submit" ng-click="updateRoom()" class="btn btn-primary">Submit</button>
+</form>
