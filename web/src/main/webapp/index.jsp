@@ -38,7 +38,7 @@
                     <ul class="nav navbar-nav navbar-left">
                         <li><a href="#!/about">About</a></li>
                         <li ng-if="admin" class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin <span class="caret"></span></a>
+                            <a href="http://urltonowhere.com" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li><a href="#!/admin/browse_users">Users</a></li>
                                 <li><a href="#!/admin/hotels">Hotels</a></li>
