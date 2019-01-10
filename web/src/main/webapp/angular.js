@@ -43,9 +43,12 @@ bookingManager.config(['$routeProvider',
                 when('/admin/browse_users/bookings/:userId/:from/:to', {templateUrl: 'partials/admin/booking_detail.html', controller: 'UserBookingCtrl'}).
                 when('/admin/newroom/:hotelId', {templateUrl: 'partials/admin/new_room.html', controller: 'AdminNewRoomCtrl'}).
                 when('/admin/hotels', {templateUrl: 'partials/admin/hotels.html', controller: 'LoadHotelsCtrl'}).
+                when('/admin/hotel/:hotelId', {templateUrl: 'partials/admin/hotel_rooms.html', controller: 'HotelDetailCtrl'}).
                 when('/admin/deletehotel/:hotelId', {templateUrl: 'partials/admin/hotels.html', controller: 'DeleteHotelCtrl'}).
                 when('/admin/edithotel/:hotelId', {templateUrl: 'partials/admin/edit_hotel.html', controller: 'EditHotelCtrl'}).
                 when('/login', {templateUrl: 'login.html', controller: 'LoginController'}).
+                when('/admin/deleteroom/:roomId', {templateUrl: 'partials/admin/hotels.html', controller: 'DeleteRoomCtrl'}).
+                when('/admin/editroom/:roomId', {templateUrl: 'partials/admin/edit_room.html', controller: 'EditHotelCtrl'}).
                 when('/logout', {templateUrl: 'login.html', controller: 'LogoutController'}).
                 otherwise({redirectTo: '/browse'});
     }]);
@@ -67,13 +70,17 @@ function loadHotelRooms($http, hotel, roomLink) {
     $http.get(roomLink).then(function (response) {
         hotel.roomCount = response.data['_embedded']['rooms'].length;
         hotel.rooms = []; //By default, we do not want to show any rooms to the user as no date range is selected at the beginning
-        console.log('AJAX loaded ' + hotel.rooms.length + 'rooms to the hotel' + hotel.name);
-    },
+        hotel.allRooms = response.data['_embedded']['rooms']; // store all (vacant + not vacant) rooms here
+        console.log('AJAX loaded ' + hotel.rooms.length + ' rooms to the hotel' + hotel.name);
+        console.log('AJAX loaded ' + hotel.allRooms.length + ' allRooms to the hotel' + hotel.name);
+
+        },
         function error(response) {
             console.log('failed to load rooms');
             console.log(response);
     });
 }
+
 
 controllers.controller('AvailableRoomsController', function ($scope, $rootScope, $http) {
     $scope.vacancies = function (hotel) {
@@ -113,6 +120,29 @@ controllers.controller('RoomBookingController', function ($scope, $rootScope, $h
                     console.log("Could not create booking.");
                 });
     }
+});
+
+controllers.controller('EditRoomCtrl', function ($scope, $http, $routeParams) {
+    $http.get('/pa165/rest/rooms/' + $routeParams.roomId).then(function (response) {
+        $scope.room = response.data;
+        $scope.updateRoom = function () {
+            $http.put('/pa165/rest/rooms/' + $routeParams.roomId, $scope.room).then(function (result) {
+                console.log("Successfully updated.");
+            });
+        };
+    });
+});
+
+controllers.controller('DeleteRoomCtrl', function ($scope, $http, $routeParams, $location) {
+    $http.delete('/pa165/rest/rooms/' + $routeParams.roomId).then(
+        function (response) {
+            console.log('Room successfully deleted.');
+            $location.path('/admin/hotels');
+        }, function (error) {
+            console.log('Could not delete room.');
+            $location.path('/admin/hotels');
+        }
+    );
 });
 
 controllers.controller('DeleteHotelCtrl', function ($scope, $http, $routeParams, $location) {

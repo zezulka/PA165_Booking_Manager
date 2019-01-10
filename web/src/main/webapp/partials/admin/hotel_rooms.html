@@ -1,0 +1,27 @@
+<div ng-app="bookingManager">
+    <div ng-show="successAlert" class="alert alert-success alert-dismissible" role="alert" ng-click="hideSuccessAlert()">
+        <alert type="danger">{{successAlert}}</alert>
+    </div>
+</div>
+
+<div ng-app="bookingManager">
+    <div ng-show="errorAlert" class="alert alert-danger alert-dismissible" role="alert" ng-click="hideErrorAlert()">
+        <alert type="danger">{{errorAlert}}</alert>
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-striped table-sm">
+        <tbody>
+            <tr ng-repeat="room in hotel.allRooms">
+                <td class="col-md-6">
+                    <span>{{room.number}}</span>
+                </td>
+                <td class="btn-group">
+                    <a href="#!/admin/editroom/{{room.id}}" class="btn btn-outline-secondary" role="button" aria-pressed="true">Edit</a>
+                    <a href="#!/admin/deleteroom/{{room.id}}" class="btn btn-outline-secondary" role="button" aria-pressed="true">Delete</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

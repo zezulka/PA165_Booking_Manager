@@ -20,12 +20,14 @@ public class HotelResource extends ResourceSupport {
     private String name;
     private String address;
     private List<RoomDTO> rooms;
-    
+    private List<RoomDTO> allRooms;
+
     public HotelResource(HotelDTO hotel) {
         address = hotel.getAddress();
         name = hotel.getName();
         dtoId = hotel.getId();
         rooms = hotel.getRooms();
+        allRooms = hotel.getRooms();
     }
 
     public String getAddress() {
@@ -43,6 +45,9 @@ public class HotelResource extends ResourceSupport {
     public List<RoomDTO> getRooms() {
         return rooms;
     }
-    
-    
+
+    public List<RoomDTO> getAllRooms() {
+        return allRooms;
+    }
+
 }
