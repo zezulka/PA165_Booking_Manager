@@ -1,8 +1,14 @@
 <form ng-controller="EditRoomCtrl">
-  <div class="form-group">
-    <label for="description">Description</label>
-    <input ng-model="room.description" type="text" class="form-control" id="description"/>
-  </div>
+    <div class="form-group">
+        <label for="description">Description</label>
+        <input ng-model="room.description" type="text" class="form-control" id="description"/>
+        <label for="type" class="col-sm-2 control-label">Type</label>
+        <select id="type" name="type" class="form-control" ng-model="room.type" required>
+            <option ng-repeat="type in types" value="{{ type}}"
+                    ng-selected="type == room.type">{{ type}}
+            </option>
+        </select>
+    </div>
 
-  <button type="submit" ng-click="updateRoom()" class="btn btn-primary">Submit</button>
+    <button type="submit" ng-click="updateRoom()" class="btn btn-primary">Submit</button>
 </form>

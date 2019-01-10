@@ -7,6 +7,10 @@ public class ResourceNotFoundException extends RestApiException {
     public ResourceNotFoundException(String message) {
         super(message);
     }
+    
+    public ResourceNotFoundException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
     @Override
     public HttpStatus getHttpStatus() {

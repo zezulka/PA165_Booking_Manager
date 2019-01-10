@@ -14,5 +14,11 @@
         <label for="number">Number</label>
         <input ng-model="room.number" type="text" class="form-control" id="number" />
     </div>
+    <div class="form-group">
+        <label for="type" class="col-sm-2 control-label">Type</label>
+        <select id="type" name="type" class="form-control" ng-model="room.type" required>
+            <option ng-repeat="type in types" value="{{ type}}">{{ type}}</option>
+        </select>
+    </div>
     <button type="submit" ng-click="createRoom()" class="btn btn-primary">Submit</button>
 </form>

@@ -39,11 +39,12 @@ bookingManager.config(['$routeProvider',
                 when('/hotel/:hotelId', {templateUrl: 'partials/hotel_detail.html', controller: 'HotelDetailCtrl'}).
                 when('/room/:roomId', {templateUrl: 'partials/room_detail.html', controller: 'RoomDetailCtrl'}).
                 // this route should handle the use case "System admin should be also able to find customers who have some room reserved in a certain time range"
-                when('/admin/browse_users', {templateUrl: 'partials/admin/browse_customers.html', controller: 'AdminBrowseCustomersCtrl'}).                
+                when('/admin/browse_users', {templateUrl: 'partials/admin/browse_customers.html', controller: 'AdminBrowseCustomersCtrl'}).
                 when('/admin/browse_users/bookings/:userId/:from/:to', {templateUrl: 'partials/admin/booking_detail.html', controller: 'UserBookingCtrl'}).
                 when('/admin/newroom/:hotelId', {templateUrl: 'partials/admin/new_room.html', controller: 'AdminNewRoomCtrl'}).
                 when('/admin/hotels', {templateUrl: 'partials/admin/hotels.html', controller: 'LoadHotelsCtrl'}).
                 when('/admin/hotel/:hotelId', {templateUrl: 'partials/admin/hotel_rooms.html', controller: 'HotelDetailCtrl'}).
+                when('/admin/bookings', {templateUrl: 'partials/admin/bookings.html', controller: 'BookingsCtrl'}).
                 when('/admin/deletehotel/:hotelId', {templateUrl: 'partials/admin/hotels.html', controller: 'DeleteHotelCtrl'}).
                 when('/admin/edithotel/:hotelId', {templateUrl: 'partials/admin/edit_hotel.html', controller: 'EditHotelCtrl'}).
                 when('/login', {templateUrl: 'login.html', controller: 'LoginController'}).
@@ -74,11 +75,11 @@ function loadHotelRooms($http, hotel, roomLink) {
         console.log('AJAX loaded ' + hotel.rooms.length + ' rooms to the hotel' + hotel.name);
         console.log('AJAX loaded ' + hotel.allRooms.length + ' allRooms to the hotel' + hotel.name);
 
-        },
-        function error(response) {
-            console.log('failed to load rooms');
-            console.log(response);
-    });
+    },
+            function error(response) {
+                console.log('failed to load rooms');
+                console.log(response);
+            });
 }
 
 
@@ -101,7 +102,7 @@ controllers.controller('AvailableRoomsController', function ($scope, $rootScope,
     }
 });
 
-controllers.controller('PopoverController' , function () {
+controllers.controller('PopoverController', function () {
     $(function () {
         $("button").popover();
     });
@@ -122,12 +123,14 @@ controllers.controller('RoomBookingController', function ($scope, $rootScope, $h
     }
 });
 
-controllers.controller('EditRoomCtrl', function ($scope, $http, $routeParams) {
+controllers.controller('EditRoomCtrl', function ($scope, $http, $routeParams, $location) {
     $http.get('/pa165/rest/rooms/' + $routeParams.roomId).then(function (response) {
         $scope.room = response.data;
+        $scope.types = ['SINGLE_ROOM', 'DOUBLE_ROOM', 'COMFORT_SINGLE_ROOM', 'COMFORT_DOUBLE_ROOM', 'SUITE'];
         $scope.updateRoom = function () {
             $http.put('/pa165/rest/rooms/' + $routeParams.roomId, $scope.room).then(function (result) {
                 console.log("Successfully updated.");
+                $location.path('/admin/hotel/' + $scope.room.hotel.id);
             });
         };
     });
@@ -135,13 +138,13 @@ controllers.controller('EditRoomCtrl', function ($scope, $http, $routeParams) {
 
 controllers.controller('DeleteRoomCtrl', function ($scope, $http, $routeParams, $location) {
     $http.delete('/pa165/rest/rooms/' + $routeParams.roomId).then(
-        function (response) {
-            console.log('Room successfully deleted.');
-            $location.path('/admin/hotels');
-        }, function (error) {
-            console.log('Could not delete room.');
-            $location.path('/admin/hotels');
-        }
+            function (response) {
+                console.log('Room successfully deleted.');
+                $location.path('/admin/hotels');
+            }, function (error) {
+        console.log('Could not delete room.');
+        $location.path('/admin/hotels');
+    }
     );
 });
 
@@ -235,26 +238,27 @@ function loadUsersBookings($http, user, from, to) {
         user.bookingCount = response.data['_embedded']['bookings'].length;
         user.bookings = response.data['_embedded']['bookings'];
         console.log('bookings loaded ' + user.bookingCount);
-        for (var i = 0; i < user.bookings.length; i++) { 
-        	var booking = user.bookings[i];
-        	var roomId = booking.room.id
-        	loadBookingRoom($http, booking, roomId)
+        for (var i = 0; i < user.bookings.length; i++) {
+            var booking = user.bookings[i];
+            var roomId = booking.room.id
+            loadBookingRoom($http, booking, roomId)
         }
     });
 }
 
 controllers.controller('AdminNewRoomCtrl', function ($scope, $rootScope, $routeParams, $location, $http) {
     $scope.room = {};
+    $scope.types = ['SINGLE_ROOM', 'DOUBLE_ROOM', 'COMFORT_SINGLE_ROOM', 'COMFORT_DOUBLE_ROOM', 'SUITE'];
     $scope.createRoom = function () {
         $http.get('/pa165/rest/hotels/' + $routeParams.hotelId).then(function (response) {
             $scope.room.hotel = response.data;
             $http.post('/pa165/rest/rooms/create', $scope.room).then(
                     function (response) {
                         console.log("Room created successfully.");
-                        $location.path('/admin/hotels');
+                        $location.path('/admin/hotel/' + $routeParams.hotelId);
                     }, function (error) {
                 console.log("Could not create room.");
-                $location.path('/admin/hotels');
+                $location.path('/admin/hotel/' + $routeParams.hotelId);
             }
             );
         });
@@ -275,6 +279,10 @@ controllers.controller('AdminBrowseCustomersCtrl', function ($scope, $rootScope,
             }
         });
     }
+});
+
+controllers.controller('BookingsCtrl', function ($scope, $rootScope, $routeParams, $http) {
+
 });
 
 controllers.controller('UserBookingCtrl',

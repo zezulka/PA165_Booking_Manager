@@ -7,6 +7,10 @@ public class RestApiException extends Exception {
     public RestApiException(String message) {
         super(message);
     }
+    
+    public RestApiException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
     /**
      * Tells which HttpStatus should be returned for the given exception.
