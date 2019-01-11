@@ -28,7 +28,7 @@ controllers.directive('convertToInt', function () {
  * /browse route will only show those hotels which have at least one room available
  * for booking.
  * 
- * /admin/hotels must show the administration all the hotels possible.
+ * /admin/hotels must show the administrator all the hotels possible.
  * 
  */
 bookingManager.config(['$routeProvider',
@@ -44,12 +44,12 @@ bookingManager.config(['$routeProvider',
                 when('/admin/newroom/:hotelId', {templateUrl: 'partials/admin/new_room.html', controller: 'AdminNewRoomCtrl'}).
                 when('/admin/hotels', {templateUrl: 'partials/admin/hotels.html', controller: 'LoadHotelsCtrl'}).
                 when('/admin/hotel/:hotelId', {templateUrl: 'partials/admin/hotel_rooms.html', controller: 'HotelDetailCtrl'}).
-                when('/admin/bookings', {templateUrl: 'partials/admin/bookings.html', controller: 'BookingsCtrl'}).
+                when('/admin/bookings', {templateUrl: 'partials/admin/bookings.html', controller: 'LoadBookingsCtrl'}).
                 when('/admin/deletehotel/:hotelId', {templateUrl: 'partials/admin/hotels.html', controller: 'DeleteHotelCtrl'}).
                 when('/admin/edithotel/:hotelId', {templateUrl: 'partials/admin/edit_hotel.html', controller: 'EditHotelCtrl'}).
-                when('/login', {templateUrl: 'login.html', controller: 'LoginController'}).
                 when('/admin/deleteroom/:roomId', {templateUrl: 'partials/admin/hotels.html', controller: 'DeleteRoomCtrl'}).
                 when('/admin/editroom/:roomId', {templateUrl: 'partials/admin/edit_room.html', controller: 'EditHotelCtrl'}).
+                when('/login', {templateUrl: 'login.html', controller: 'LoginController'}).
                 when('/logout', {templateUrl: 'login.html', controller: 'LogoutController'}).
                 otherwise({redirectTo: '/browse'});
     }]);
@@ -221,12 +221,6 @@ controllers.controller('RoomDetailCtrl',
             );
         });
 
-/**
- *
- * Admin stuff
- *
- */
-
 function loadBookingRoom($http, booking, roomId) {
     $http.get('/pa165/rest/rooms/' + roomId).then(function (response) {
         booking.roomData = response.data;
@@ -281,8 +275,16 @@ controllers.controller('AdminBrowseCustomersCtrl', function ($scope, $rootScope,
     }
 });
 
-controllers.controller('BookingsCtrl', function ($scope, $rootScope, $routeParams, $http) {
-
+controllers.controller('LoadBookingsCtrl', function ($scope, $rootScope, $routeParams, $http) {
+    console.log('/pa165/rest/bookings/');
+    $http.get('/pa165/rest/bookings/').then(function (response) {
+        var bookings = response.data['_embedded']['bookings'];
+        console.log('AJAX loaded all bookings.');
+        $scope.bookings = bookings;
+        $scope.dateToString = function(date) {
+            return date.year + '-' + date.monthValue + '-' + date.dayOfMonth;
+        };
+    });
 });
 
 controllers.controller('UserBookingCtrl',
@@ -307,9 +309,7 @@ controllers.controller('UserBookingCtrl',
                     }
             );
         });
-/**
- * Authentication stuff.
- */
+
 controllers.factory('PageService', function ($rootScope, $http, $location, $cookies) {
     var _title = '';
     var _pageName = '';
