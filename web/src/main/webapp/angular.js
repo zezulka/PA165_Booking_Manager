@@ -47,7 +47,7 @@ bookingManager.config(['$routeProvider',
                 when('/admin/bookings', {templateUrl: 'partials/admin/bookings.html', controller: 'LoadBookingsCtrl'}).
                 when('/admin/deletehotel/:hotelId', {templateUrl: 'partials/admin/hotels.html', controller: 'DeleteHotelCtrl'}).
                 when('/admin/edithotel/:hotelId', {templateUrl: 'partials/admin/edit_hotel.html', controller: 'EditHotelCtrl'}).
-                when('/admin/deleteroom/:roomId', {templateUrl: 'partials/admin/hotels.html', controller: 'DeleteRoomCtrl'}).
+                when('/admin/hotel/:hotelId/deleteroom/:roomId', {templateUrl: 'partials/admin/hotel_rooms.html', controller: 'DeleteRoomCtrl'}).
                 when('/admin/editroom/:roomId', {templateUrl: 'partials/admin/edit_room.html', controller: 'EditHotelCtrl'}).
                 when('/login', {templateUrl: 'login.html', controller: 'LoginController'}).
                 when('/logout', {templateUrl: 'login.html', controller: 'LogoutController'}).
@@ -140,10 +140,10 @@ controllers.controller('DeleteRoomCtrl', function ($scope, $http, $routeParams, 
     $http.delete('/pa165/rest/rooms/' + $routeParams.roomId).then(
             function (response) {
                 console.log('Room successfully deleted.');
-                $location.path('/admin/hotels');
+                $location.path('/admin/hotel/' + $routeParams.hotelId);
             }, function (error) {
         console.log('Could not delete room.');
-        $location.path('/admin/hotels');
+        $location.path('/admin/hotel/' + $routeParams.hotelId);
     }
     );
 });
@@ -281,7 +281,7 @@ controllers.controller('LoadBookingsCtrl', function ($scope, $rootScope, $routeP
         var bookings = response.data['_embedded']['bookings'];
         console.log('AJAX loaded all bookings.');
         $scope.bookings = bookings;
-        $scope.dateToString = function(date) {
+        $scope.dateToString = function (date) {
             return date.year + '-' + date.monthValue + '-' + date.dayOfMonth;
         };
     });
