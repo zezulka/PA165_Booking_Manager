@@ -53,6 +53,7 @@ bookingManager.config(['$routeProvider',
                 when('/logout', {templateUrl: 'login.html', controller: 'LogoutController'}).
                 otherwise({redirectTo: '/browse'});
     }]);
+
 bookingManager.run(function ($rootScope, $http) {
     $rootScope.hideSuccessAlert = function () {
         $rootScope.successAlert = undefined;
@@ -83,44 +84,48 @@ function loadHotelRooms($http, hotel, roomLink) {
 }
 
 
-controllers.controller('AvailableRoomsController', function ($scope, $rootScope, $http) {
+controllers.controller('BookingController', function ($scope, $rootScope, $http, PageService) {
     $scope.vacancies = function (hotel) {
-        console.log("foobar");
+        if (typeof $scope.to === 'undefined' || typeof $scope.from === 'undefined') {
+            return;
+        }
         var hotelId = hotel.id;
         var from = $scope.from.toISOString().substring(0, 10);
         var to = $scope.to.toISOString().substring(0, 10);
-        // Remeber these globally as we'll need to use them later
-        $rootScope.fromDate = from;
-        $rootScope.toDate = to;
         $http.get('/pa165/rest/hotels/' + hotelId + '/vacancy?from=' + from + '&to=' + to).then(function (response) {
-            hotel.rooms = response.data['_embedded']['rooms'];
+            if(!('_embedded' in response.data)) {
+                $scope.hotel.rooms = [];
+            } else {
+                $scope.hotel.rooms = response.data['_embedded']['rooms'];    
+            }
+            console.log('successfully loaded rooms for the hotel with id ' + hotelId);
         }, function error(response) {
             console.log('failed to load rooms');
             console.log(response);
-            $rootScope.errorAlert = 'Cannot load rooms: ' + response.data.message;
+            $rootScope.errorAlert = 'Cannot load rooms.';
         });
-    }
+    };
+
+    $scope.book = function (room) {
+        var from = $scope.from.toISOString().substring(0, 10);
+        var to = $scope.to.toISOString().substring(0, 10);
+        var body = {room: room, fromDate: from, toDate: to, user: PageService.getUser(), total: room.recommendedPrice};
+        console.log(body);
+        $http.post('/pa165/rest/bookings/create', body)
+                .then(function (response) {
+                    console.log("Booking successfully created.");
+                    $rootScope.successAlert = 'Booking successfully created';
+                    $scope.vacancies(room.hotel);
+                }, function (reason) {
+                    console.log("Could not create booking.");
+                });
+    };
 });
 
 controllers.controller('PopoverController', function () {
     $(function () {
         $("button").popover();
     });
-})
-
-controllers.controller('RoomBookingController', function ($scope, $rootScope, $http, $location, PageService) {
-    $scope.book = function (room) {
-        var body = {room: room, fromDate: $rootScope.fromDate, toDate: $rootScope.toDate, user: PageService.getUser(), total: room.recommendedPrice};
-        console.log(body);
-        $http.post('/pa165/rest/bookings/create', body)
-                .then(function (response) {
-                    console.log("Booking successfully created.");
-                    $location.path('/hotel/' + room.hotel.id);
-                    $rootScope.successAlert = 'Booking successfully created';
-                }, function (reason) {
-                    console.log("Could not create booking.");
-                });
-    }
 });
 
 controllers.controller('EditRoomCtrl', function ($scope, $http, $routeParams, $location) {
@@ -193,7 +198,6 @@ controllers.controller('HotelDetailCtrl',
                     function (response) {
                         $scope.hotel = response.data;
                         console.log('[AJAX] hotel ' + $scope.hotel.name + 'detail load');
-
                         var hotelRoomsLink = $scope.hotel['_links'].rooms.href;
                         loadHotelRooms($http, $scope.hotel, hotelRoomsLink);
                     },
@@ -204,19 +208,20 @@ controllers.controller('HotelDetailCtrl',
                     }
             );
         });
+
 controllers.controller('RoomDetailCtrl',
         function ($scope, $rootScope, $routeParams, $http) {
             var roomId = $routeParams.roomId;
             $http.get('/pa165/rest/rooms/' + roomId).then(
                     function (response) {
                         $scope.room = response.data;
-                        console.log('[AJAX] room ${scope.room.name} detail load');
+                        console.log('[AJAX] room' + $scope.room.name + 'detail load');
 
                     },
                     function error(response) {
-                        console.log("failed to load room ${toomId}");
+                        console.log("failed to load room" + roomId);
                         console.log(response);
-                        $rootScope.errorAlert = 'Cannot load room: ${response.data.message}';
+                        $rootScope.errorAlert = 'Cannot load room:' + response.data.message;
                     }
             );
         });
@@ -234,7 +239,7 @@ function loadUsersBookings($http, user, from, to) {
         console.log('bookings loaded ' + user.bookingCount);
         for (var i = 0; i < user.bookings.length; i++) {
             var booking = user.bookings[i];
-            var roomId = booking.room.id
+            var roomId = booking.room.id;
             loadBookingRoom($http, booking, roomId)
         }
     });

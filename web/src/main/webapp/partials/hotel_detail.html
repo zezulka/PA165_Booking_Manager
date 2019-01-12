@@ -15,52 +15,54 @@
     <h4>{{hotel.address}}</h4>
 </div>
 
-<div class="row">
-    <form name="form" ng-controller="AvailableRoomsController" novalidate>
-        <div class="row">
-            <div class="form-group" ng-class="{ 'has-error': !(form.from.$valid) }">
-                <label for="from" class="control-label col-sm-2">From:</label>
-                <div class="col-sm-5">
-                    <input ng-model="from" id="from" class="date" type="date" name="from" min="today" required/>
-                </div>
-                <div class="col-sm-5">
-                    <p ng-show="form.from.$error.required && form.$dirty" class="help-block">From date is required.</p>
-                </div>
-            </div>
-
-        </div>
-        <div class="row">
-            <div class="form-group" ng-class="{ 'has-error': !(form.to.$valid) }">
-                <label for="to" class="control-label col-sm-2">To:</label>
-                <div class="col-sm-5">
-                    <input ng-model="to" id="to" class="date" type="date" name="to" min="today" required/>
-                </div>
-                <div class="col-sm-5">
-                    <p ng-show="form.to.$error.required && form.$dirty" class="help-block">To date is required.</p>
-                </div>
-            </div>
-
-        </div>
-        <button type="submit" class="btn btn-primary" ng-disabled="!form.$valid" ng-click="vacancies(hotel)">Show vacant rooms</button>
-    </form>
-</div>
-<br>
-<div class="row">
-    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4" ng-repeat="room in hotel.rooms">
-        <div class="thumbnail">
-            <img ng-src="{{room._links.image.href}}">
-            <div class="caption">
-                <div class="btn-group btn-group-justified" role="group" aria-label="...">
-                    <div class="btn-group" ng-show="user" role="group">
-                        <button ng-controller="RoomBookingController" type="button" ng-click="book(room)" class="btn btn-primary">Book room</button>
+<div ng-controller="BookingController">
+    <div class="row">
+        <form name="form" novalidate>
+            <div class="row">
+                <div class="form-group" ng-class="{ 'has-error': !(form.from.$valid) }">
+                    <label for="from" class="control-label col-sm-2">From:</label>
+                    <div class="col-sm-5">
+                        <input ng-model="from" id="from" class="date" type="date" name="from" min="today" required/>
                     </div>
-                    <div class="btn-group" role="group">
-                        <div class="btn btn-default disabled" style="cursor:default;">${{room.recommendedPrice}}</div>
+                    <div class="col-sm-5">
+                        <p ng-show="form.from.$error.required && form.$dirty" class="help-block">From date is required.</p>
                     </div>
-                    <div class="btn-group" role="group">
-                        <button ng-controller="PopoverController" type="button" class="btn btn-secondary" data-container="body" data-toggle="popover" data-placement="bottom" title="Room No. {{room.number}}" data-content="{{room.description}}">
-                            <span class="glyphicon glyphicon-info-sign"></span> Details
-                        </button>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="form-group" ng-class="{ 'has-error': !(form.to.$valid) }">
+                    <label for="to" class="control-label col-sm-2">To:</label>
+                    <div class="col-sm-5">
+                        <input ng-model="to" id="to" class="date" type="date" name="to" min="today" required/>
+                    </div>
+                    <div class="col-sm-5">
+                        <p ng-show="form.to.$error.required && form.$dirty" class="help-block">To date is required.</p>
+                    </div>
+                </div>
+
+            </div>
+            <button type="submit" class="btn btn-primary" ng-disabled="!form.$valid" ng-click="vacancies(hotel)">Show vacant rooms</button>
+        </form>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4" ng-repeat="room in hotel.rooms">
+            <div class="thumbnail">
+                <img ng-src="{{room._links.image.href}}">
+                <div class="caption">
+                    <div class="btn-group btn-group-justified" role="group" aria-label="...">
+                        <div class="btn-group" ng-show="user" role="group">
+                            <button type="button" ng-click="book(room)" class="btn btn-primary">Book room</button>
+                        </div>
+                        <div class="btn-group" role="group">
+                            <div class="btn btn-default disabled" style="cursor:default;">{{room.recommendedPrice}}</div>
+                        </div>
+                        <div class="btn-group" role="group">
+                            <button ng-controller="PopoverController" type="button" class="btn btn-secondary" data-container="body" data-toggle="popover" data-placement="bottom" title="Room No. {{room.number}}" data-content="{{room.description}}">
+                                <span class="glyphicon glyphicon-info-sign"></span> Details
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
